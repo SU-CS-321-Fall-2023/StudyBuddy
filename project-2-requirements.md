@@ -1,7 +1,7 @@
 1. **User Registration and Login**
-2. **User Profiles**
-3. **Study Group Creation**
-4. **Study Group Search and Matching**
-5. **Password Encryption**
-6. **Email Capture**
-7. **Send Emails**
+2. **Email Capture**
+3. **Password Encryption**
+4. **Study Group Creation**
+6. **Study Group Search and Matching**
+7. **User Profiles**
+8. **Send Emails**
