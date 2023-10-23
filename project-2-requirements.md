@@ -5,3 +5,4 @@
 6. **Study Group Search and Matching**
 7. **User Profiles**
 8. **Send Emails**
+9. **App on both Android and iOS**
