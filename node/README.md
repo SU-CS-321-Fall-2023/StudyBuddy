@@ -8,6 +8,20 @@ A boilerplate/starter project for quickly building RESTful APIs using Node.js, E
 
 By running a single command, you will get a production-ready Node.js app installed and fully configured on your machine. The app comes with many built-in features, such as authentication using JWT, request validation, unit and integration tests, continuous integration, docker support, API documentation, pagination, etc. For more details, check the features list below.
 
+## How to run?
+
+1. create a `.env` file identical to `.env.example`. Change the `MONGODB_URL` variable to ours then save.
+
+2.install dependencies and run:
+
+```bash
+npm install
+```
+
+```bash
+npm run start
+```
+
 ## Quick Start
 
 To create a project, simply run:
