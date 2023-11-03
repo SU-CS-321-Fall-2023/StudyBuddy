@@ -6,6 +6,23 @@ import re
 ## The code is also not very robust
 ## it will not return correct output for "LAW" department classes. Everything else works.
 
+###MONGO CONNECTION###
+import pymongo.server_api
+from pymongo import MongoClient
+
+# need the uri
+# need to check the class isn't already in the database before adding?
+uri = "mongodb+srv://root:SbkEiPRaVoJsyX1M@cluster0.rqigw14.mongodb.net/scrapeTest?retryWrites=true&w=majority"
+client = MongoClient(uri, server_api=pymongo.server_api.ServerApi('1'))
+# print message indicating attempt to connect to the database
+print(f"Attempting to connect to database {uri}...")
+if client:
+    print("Successfully connected to database! {db.name}")
+db = client.db
+courses = db.courses
+
+
+###SCRAPING###
 def parse_class_info(class_string):
     # Use regular expression to extract department code, class code, class letter, and class name
     pattern = r"([A-Z]+)\s*(\d+[A-Z]?\d*)([A-Z]?)[\s\.]+(.+?)\.\s+\d"
@@ -44,6 +61,10 @@ for link in department_links:
     
     # Extract class information from the department page
     class_blocks = department_soup.select("div.courseblock")
+    department = department_soup.title.get_text()
+    department = department.split("<")[0] # can change this to ( so abbreviation isn't included if we want
+    department_name = department.split("(")[0]
+    print(department_name)
     for class_block in class_blocks:
         
         class_title = class_block.select_one("p.courseblocktitle strong").text.strip()
@@ -62,3 +83,21 @@ for link in department_links:
 
         print("Failures:", failures)
         print("=" * 50)
+
+        # Insert department_name, class_title, and class_description into database
+        data = {'department_name': department_name,
+                'department_code': class_info[0],
+                'class_title': class_info[3],
+                'class_code': class_info[1],
+                'class_description': class_description}
+        courses.insert_one(data)
+
+        # Print or store the class information as needed
+        print("Class Title:", class_info[3])
+        print("Class Description:", class_description)
+        print("=" * 50)
+# fix the space after department name
+# fails on law
+# get into mongo database
+# keep description for fall/spring
+# we want to know if a class doesnt exist anymore, and archive it somehow--how to find classes that don't exist
