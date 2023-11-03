@@ -9,7 +9,7 @@ const classSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        department: {  // possibly make enum cuz categories?
+        department: {  // possibly make enum cuz categories? but do we want it able to auto-update? how would we do that
             type: String,
             required: true,
         },
@@ -21,14 +21,14 @@ const classSchema = mongoose.Schema(
         },
         description: {
             type: String,
-        }
+        },
         keywords: {  // to help in searching for classes
             type: [String],
-        }
+        },
         isactive: {  // if the course is active or archived/gone
             type: Boolean,
             default: true,
-        }
+        },
     }
 );
 
