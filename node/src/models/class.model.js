@@ -14,7 +14,8 @@ const classSchema = mongoose.Schema(
             required: true,
         },
         code: {  // course code
-            type: Int16Array,
+            type: String,
+            length: 4,
             required: true,
             unique: true,  // cuz each class has its own code
         },
