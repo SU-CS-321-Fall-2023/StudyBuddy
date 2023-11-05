@@ -34,7 +34,7 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  return User.findById(id);
+  return User.findById(id).populate('classes').populate('studyGroups');
 };
 
 /**
@@ -53,7 +53,7 @@ const getUserByEmail = async (email) => {
  * @returns {Promise<User>}
  */
 const updateUserById = async (userId, updateBody) => {
-  const user = await getUserById(userId);
+  const user = (await getUserById(userId));
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
