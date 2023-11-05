@@ -3,6 +3,8 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const Class = require('./class.model.js'); // Import the Class model
+const StudyGroup = require('./studygroup.model.js'); // Import the StudyGroup model
 
 const userSchema = mongoose.Schema(
   {
@@ -35,6 +37,18 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
+    classes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Class',
+      },
+    ],
+    studyGroups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'StudyGroup',
+      },
+    ],
     role: {
       type: String,
       enum: roles,
