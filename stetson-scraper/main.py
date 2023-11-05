@@ -1,10 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from pymongo import MongoClient
 
-## The code is still unfinished, it contains debugging code like "failures" and "print" statements
-## The code is also not very robust
-## it will not return correct output for "LAW" department classes. Everything else works.
+# MongoDB connection setup
+uri = "mongodb+srv://root:SbkEiPRaVoJsyX1M@cluster0.rqigw14.mongodb.net/scrapeTest?retryWrites=true&w=majority"
+client = MongoClient(uri)
+db = client['scrapeTest']
+courses = db['classes']
 
 def parse_class_info(class_string):
     # Use regular expression to extract department code, class code, class letter, and class name
@@ -20,45 +23,62 @@ def parse_class_info(class_string):
     else:
         return None
 
-# URL of the main page with department links
 main_page_url = "https://catalog.stetson.edu/courses-instruction/"
-
-# Send a GET request to the main page
 main_page_response = requests.get(main_page_url)
 main_page_content = main_page_response.content
-
-# Parse the main page content
 main_page_soup = BeautifulSoup(main_page_content, "html.parser")
 failures = []
-# Extract department links from the main page
+
 department_links = main_page_soup.select("div.sitemap a.sitemaplink")
 for link in department_links:
     department_url = "https://catalog.stetson.edu" + link["href"]
-    
-    # Send a GET request to the department page
     department_response = requests.get(department_url)
     department_content = department_response.content
-    
-    # Parse the department page content
     department_soup = BeautifulSoup(department_content, "html.parser")
-    
-    # Extract class information from the department page
     class_blocks = department_soup.select("div.courseblock")
+    department = department_soup.title.get_text().split("(")[0].strip()
+    print(department)
+    
     for class_block in class_blocks:
-        
-        class_title = class_block.select_one("p.courseblocktitle strong").text.strip()
-        class_description = class_block.select_one("p.courseblockdesc").text.strip()
-        class_info = parse_class_info(class_title)
-        
+        try:
+            class_title = class_block.select_one("p.courseblocktitle strong").text.strip()
+            class_description = class_block.select_one("p.courseblockdesc").text.strip()
+            class_info = parse_class_info(class_title)
 
-        # Print or store the class information as needed
-        if class_info:
-            print("Department Code:", class_info[0])
-            print("Class Code:", class_info[1])
-            print("Class Letter:", class_info[2])
-            print("Class Name:", class_info[3])
-        else:
+            if class_info:
+                print("Department Code:", class_info[0])
+                print("Class Code:", class_info[1])
+                print("Class Letter:", class_info[2])
+                print("Class Name:", class_info[3])
+            else:
+                failures.append(class_title)
+
+            print("Failures:", failures)
+            print("=" * 50)
+
+            # Check if the class already exists in the database
+            existing_class = courses.find_one({
+                'department_name': department,
+                'department_code': class_info[0],
+                'class_title': class_info[3],
+                'class_code': class_info[1]
+                        })
+
+            if not existing_class:
+                # Insert class information into the database
+                data = {
+                    'department_name': department,
+                    'department_code': class_info[0],
+                    'class_title': class_info[3],
+                    'class_code': class_info[1]
+                    }
+                courses.insert_one(data)
+                print("Class added to the database.")
+            else:
+                print("Class already exists in the database.")
+            print("=" * 50)
+
+        except Exception as e:
+            print(f"Error processing class: {e}")
             failures.append(class_title)
-
-        print("Failures:", failures)
-        print("=" * 50)
+            continue
