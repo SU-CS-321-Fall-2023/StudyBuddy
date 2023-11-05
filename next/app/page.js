@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import RegisterService from './services/register'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import RegisterForm from './components/RegisterForm'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import './index.css'
@@ -15,6 +17,9 @@ export default function Home() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [registerName, setRegisterName] = useState('')
+  const [registerEmail, setRegisterEmail] = useState('')
+  const [registerPassword, setRegisterPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
@@ -49,7 +54,7 @@ export default function Home() {
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
+    window.localStorage.removeItem('loggedStudyBuddyUser')
   }
 
   const handleUsernameChange = (event) => {
@@ -61,7 +66,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedStudyBuddyUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -84,7 +89,7 @@ export default function Home() {
         email, password,
       })
       const { user, tokens } = response
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user),)
+      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
       blogService.setToken(tokens.access.token)
       setUser(user)
       setEmail('')
@@ -97,6 +102,41 @@ export default function Home() {
     }
     catch (exception) {
       setMessage('wrong email or password')
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+    console.log('logging in with', email, password)
+  }
+
+  const handleRegister = async (event) => {
+    event.preventDefault()
+    try {
+      const response = await RegisterService.register({
+        name: registerName,
+        email: registerEmail,
+        password: registerPassword,
+      })
+      console.log(response)
+      const { user, tokens } = response
+      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+      blogService.setToken(tokens.access.token)
+      setUser(user)
+      setEmail('')
+      setPassword('')
+      setRegisterEmail('')
+      setRegisterPassword('')
+      setRegisterName('')
+      setMessage(`Successfully registered as ${user.name} and logged in`)
+      setMessageType('success')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+    catch (exception) {
+      console.log(exception)
+      setMessage(exception.response.data.message)
       setMessageType('error')
       setTimeout(() => {
         setMessage(null)
@@ -118,6 +158,18 @@ export default function Home() {
           handleUsernameChange={handleUsernameChange}
           handlePasswordChange={handlePasswordChange}
           handleLogin={handleLogin}
+        />
+      </Togglable>}
+      {user === null &&
+      <Togglable buttonLabel="Register">
+        <RegisterForm
+          name={registerName}
+          email={registerEmail}
+          password={registerPassword}
+          setName={setRegisterName}
+          setEmail={setRegisterEmail}
+          setPassword={setRegisterPassword}
+          handleRegister={handleRegister}
         />
       </Togglable>}
       {user && <div>
