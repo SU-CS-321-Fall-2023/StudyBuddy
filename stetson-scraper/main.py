@@ -2,7 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-#when this code is finished, start the database from scratch to ensure all entries are properly formatted/ no duplicates
+#add law classes that failed to database
+    #change url path to just law
+    #change regex?
+    #other law classes won't be added since they are already included
 
 #take out class letter--decided we dont wan't this anymore
 #need to adjust regex or just omit law classes (try the regex though)
@@ -32,7 +35,7 @@ print(f"Attempting to connect to database {uri}...")
 if client:
     print("Successfully connected to database! {db.name}")
 db = client.db
-courses = db.courses
+courses = db.stetson_courses
 
 
 ###SCRAPING###
@@ -55,7 +58,7 @@ main_page_url = "https://catalog.stetson.edu/courses-instruction/"
 main_page_response = requests.get(main_page_url)
 main_page_content = main_page_response.content # get main page content
 main_page_soup = BeautifulSoup(main_page_content, "html.parser") # parse main page content
-department_links = main_page_soup.select("div.sitemap a.sitemaplink") # get department links from main page in a list
+department_links = main_page_soup.select("div.sitemap a.sitemaplink") # get department links from main page in a list (selects all under this search)
 failures = [] # keep track of issues
 
 # loop through list of departments
@@ -67,7 +70,7 @@ for link in department_links:
     department_soup = BeautifulSoup(department_content, "html.parser")
     
     # Get department name
-    class_blocks = department_soup.select("div.courseblock")
+    class_blocks = department_soup.select("div.courseblock") # get all courses, somewhat similar to getting departments
     department = department_soup.title.get_text()
     department = department.split("<")[0]
     department_name = department.split(" (")[0]
@@ -75,7 +78,7 @@ for link in department_links:
 
     # Loop through classes in each department
     for class_block in class_blocks:
-        class_title = class_block.select_one("p.courseblocktitle strong").text.strip()
+        class_title = class_block.select_one("p.courseblocktitle strong").text.strip() #.strip gets rid of whitespace
         class_description = class_block.select_one("p.courseblockdesc").text.strip()
         class_info = parse_class_info(class_title) # get relevant info to be stored in database
 
