@@ -2,9 +2,22 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-## The code is still unfinished, it contains debugging code like "failures" and "print" statements
-## The code is also not very robust
-## it will not return correct output for "LAW" department classes. Everything else works.
+#when this code is finished, start the database from scratch to ensure all entries are properly formatted/ no duplicates
+
+#take out class letter--decided we dont wan't this anymore
+#need to adjust regex or just omit law classes (try the regex though)
+#convert all class names to lowercase before adding to database--DONE
+#convert deparment names to lowercase before adding to database--DONE
+    #means:
+    #convert all search queries for class names to lowercase
+    #convert search queries for department names to lowercase
+    #convert all department codes in search queries to uppercase
+
+#work on node.js and mongo connection, searching for valid classes
+#study group creation--how to match people
+#stat collection
+#email reminders
+
 
 ###MONGO CONNECTION###
 import pymongo.server_api
@@ -33,71 +46,72 @@ def parse_class_info(class_string):
         class_code = match.group(2)
         class_letter = match.group(3)
         class_name = match.group(4)
-        return [department_code, class_code, class_letter, class_name]
+        return [department_code, class_code, class_letter, class_name.lower()]
     else:
         return None
 
-# URL of the main page with department links
+
 main_page_url = "https://catalog.stetson.edu/courses-instruction/"
-
-# Send a GET request to the main page
 main_page_response = requests.get(main_page_url)
-main_page_content = main_page_response.content
+main_page_content = main_page_response.content # get main page content
+main_page_soup = BeautifulSoup(main_page_content, "html.parser") # parse main page content
+department_links = main_page_soup.select("div.sitemap a.sitemaplink") # get department links from main page in a list
+failures = [] # keep track of issues
 
-# Parse the main page content
-main_page_soup = BeautifulSoup(main_page_content, "html.parser")
-failures = []
-# Extract department links from the main page
-department_links = main_page_soup.select("div.sitemap a.sitemaplink")
+# loop through list of departments
 for link in department_links:
+    # same getting/ parsing process as with main page, applied to each department link
     department_url = "https://catalog.stetson.edu" + link["href"]
-    
-    # Send a GET request to the department page
     department_response = requests.get(department_url)
     department_content = department_response.content
-    
-    # Parse the department page content
     department_soup = BeautifulSoup(department_content, "html.parser")
     
-    # Extract class information from the department page
+    # Get department name
     class_blocks = department_soup.select("div.courseblock")
     department = department_soup.title.get_text()
-    department = department.split("<")[0] # can change this to ( so abbreviation isn't included if we want
-    department_name = department.split("(")[0]
+    department = department.split("<")[0]
+    department_name = department.split(" (")[0]
     print(department_name)
+
+    # Loop through classes in each department
     for class_block in class_blocks:
-        
         class_title = class_block.select_one("p.courseblocktitle strong").text.strip()
         class_description = class_block.select_one("p.courseblockdesc").text.strip()
-        class_info = parse_class_info(class_title)
-        
+        class_info = parse_class_info(class_title) # get relevant info to be stored in database
 
-        # Print or store the class information as needed
         if class_info:
+            # Insert department_name, class_title, and class_description into database
+            data = {'department_name': department_name.lower(),
+                    'department_code': class_info[0],
+                    'class_title': class_info[3],
+                    'class_code': class_info[1],
+                    'class_description': class_description}
+
+            # Check if course already exists in database (cross-check three fields in case duplicate names & codes)
+            # ex. independent study 385 occurs in multiple departments
+            # useful for when this code runs periodically to update database with new classes
+            if courses.count_documents({'department_code': class_info[0], 'class_title': class_info[3], 'class_code': class_info[1]}):
+                print(class_info[3], class_info[1], 'in', department_name, 'already exists in database.')
+            else:
+                courses.insert_one(data)
+
             print("Department Code:", class_info[0])
             print("Class Code:", class_info[1])
-            print("Class Letter:", class_info[2])
+            # print("Class Letter:", class_info[2])
             print("Class Name:", class_info[3])
+            print("=" * 50)
+
+        # if problem occurs parsing class info
         else:
             failures.append(class_title)
+            print("Failures:", failures)
+            print("=" * 50)
 
-        print("Failures:", failures)
-        print("=" * 50)
-
-        # Insert department_name, class_title, and class_description into database
-        data = {'department_name': department_name,
-                'department_code': class_info[0],
-                'class_title': class_info[3],
-                'class_code': class_info[1],
-                'class_description': class_description}
-        courses.insert_one(data)
-
-        # Print or store the class information as needed
-        print("Class Title:", class_info[3])
-        print("Class Description:", class_description)
-        print("=" * 50)
-# fix the space after department name
-# fails on law
-# get into mongo database
+# fails on law--get around this
 # keep description for fall/spring
-# we want to know if a class doesnt exist anymore, and archive it somehow--how to find classes that don't exist
+# we want to know if a class doesn't exist anymore, and archive it somehow--how to find classes that don't exist
+
+#to do after:
+# connect user database to classes database (users to classes)
+    #a class list field
+# work study group creation
