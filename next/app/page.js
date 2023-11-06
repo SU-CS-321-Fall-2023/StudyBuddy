@@ -12,15 +12,27 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import './index.css'
 
+import { useContext } from 'react'
+
+import {useAuth} from './contexts/AuthContext'
+import { useRender } from './contexts/RenderContext'
+
+import { Button } from "@material-tailwind/react";
+
+import Hero from './components/Hero'
+
 export default function Home() {
   const [blogs, setBlogs] = useState([])
+  
+  const { user, setUser } = useAuth()
+  const { render, setRender } = useRender()
+  console.log(render)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [registerName, setRegisterName] = useState('')
   const [registerEmail, setRegisterEmail] = useState('')
   const [registerPassword, setRegisterPassword] = useState('')
-  const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
 
@@ -55,6 +67,7 @@ export default function Home() {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedStudyBuddyUser')
+    setRender('default')
   }
 
   const handleUsernameChange = (event) => {
@@ -65,22 +78,22 @@ export default function Home() {
     setPassword(event.target.value)
   }
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedStudyBuddyUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const loggedUserJSON = window.localStorage.getItem('loggedStudyBuddyUser')
+  //   if (loggedUserJSON) {
+  //     const user = JSON.parse(loggedUserJSON)
+  //     setUser(user)
+  //     blogService.setToken(user.token)
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    blogService
-      .getAll()
-      .then(blogs =>
-        setBlogs(blogs)
-      )
-  }, [])
+  // useEffect(() => {
+  //   blogService
+  //     .getAll()
+  //     .then(blogs =>
+  //       setBlogs(blogs)
+  //     )
+  // }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -96,6 +109,7 @@ export default function Home() {
       setPassword('')
       setMessage('Successfully logged in')
       setMessageType('success')
+      setRender('logged-in')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -149,9 +163,8 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
      <div>
       <Notification message = {message} type={messageType} />
-      <h2>blogs</h2>
-      {user === null &&
-      <Togglable buttonLabel="Login">
+      { render === 'default' && <Hero/> }
+      { (render ==='login' && user === null) &&
         <LoginForm
           email={email}
           password={password}
@@ -159,9 +172,9 @@ export default function Home() {
           handlePasswordChange={handlePasswordChange}
           handleLogin={handleLogin}
         />
-      </Togglable>}
-      {user === null &&
-      <Togglable buttonLabel="Register">
+      }
+      { (render === 'register' && user === null) &&
+      
         <RegisterForm
           name={registerName}
           email={registerEmail}
@@ -171,26 +184,28 @@ export default function Home() {
           setPassword={setRegisterPassword}
           handleRegister={handleRegister}
         />
-      </Togglable>}
+      }
       {user && <div>
         {user.name && <p>{user.name} logged in</p> }
         <form onSubmit={handleLogout}>
-          <button
+          <Button
+           color="red"
             id='logout-button'
             type='submit'
           >
             Log out
-          </button>
+          </Button>
         </form>
+        {/* {user.classes && user.classes.map(c => <p key={c.id}>{c.class_title}</p>)} */}
 
-        <Togglable buttonLabel="new blog" >
+        {/* <Togglable buttonLabel="new blog" >
           <BlogForm
             createBlog={createBlog}
           />
-        </Togglable>
+        </Togglable> */}
       </div>
       }
-      {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+      {/* {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog
           key={blog.id}
           blog={blog}
@@ -199,7 +214,7 @@ export default function Home() {
           user={user}
           handleLikeClick={() => handleLikeClick(blog)}
         />
-      )}
+      )} */}
     </div>
     </main>
   )
