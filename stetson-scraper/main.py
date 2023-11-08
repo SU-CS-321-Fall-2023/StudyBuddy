@@ -2,24 +2,24 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-#add law classes that failed to database
-    #change url path to just law
-    #change regex?
-    #other law classes won't be added since they are already included
+# add law classes that failed to database
+    # change url path to just law
+    # change regex?
+    # other law classes won't be added since they are already included
 
-#take out class letter--decided we dont wan't this anymore
-#need to adjust regex or just omit law classes (try the regex though)
-#convert all class names to lowercase before adding to database--DONE
-#convert deparment names to lowercase before adding to database--DONE
-    #means:
-    #convert all search queries for class names to lowercase
-    #convert search queries for department names to lowercase
-    #convert all department codes in search queries to uppercase
+# take out class letter--decided we don't want this anymore
+# need to adjust regex or just omit law classes (try the regex though)
+# convert all class names to lowercase before adding to database--DONE
+# convert department names to lowercase before adding to database--DONE
+    # means:
+    # convert all search queries for class names to lowercase
+    # convert search queries for department names to lowercase
+    # convert all department codes in search queries to uppercase
 
-#work on node.js and mongo connection, searching for valid classes
-#study group creation--how to match people
-#stat collection
-#email reminders
+# work on node.js and mongo connection, searching for valid classes
+# study group creation--how to match people
+# stat collection
+# email reminders
 
 
 ###MONGO CONNECTION###
@@ -114,7 +114,7 @@ for link in department_links:
 # keep description for fall/spring
 # we want to know if a class doesn't exist anymore, and archive it somehow--how to find classes that don't exist
 
-#to do after:
+# to do after:
 # connect user database to classes database (users to classes)
-    #a class list field
+    # a class list field
 # work study group creation
