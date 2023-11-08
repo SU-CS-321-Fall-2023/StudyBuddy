@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Distributes space between items
     alignItems: 'center',
     padding: 10,
-    paddingTop: 10, // Add padding at the top if you want to lower the header elements
+    paddingTop: 30, // Add padding at the top if you want to lower the header elements
   },
   title: {
     fontSize: 24,

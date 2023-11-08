@@ -9,7 +9,10 @@ import { Ionicons } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => (
-  <Tab.Navigator>
+  <Tab.Navigator
+  screenOptions={{
+    headerShown: false, // This hides the header for all tab screens
+  }}>
     {/* Define tabs and their associated screens here */}
     <Tab.Screen name="HomePage" component={HomePage} /* ... */ />
     {/* ... other tabs */}

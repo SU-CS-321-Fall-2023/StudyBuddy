@@ -54,12 +54,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
+    paddingTop: 30,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
   title: {
     fontSize: 20,
     textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
   backButton: {
     fontSize: 18,
