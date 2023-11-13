@@ -14,7 +14,9 @@ import './index.css'
 
 import { useContext } from 'react'
 
-import {useAuth} from './contexts/AuthContext'
+import { useAuth } from './contexts/AuthContext'
+import { useApp } from './contexts/AppContext'
+
 import { useRender } from './contexts/RenderContext'
 
 import { Button } from "@material-tailwind/react";
@@ -28,7 +30,9 @@ export default function Home() {
   const { render, setRender } = useRender()
   console.log(render)
 
-  const [email, setEmail] = useState('')
+  const { email, setEmail } = useApp()
+  console.log("Email", email)
+
   const [password, setPassword] = useState('')
   const [registerName, setRegisterName] = useState('')
   const [registerEmail, setRegisterEmail] = useState('')

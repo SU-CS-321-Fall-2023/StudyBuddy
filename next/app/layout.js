@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 import './globals.css'
 import { AuthProvider } from './contexts/AuthContext'
 import { RenderProvider } from './contexts/RenderContext'
-
+import { AppProvider } from './contexts/AppContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,6 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
+    <AppProvider>
     <AuthProvider> 
       <RenderProvider>
     <html lang="en">
@@ -24,5 +25,6 @@ export default function RootLayout({ children }) {
     </html>
     </RenderProvider>
     </AuthProvider>
+    </AppProvider>
   )
 }
