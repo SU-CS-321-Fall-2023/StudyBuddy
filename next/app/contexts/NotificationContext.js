@@ -11,18 +11,6 @@ export const NotificationProvider = ({ children }) => {
   return (
     <NotificationContext.Provider
       value={{
-        blogs,
-        setBlogs,
-        email,
-        setEmail,
-        password,
-        setPassword,
-        registerName,
-        setRegisterName,
-        registerEmail,
-        setRegisterEmail,
-        registerPassword,
-        setRegisterPassword,
         message,
         setMessage,
         messageType,

@@ -3,7 +3,9 @@ import Navbar from './components/Navbar'
 import './globals.css'
 import { AuthProvider } from './contexts/AuthContext'
 import { RenderProvider } from './contexts/RenderContext'
-import { AppProvider } from './contexts/AppContext'
+import { ContentProvider } from './contexts/ContentContext'
+import { FormProvider } from './contexts/FormContext'
+import { NotificationProvider } from './contexts/NotificationContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,16 +17,20 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
-    <AppProvider>
     <AuthProvider> 
       <RenderProvider>
+        <NotificationProvider>
+          <ContentProvider>
+            <FormProvider>
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
         {children}</body>
     </html>
-    </RenderProvider>
+            </FormProvider>
+          </ContentProvider>
+        </NotificationProvider>
+      </RenderProvider>
     </AuthProvider>
-    </AppProvider>
   )
 }

@@ -14,31 +14,26 @@ import './index.css'
 
 import { useContext } from 'react'
 
-import { useAuth } from './contexts/AuthContext'
-import { useApp } from './contexts/AppContext'
+import { useAuthContext } from './contexts/AuthContext'
 
 import { useRender } from './contexts/RenderContext'
+
+import { useNotificationContext } from './contexts/NotificationContext'
+import { useContentContext } from './contexts/ContentContext'
+import { useFormContext } from './contexts/FormContext'
 
 import { Button } from "@material-tailwind/react";
 
 import Hero from './components/Hero'
 
 export default function Home() {
-  const [blogs, setBlogs] = useState([])
   
-  const { user, setUser } = useAuth()
+  const { user, setUser } = useAuthContext()
   const { render, setRender } = useRender()
   console.log(render)
-
-  const { email, setEmail } = useApp()
-  console.log("Email", email)
-
-  const [password, setPassword] = useState('')
-  const [registerName, setRegisterName] = useState('')
-  const [registerEmail, setRegisterEmail] = useState('')
-  const [registerPassword, setRegisterPassword] = useState('')
-  const [message, setMessage] = useState(null)
-  const [messageType, setMessageType] = useState('')
+  const { blogs, setBlogs } = useContentContext()
+  const { email, setEmail, password, setPassword, registerName, setRegisterName, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword } = useFormContext()
+  const { message, setMessage, messageType, setMessageType } = useNotificationContext();
 
   const createBlog = (blogObject) => {
     blogService
