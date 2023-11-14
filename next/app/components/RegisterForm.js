@@ -8,18 +8,19 @@ import {
 
 import { useRender } from '../contexts/RenderContext'
 
+import { useFormContext } from '../contexts/FormContext'
+import { useNotificationContext } from '../contexts/NotificationContext';
+import { useAuthContext } from '../contexts/AuthContext';
 
-const RegisterForm = ({
-    handleRegister,
-    name,
-    email,
-    password,
-    setEmail,
-    setPassword,
-    setName,
-    setRegisterName,
-  }) => {
+import RegisterService from '../services/register'
+import blogService from '../services/blogs'
+
+const RegisterForm = () => {
     const { render, setRender } = useRender()
+
+    const { email, setEmail, password, setPassword, name, setName } = useFormContext()
+    const { message, setMessage, messageType, setMessageType } = useNotificationContext();
+    const { user, setUser } = useAuthContext()
     
   const handleEmailChange = (event) => {
     setEmail(event.target.value)
@@ -32,7 +33,39 @@ const RegisterForm = ({
   const handleNameChange = (event) => {
     setName(event.target.value)
   }
-  
+
+  const handleRegister = async (event) => {
+    event.preventDefault()
+    try {
+      const response = await RegisterService.register({
+        name,
+        email,
+        password
+      })
+      console.log(response)
+      const { user, tokens } = response
+      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+      blogService.setToken(tokens.access.token)
+      setUser(user)
+      setEmail('')
+      setPassword('')
+      setName('')
+      setMessage(`Successfully registered as ${user.name} and logged in`)
+      setMessageType('success')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+    catch (exception) {
+      console.log(exception)
+      setMessage(exception.response.data.message)
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+    console.log('logging in with', email, password)
+  }
   return (
     <Card color="transparent" shadow={false} className="w-80 max-w-screen-lg sm:w-96 p-8">
       <Typography variant="h4" color="blue-gray" className="mb-4">

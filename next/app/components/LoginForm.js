@@ -7,16 +7,55 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useRender } from '../contexts/RenderContext'
+import { useFormContext } from '../contexts/FormContext'
+import { useNotificationContext } from '../contexts/NotificationContext';
+import { useAuthContext } from '../contexts/AuthContext';
+import loginService from '../services/login'
+import blogService from '../services/blogs'
 
-const LoginForm = ({
-  handleLogin,
-  handleUsernameChange,
-  handlePasswordChange,
-  email,
-  password
-}) => {
+const LoginForm = () => {
 
+  const { email, setEmail, password, setPassword } = useFormContext()
   const { render, setRender } = useRender()
+  const { message, setMessage, messageType, setMessageType } = useNotificationContext();
+  const { user, setUser } = useAuthContext()
+
+  const handleUsernameChange = (event) => {
+    setEmail(event.target.value)
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value)
+  }
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const response = await loginService.login({
+        email, password,
+      })
+      const { user, tokens } = response
+      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+      blogService.setToken(tokens.access.token)
+      setUser(user)
+      setEmail('')
+      setPassword('')
+      setMessage('Successfully logged in')
+      setMessageType('success')
+      setRender('logged-in')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+    catch (exception) {
+      setMessage('wrong email or password')
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+    console.log('logging in with', email, password)
+  }
   
   return (
   <Card color="transparent" shadow={false} className="w-80 max-w-screen-lg sm:w-96 p-8">

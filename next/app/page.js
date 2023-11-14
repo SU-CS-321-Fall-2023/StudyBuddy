@@ -26,6 +26,9 @@ import { Button } from "@material-tailwind/react";
 
 import Hero from './components/Hero'
 
+// TODO: extract notification the layout in its own div
+// TODO: extract logout button into navbar to be shown when logged in
+
 export default function Home() {
   
   const { user, setUser } = useAuthContext()
@@ -69,14 +72,6 @@ export default function Home() {
     setRender('default')
   }
 
-  const handleUsernameChange = (event) => {
-    setEmail(event.target.value)
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
-
   // useEffect(() => {
   //   const loggedUserJSON = window.localStorage.getItem('loggedStudyBuddyUser')
   //   if (loggedUserJSON) {
@@ -93,96 +88,18 @@ export default function Home() {
   //       setBlogs(blogs)
   //     )
   // }, [])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const response = await loginService.login({
-        email, password,
-      })
-      const { user, tokens } = response
-      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
-      blogService.setToken(tokens.access.token)
-      setUser(user)
-      setEmail('')
-      setPassword('')
-      setMessage('Successfully logged in')
-      setMessageType('success')
-      setRender('logged-in')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    catch (exception) {
-      setMessage('wrong email or password')
-      setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    console.log('logging in with', email, password)
-  }
-
-  const handleRegister = async (event) => {
-    event.preventDefault()
-    try {
-      const response = await RegisterService.register({
-        name: registerName,
-        email: registerEmail,
-        password: registerPassword,
-      })
-      console.log(response)
-      const { user, tokens } = response
-      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
-      blogService.setToken(tokens.access.token)
-      setUser(user)
-      setEmail('')
-      setPassword('')
-      setRegisterEmail('')
-      setRegisterPassword('')
-      setRegisterName('')
-      setMessage(`Successfully registered as ${user.name} and logged in`)
-      setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    catch (exception) {
-      console.log(exception)
-      setMessage(exception.response.data.message)
-      setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    console.log('logging in with', email, password)
-  }
-
+ 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
      <div>
       <Notification message = {message} type={messageType} />
       { render === 'default' && <Hero/> }
       { (render ==='login' && user === null) &&
-        <LoginForm
-          email={email}
-          password={password}
-          handleUsernameChange={handleUsernameChange}
-          handlePasswordChange={handlePasswordChange}
-          handleLogin={handleLogin}
-        />
+        <LoginForm />
       }
       { (render === 'register' && user === null) &&
       
-        <RegisterForm
-          name={registerName}
-          email={registerEmail}
-          password={registerPassword}
-          setName={setRegisterName}
-          setEmail={setRegisterEmail}
-          setPassword={setRegisterPassword}
-          handleRegister={handleRegister}
-        />
+        <RegisterForm />
       }
       {user && <div>
         {user.name && <p>{user.name} logged in</p> }
