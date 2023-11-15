@@ -132,6 +132,9 @@ export default function NavbarDefault() {
     setUser(null)
     setMessage('Successfully logged out')
     setMessageType('success')
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
  
   return (
