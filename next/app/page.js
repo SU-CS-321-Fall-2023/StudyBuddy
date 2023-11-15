@@ -1,40 +1,31 @@
 "use client"
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+
 import blogService from './services/blogs'
-import loginService from './services/login'
-import RegisterService from './services/register'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
-import RegisterForm from './components/RegisterForm'
-import Togglable from './components/Togglable'
-import BlogForm from './components/BlogForm'
+
 import './index.css'
+import { useAuthContext } from './contexts/AuthContext'
 
-import { useContext } from 'react'
-
-import {useAuth} from './contexts/AuthContext'
 import { useRender } from './contexts/RenderContext'
 
-import { Button } from "@material-tailwind/react";
+import { useNotificationContext } from './contexts/NotificationContext'
+import { useContentContext } from './contexts/ContentContext'
+import { useFormContext } from './contexts/FormContext'
 
 import Hero from './components/Hero'
+import { useRouter } from 'next/navigation'
+
+// TODO: extract notification the layout in its own div
+// TODO: extract logout button into navbar to be shown when logged in
 
 export default function Home() {
-  const [blogs, setBlogs] = useState([])
   
-  const { user, setUser } = useAuth()
+  const { user, setUser } = useAuthContext()
   const { render, setRender } = useRender()
   console.log(render)
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [registerName, setRegisterName] = useState('')
-  const [registerEmail, setRegisterEmail] = useState('')
-  const [registerPassword, setRegisterPassword] = useState('')
-  const [message, setMessage] = useState(null)
-  const [messageType, setMessageType] = useState('')
+  const { blogs, setBlogs } = useContentContext()
+  const { email, setEmail, password, setPassword, registerName, setRegisterName, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword } = useFormContext()
+  const { message, setMessage, messageType, setMessageType } = useNotificationContext();
+  const router = useRouter()
 
   const createBlog = (blogObject) => {
     blogService
@@ -66,16 +57,10 @@ export default function Home() {
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedStudyBuddyUser')
+    if (window !== undefined) {
+      window.localStorage.removeItem('loggedStudyBuddyUser')
+    }
     setRender('default')
-  }
-
-  const handleUsernameChange = (event) => {
-    setEmail(event.target.value)
-  }
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
   }
 
   // useEffect(() => {
@@ -95,126 +80,10 @@ export default function Home() {
   //     )
   // }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const response = await loginService.login({
-        email, password,
-      })
-      const { user, tokens } = response
-      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
-      blogService.setToken(tokens.access.token)
-      setUser(user)
-      setEmail('')
-      setPassword('')
-      setMessage('Successfully logged in')
-      setMessageType('success')
-      setRender('logged-in')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    catch (exception) {
-      setMessage('wrong email or password')
-      setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    console.log('logging in with', email, password)
-  }
-
-  const handleRegister = async (event) => {
-    event.preventDefault()
-    try {
-      const response = await RegisterService.register({
-        name: registerName,
-        email: registerEmail,
-        password: registerPassword,
-      })
-      console.log(response)
-      const { user, tokens } = response
-      window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
-      blogService.setToken(tokens.access.token)
-      setUser(user)
-      setEmail('')
-      setPassword('')
-      setRegisterEmail('')
-      setRegisterPassword('')
-      setRegisterName('')
-      setMessage(`Successfully registered as ${user.name} and logged in`)
-      setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    catch (exception) {
-      console.log(exception)
-      setMessage(exception.response.data.message)
-      setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-    console.log('logging in with', email, password)
-  }
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
      <div>
-      <Notification message = {message} type={messageType} />
-      { render === 'default' && <Hero/> }
-      { (render ==='login' && user === null) &&
-        <LoginForm
-          email={email}
-          password={password}
-          handleUsernameChange={handleUsernameChange}
-          handlePasswordChange={handlePasswordChange}
-          handleLogin={handleLogin}
-        />
-      }
-      { (render === 'register' && user === null) &&
-      
-        <RegisterForm
-          name={registerName}
-          email={registerEmail}
-          password={registerPassword}
-          setName={setRegisterName}
-          setEmail={setRegisterEmail}
-          setPassword={setRegisterPassword}
-          handleRegister={handleRegister}
-        />
-      }
-      {user && <div>
-        {user.name && <p>{user.name} logged in</p> }
-        <form onSubmit={handleLogout}>
-          <Button
-           color="red"
-            id='logout-button'
-            type='submit'
-          >
-            Log out
-          </Button>
-        </form>
-        {/* {user.classes && user.classes.map(c => <p key={c.id}>{c.class_title}</p>)} */}
-
-        {/* <Togglable buttonLabel="new blog" >
-          <BlogForm
-            createBlog={createBlog}
-          />
-        </Togglable> */}
-      </div>
-      }
-      {/* {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          setMessage={setMessage}
-          setMessageType={setMessageType}
-          user={user}
-          handleLikeClick={() => handleLikeClick(blog)}
-        />
-      )} */}
+      <Hero/> 
     </div>
     </main>
   )
