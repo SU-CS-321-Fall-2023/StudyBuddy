@@ -58,7 +58,7 @@ export default function Home() {
 
   const handleLogout = () => {
     if (window !== undefined) {
-      localStorage.removeItem('loggedStudyBuddyUser')
+      window.localStorage.removeItem('loggedStudyBuddyUser')
     }
     setRender('default')
   }

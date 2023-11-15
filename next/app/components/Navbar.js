@@ -127,7 +127,7 @@ export default function NavbarDefault() {
 
   const handleLogout = () => {
     if (window !== undefined) {
-      localStorage.removeItem('loggedStudyBuddyUser')
+      window.localStorage.removeItem('loggedStudyBuddyUser')
     }
     setUser(null)
     setMessage('Successfully logged out')

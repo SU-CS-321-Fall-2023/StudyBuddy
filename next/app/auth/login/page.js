@@ -41,7 +41,7 @@ export default function LoginPage() {
         })
         const { user, tokens } = response
         if (window !== undefined) {
-            localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+            window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
         }
         blogService.setToken(tokens.access.token)
         setUser(user)
