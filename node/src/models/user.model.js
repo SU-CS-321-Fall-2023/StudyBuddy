@@ -5,6 +5,7 @@ const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 const Class = require('./class.model.js'); // Import the Class model
 const StudyGroup = require('./studygroup.model.js'); // Import the StudyGroup model
+const LoginHistory = require('./loginhistory.model.js'); // Import the LoginHistory model
 
 const userSchema = mongoose.Schema(
   {
@@ -58,9 +59,21 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    interactionTime: {
+      type: number,
+      default: false,
+    },
+    loginHistory: [ //could instead make this a list and not create a whole schema for it?
+      {
+        // type: Date
+        // required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'LoginHistory',
+      },
+    ],
   },
   {
-    timestamps: true,
+    timestamps: true, // what does this do?
   }
 );
 
