@@ -16,15 +16,15 @@ import { useAuthContext } from '@/app/contexts/AuthContext';
 import RegisterService from '@/app/services/register'
 import blogService from '@/app/services/blogs'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
-    const { render, setRender } = useRender()
-
     const { email, setEmail, password, setPassword, name, setName } = useFormContext()
     const { message, setMessage, messageType, setMessageType } = useNotificationContext();
     const { user, setUser } = useAuthContext()
+    const router = useRouter()
 
-    if (user !== null) {
+    if (user !== null ) {
         router.push('/')
     }
 
