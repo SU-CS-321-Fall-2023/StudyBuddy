@@ -20,12 +20,6 @@ export default function NavbarDefault() {
   const { user, setUser } = useAuthContext()
   const { message, setMessage, messageType, setMessageType } = useNotificationContext();
 
-   // useEffect will be called every time the 'render' value changes
-   useEffect(() => {
-    console.log('Render value changed:', render);
-    // You can perform any action here whenever 'render' value changes
-  }, [render]); // Dependency array ensures this effect runs whenever 'render' changes
-
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -134,9 +128,8 @@ export default function NavbarDefault() {
   const handleLogout = () => {
     localStorage.removeItem('loggedStudyBuddyUser')
     setUser(null)
-    setTimeout(() => {
     setMessage('Successfully logged out')
-    setMessageType('success')}, 5000)
+    setMessageType('success')
   }
  
   return (
@@ -221,12 +214,18 @@ export default function NavbarDefault() {
         <div className="container mx-auto">
           {navList}
           <div className="flex items-center gap-x-1">
+            { user === null ? 
+            <>
             <Button fullWidth variant="text" size="sm" className="">
-              <span>Log In</span>
+              <Link href="/auth/login">Login</Link>
             </Button>
             <Button fullWidth variant="gradient" size="sm" className="">
-              <span>Sign in</span>
+              <Link href="/auth/register">Register</Link>
             </Button>
+            </> :
+            <Button fullWidth variant="gradient" color="red" size="sm" className="" onClick={handleLogout}>
+            <span>Log out</span>
+          </Button>}
           </div>
         </div>
       </MobileNav>

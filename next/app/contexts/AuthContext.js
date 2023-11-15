@@ -7,8 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   if (user === null || user === '') {
     const storedUser = localStorage.getItem('loggedStudyBuddyUser')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    if (storedUser !== undefined && storedUser !== null) {
+      setUser(storedUser)
     }
   }
   return (
