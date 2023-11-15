@@ -144,11 +144,12 @@ export default function NavbarDefault() {
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
-          href="/"
           className="mr-4 cursor-pointer py-1.5 font-medium"
           onClick={() => setRender('default')}
         >
+          <Link href='/'>
           <b>StudyBuddy</b>@Stetson
+          </Link>
         </Typography>
         { (user !== null) &&
         <div className="hidden lg:block">{navList}</div>

@@ -1,6 +1,4 @@
 'use client'
-import LoginForm from '../../components/LoginForm'
-import RegisterForm from '../../components/RegisterForm'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import React from 'react';

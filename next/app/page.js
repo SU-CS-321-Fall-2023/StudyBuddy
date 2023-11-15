@@ -1,19 +1,8 @@
 "use client"
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+
 import blogService from './services/blogs'
-import loginService from './services/login'
-import RegisterService from './services/register'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
-import RegisterForm from './components/RegisterForm'
-import Togglable from './components/Togglable'
-import BlogForm from './components/BlogForm'
+
 import './index.css'
-
-import { useContext } from 'react'
-
 import { useAuthContext } from './contexts/AuthContext'
 
 import { useRender } from './contexts/RenderContext'
@@ -21,8 +10,6 @@ import { useRender } from './contexts/RenderContext'
 import { useNotificationContext } from './contexts/NotificationContext'
 import { useContentContext } from './contexts/ContentContext'
 import { useFormContext } from './contexts/FormContext'
-
-import { Button } from "@material-tailwind/react";
 
 import Hero from './components/Hero'
 import { useRouter } from 'next/navigation'
