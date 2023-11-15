@@ -15,6 +15,7 @@ import { useAuthContext } from '@/app/contexts/AuthContext';
 
 import RegisterService from '@/app/services/register'
 import blogService from '@/app/services/blogs'
+import Link from 'next/link';
 
 export default function RegisterPage() {
     const { render, setRender } = useRender()
@@ -132,9 +133,9 @@ export default function RegisterPage() {
         </form>
         <Typography color="gray" className="text-center font-normal">
             Already have an account?{" "}
-            <a onClick={() => setRender('login')} className="font-medium text-gray-900">
+            <Link href="/auth/login">
             Sign In
-            </a>
+            </Link>
         </Typography>
         </Card>
         </main>

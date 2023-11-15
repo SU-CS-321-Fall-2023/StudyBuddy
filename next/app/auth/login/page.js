@@ -12,6 +12,7 @@ import { useFormContext } from '@/app/contexts/FormContext'
 import { useNotificationContext } from '@/app/contexts/NotificationContext';
 import loginService from '@/app/services/login'
 import blogService from '@/app/services/blogs'
+import Link from 'next/link';
 
 export default function LoginPage() {
     const { user, setUser } = useAuthContext()
@@ -106,9 +107,9 @@ export default function LoginPage() {
     </form>
     <Typography color="gray" className="text-center font-normal">
       {`Dont have an account?${" "}`}
-      <a onClick={() => setRender('register')} className="font-medium text-gray-900">
+      <Link href='/auth/register'>
         Sign Up
-      </a>
+      </Link>
     </Typography>
   </Card>
     </div>
