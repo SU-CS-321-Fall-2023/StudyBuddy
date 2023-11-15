@@ -73,7 +73,7 @@ export default function RegisterPage() {
         console.log('logging in with', email, password)
     }
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <main className="flex min-h-screen flex-col items-center justify-between py-4">
         <Card color="transparent" shadow={false} className="w-80 max-w-screen-lg sm:w-96 p-8">
         <Typography variant="h4" color="blue-gray" className="mb-4">
             Register
