@@ -50,7 +50,9 @@ export default function RegisterPage() {
         })
         console.log(response)
         const { user, tokens } = response
-        window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+        if (window !== undefined) {
+            localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+        }
         blogService.setToken(tokens.access.token)
         setUser(user)
         setEmail('')

@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  if (user === null || user === '') {
+  if (user === null || user === '' &&  window !== undefined) {
     const storedUser = localStorage.getItem('loggedStudyBuddyUser')
     if (storedUser !== undefined && storedUser !== null) {
       setUser(storedUser)
