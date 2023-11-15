@@ -1,10 +1,21 @@
 import axios from 'axios'
 
-const baseUrl = 'https://sb-node.onrender.com/v1/auth/register'
+const baseUrl = 'https://sb-node.onrender.com/v1/auth'
 
 const register = async credentials => {
-  const response = await axios.post(baseUrl, credentials)
-  return response.data
+  const url = `${baseUrl}/register`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  };
+  
+  const response = await fetch(url, options);
+  const data = await response.json();
+
+  return data;
 }
 
 export default { register }

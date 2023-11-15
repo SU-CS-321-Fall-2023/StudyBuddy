@@ -5,7 +5,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
+  if (user === null || user === '') {
+    const storedUser = localStorage.getItem('loggedStudyBuddyUser')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
+  }
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

@@ -25,6 +25,7 @@ import { useFormContext } from './contexts/FormContext'
 import { Button } from "@material-tailwind/react";
 
 import Hero from './components/Hero'
+import { useRouter } from 'next/navigation'
 
 // TODO: extract notification the layout in its own div
 // TODO: extract logout button into navbar to be shown when logged in
@@ -37,6 +38,7 @@ export default function Home() {
   const { blogs, setBlogs } = useContentContext()
   const { email, setEmail, password, setPassword, registerName, setRegisterName, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword } = useFormContext()
   const { message, setMessage, messageType, setMessageType } = useNotificationContext();
+  const router = useRouter()
 
   const createBlog = (blogObject) => {
     blogService
@@ -88,49 +90,14 @@ export default function Home() {
   //       setBlogs(blogs)
   //     )
   // }, [])
- 
+
+  if (user == null) {
+    router.push('/auth/login')
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
      <div>
-      <Notification message = {message} type={messageType} />
-      { render === 'default' && <Hero/> }
-      { (render ==='login' && user === null) &&
-        <LoginForm />
-      }
-      { (render === 'register' && user === null) &&
-      
-        <RegisterForm />
-      }
-      {user && <div>
-        {user.name && <p>{user.name} logged in</p> }
-        <form onSubmit={handleLogout}>
-          <Button
-           color="red"
-            id='logout-button'
-            type='submit'
-          >
-            Log out
-          </Button>
-        </form>
-        {/* {user.classes && user.classes.map(c => <p key={c.id}>{c.class_title}</p>)} */}
-
-        {/* <Togglable buttonLabel="new blog" >
-          <BlogForm
-            createBlog={createBlog}
-          />
-        </Togglable> */}
-      </div>
-      }
-      {/* {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          setMessage={setMessage}
-          setMessageType={setMessageType}
-          user={user}
-          handleLikeClick={() => handleLikeClick(blog)}
-        />
-      )} */}
+      <Hero/> 
     </div>
     </main>
   )

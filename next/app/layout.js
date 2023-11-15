@@ -6,7 +6,7 @@ import { RenderProvider } from './contexts/RenderContext'
 import { ContentProvider } from './contexts/ContentContext'
 import { FormProvider } from './contexts/FormContext'
 import { NotificationProvider } from './contexts/NotificationContext'
-
+import Notification from './components/Notification'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -25,6 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
+        <Notification />
         {children}</body>
     </html>
             </FormProvider>

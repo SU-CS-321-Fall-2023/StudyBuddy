@@ -10,11 +10,15 @@ import {
 
 import { useRender } from '../contexts/RenderContext'
 import { useEffect, useContext } from 'react';
+import { useAuthContext } from "../contexts/AuthContext";
+import Link from 'next/link'
+import { useNotificationContext } from "../contexts/NotificationContext";
 
- 
 export default function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
   const { render, setRender } = useRender()
+  const { user, setUser } = useAuthContext()
+  const { message, setMessage, messageType, setMessageType } = useNotificationContext();
 
    // useEffect will be called every time the 'render' value changes
    useEffect(() => {
@@ -126,39 +130,53 @@ export default function NavbarDefault() {
       </Typography> */}
     </ul>
   );
+
+  const handleLogout = () => {
+    localStorage.removeItem('loggedStudyBuddyUser')
+    setUser(null)
+    setTimeout(() => {
+    setMessage('Successfully logged out')
+    setMessageType('success')}, 5000)
+  }
  
   return (
     <Navbar className="mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4">
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
-          href="#"
+          href="/"
           className="mr-4 cursor-pointer py-1.5 font-medium"
           onClick={() => setRender('default')}
         >
           <b>StudyBuddy</b>@Stetson
         </Typography>
-        { (render === 'logged-in') &&
+        { (user !== null) &&
         <div className="hidden lg:block">{navList}</div>
         }
         <div className="flex items-center gap-x-1">
-        { (render !== 'logged-in') && <><Button
+        { user === null ? <><Button
           variant="text"
           size="sm"
           className="hidden lg:inline-block"
-          onClick={() => setRender('register')}
           >
-            <span>Register</span>
+            <Link href="/auth/register">Register</Link>
           </Button>
           <Button
             variant="gradient"
             size="sm"
             className="hidden lg:inline-block"
-            onClick={() => setRender('login')}
           >
-            <span>Sign in</span>
+            <Link href="/auth/login">Login</Link>
           </Button>
-          </>}
+          </> : <><span className="px-4 text-sm">{user.name}</span> <Button
+            variant="gradient"
+            color="red"
+            size="sm"
+            className="hidden lg:inline-block"
+            onClick={handleLogout}
+          >
+            <span>Log out</span>
+          </Button></>}
         </div>
         <IconButton
           variant="text"

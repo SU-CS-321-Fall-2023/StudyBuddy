@@ -14,7 +14,6 @@ const login = async (credentials) => {
   const data = await response.json();
 
   return data;
-
 }
 
 export default { login }

@@ -1,10 +1,16 @@
-const Notification = ({ message, type }) => {
+'use client'
+import { useNotificationContext } from "../contexts/NotificationContext"
+
+const Notification = () => {
+
+  const { message, messageType } = useNotificationContext()
+
   if (message === null || message === '') {
     return null
   }
 
   return (
-    <div className={type}>
+    <div className={messageType}>
       {message}
     </div>
   )
