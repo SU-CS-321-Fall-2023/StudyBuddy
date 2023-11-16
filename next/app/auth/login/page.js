@@ -15,7 +15,7 @@ import blogService from '@/app/services/blogs'
 import Link from 'next/link';
 
 export default function LoginPage() {
-    const { user, setUser } = useAuthContext()
+    const { user, setUser, setToken } = useAuthContext()
     const router = useRouter()
 
     if (user !== null) {
@@ -39,17 +39,20 @@ export default function LoginPage() {
         const response = await loginService.login({
           email, password,
         })
-        const { user, tokens } = response
+        const { user } = response
+        const fetchedToken = response.tokens.access.token
         if (window !== undefined) {
             window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+            window.localStorage.setItem('loggedStudyBuddyUserToken', JSON.stringify(fetchedToken))
         }
-        blogService.setToken(tokens.access.token)
+        // blogService.setToken(fetchedToken)
         setUser(user)
+        setToken(fetchedToken)
         setEmail('')
         setPassword('')
+        router.push('/')
         setMessage('Successfully logged in')
         setMessageType('success')
-        router.push('/')
         setTimeout(() => {
           setMessage(null)
         }, 5000)
@@ -57,6 +60,7 @@ export default function LoginPage() {
       catch (exception) {
         setMessage('wrong email or password')
         setMessageType('error')
+        console.log(exception)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
