@@ -26,6 +26,11 @@ export default function NavbarDefault() {
       () => window.innerWidth >= 960 && setOpenNav(false),
     );
   }, []);
+
+  // print user everytime it changes
+  useEffect(() => {
+    console.log(user, 'user')
+  }, [user])
  
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -167,7 +172,7 @@ export default function NavbarDefault() {
           >
             <Link href="/auth/login">Login</Link>
           </Button>
-          </> : <><span className="px-4 text-sm">{user.name}</span> <Button
+          </> : <><Link href={`/profile/${user.id}`} className="px-4 text-sm">{user.name}</Link> <Button
             variant="gradient"
             color="red"
             size="sm"
