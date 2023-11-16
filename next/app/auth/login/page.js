@@ -50,9 +50,9 @@ export default function LoginPage() {
         setToken(fetchedToken)
         setEmail('')
         setPassword('')
+        router.push('/')
         setMessage('Successfully logged in')
         setMessageType('success')
-        router.push('/')
         setTimeout(() => {
           setMessage(null)
         }, 5000)

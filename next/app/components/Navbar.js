@@ -7,6 +7,7 @@ import {
   Button,
   IconButton,
 } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 
 import { useRender } from '../contexts/RenderContext'
 import { useEffect, useContext } from 'react';
@@ -19,7 +20,7 @@ export default function NavbarDefault() {
   const { render, setRender } = useRender()
   const { user, setUser } = useAuthContext()
   const { message, setMessage, messageType, setMessageType } = useNotificationContext();
-
+  const router = useRouter()
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -135,6 +136,7 @@ export default function NavbarDefault() {
       window.localStorage.removeItem('loggedStudyBuddyUser')
     }
     setUser(null)
+    router.push('/')
     setMessage('Successfully logged out')
     setMessageType('success')
     setTimeout(() => {
