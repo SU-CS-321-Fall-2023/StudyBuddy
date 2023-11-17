@@ -15,7 +15,7 @@ const getClasses = catchAsync(async (req, res) => {
       filter.$or = [
         { department_code: { $regex: query, $options: 'i' } }, 
         { department_name: { $regex: query, $options: 'i' } },
-        { title: { $regex: query, $options: 'i' } }
+        { class_title: { $regex: query, $options: 'i' } }
       ];
     }
   
