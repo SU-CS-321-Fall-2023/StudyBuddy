@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { toJSON, paginate } = require('./plugins');
 
 const classSchema = mongoose.Schema({
   department_name: {
@@ -27,6 +28,9 @@ const classSchema = mongoose.Schema({
     trim: true,
   },
 });
+
+classSchema.plugin(toJSON);
+classSchema.plugin(paginate);
 
 const Class = mongoose.model('Class', classSchema);
 
