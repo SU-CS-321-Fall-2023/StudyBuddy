@@ -2,13 +2,20 @@
 import { useAuthContext } from "@/app/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import Image from 'next/image'
+import Loading from "@/app/components/Loading";
+
 export default function Page( {params}) {
   const [fetchedUser, setFetchedUser] = useState(null)
   const { user, token } = useAuthContext()
+
+  const [isLoading, setIsLoading] = useState(true);
   console.log(user, 'user')
   console.log(`token: ${token?.replace(/"/g, '')}`)
   // use useEffect to fetch instead of async function
   useEffect(() => {
+    if (!isLoading) {
+      setIsLoading(true);
+    }
     async function fetchUser() {
       const response = await fetch(`https://sb-node.onrender.com/v1/users/${params.user_id}`, {
         headers: {
@@ -19,9 +26,14 @@ export default function Page( {params}) {
       console.log(response, 'response')
       const user = await response.json();
       setFetchedUser(user);
+      setIsLoading(false);
     }
     fetchUser();
   }, [user, params.user_id, token]);
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <section className="pt-16 bg-blueGray-50">
