@@ -62,7 +62,10 @@ const updateUserById = async (userId, updateBody) => {
   }
   Object.assign(user, updateBody);
   await user.save();
-  return user;
+  // Retrieve the user again to populate the fields
+  const updatedUser = await User.findById(userId).populate('classes').populate('studyGroups')
+
+  return updatedUser;
 };
 
 /**
