@@ -3,6 +3,7 @@ import { useAuthContext } from "@/app/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Loading from "@/app/components/Loading";
+import ClassSearch from "@/app/components/ClassSearch";
 
 export default function Page( {params}) {
   const [fetchedUser, setFetchedUser] = useState(null)
@@ -13,9 +14,7 @@ export default function Page( {params}) {
   console.log(`token: ${token?.replace(/"/g, '')}`)
   // use useEffect to fetch instead of async function
   useEffect(() => {
-    if (!isLoading) {
-      setIsLoading(true);
-    }
+    setIsLoading(true);
     async function fetchUser() {
       const response = await fetch(`https://sb-node.onrender.com/v1/users/${params.user_id}`, {
         headers: {
@@ -23,7 +22,6 @@ export default function Page( {params}) {
         },
       });
 
-      console.log(response, 'response')
       const user = await response.json();
       setFetchedUser(user);
       setIsLoading(false);
@@ -77,7 +75,7 @@ export default function Page( {params}) {
         </div>
         <div className="text-center mt-12">
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-            {user?.name}
+            {fetchedUser?.name}
           </h3>
           {/* <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
             <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400" />
@@ -99,11 +97,11 @@ export default function Page( {params}) {
               {fetchedUser?.classes?.length 
               ? 
               <>
-                Your classes:  
-                <ul>
+                <a className="text-md font-bold"> Classes </a>
+                <ul className="text-sm font-medium">
                 {fetchedUser.classes.map(c =>
                 <li key={c.id}>
-                  {c.department_code}{c.class_code} {c.class_title}
+                  {c.department_code} {c.class_code}: {c.class_title}
                   </li>)}
                 </ul>
               </>
@@ -112,6 +110,8 @@ export default function Page( {params}) {
               <p>{`You don't have any classes yet`}</p>
               }
               </p>
+
+              <ClassSearch />
               
             </div>
           </div>
