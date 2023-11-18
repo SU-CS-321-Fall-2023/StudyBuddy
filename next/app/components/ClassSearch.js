@@ -103,7 +103,7 @@ export default function ComboBox() {
     />
 
     <Button
-      color="lightBlue"
+      color="green"
       buttonType="filled"
       size="regular"
       rounded={false}
@@ -111,7 +111,6 @@ export default function ComboBox() {
       iconOnly={false}
       ripple="light"
       className='mt-4'
-      color="green"
       onClick={handleAddClass}
     >
       Add Class
