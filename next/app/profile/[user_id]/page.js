@@ -3,6 +3,7 @@ import { useAuthContext } from "@/app/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Loading from "@/app/components/Loading";
+import ClassSearch from "@/app/components/ClassSearch";
 
 export default function Page( {params}) {
   const [fetchedUser, setFetchedUser] = useState(null)
@@ -112,6 +113,8 @@ export default function Page( {params}) {
               <p>{`You don't have any classes yet`}</p>
               }
               </p>
+
+              <ClassSearch />
               
             </div>
           </div>
