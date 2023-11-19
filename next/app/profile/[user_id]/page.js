@@ -8,12 +8,15 @@ import { Button } from "@material-tailwind/react";
 
 import { useNotificationContext } from "@/app/contexts/NotificationContext";
 import userController from "@/app/controllers/user";
+import { useNotification } from '@/app/contexts/NotificationContext';
+
 
 export default function Page( {params}) {
   // TODO: Extract fetches into their own services
   const [fetchedUser, setFetchedUser] = useState(null)
   const { user, setUser, token } = useAuthContext()
   const { setMessage, setMessageType } = useNotificationContext();
+  const { setNotification } = useNotification();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,18 +39,9 @@ export default function Page( {params}) {
     if (updatedUser.ok) {
       setUser(updatedUser.body)
       setFetchedUser(updatedUser.body)
-      setMessage(updatedUser.message)
-      setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      setNotification(updatedUser.message, 'success')
     } else {
-      // TODO: Implement stay DRY principle here      
-      setMessage(updatedUser.message)
-      setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      setNotification(updatedUser.message, 'error')
     }
   }
 

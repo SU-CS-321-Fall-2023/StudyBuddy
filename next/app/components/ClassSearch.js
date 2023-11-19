@@ -7,12 +7,14 @@ import { Button } from "@material-tailwind/react";
 import { useNotificationContext } from '../contexts/NotificationContext';
 import classController from '@/app/controllers/class';
 import userController from '@/app/controllers/user';
+import { useNotification } from '@/app/contexts/NotificationContext';
 
 export default function ComboBox() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const { user, setUser, token, setToken } = useAuthContext();
   const [selectedClass, setSelectedClass] = useState(null);
+  const { setNotification } = useNotification();
 
   const { setMessage, setMessageType } = useNotificationContext();
 
@@ -36,19 +38,9 @@ export default function ComboBox() {
     if (updatedUser.ok) {
       console.log(updatedUser, 'updatedUser')
       setUser(updatedUser.body)
-      setMessage(updatedUser.message)
-      setMessageType('success')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      setNotification(updatedUser.message, 'success')
     } else {
-
-      // TODO: Implement stay DRY principle here      
-      setMessage(updatedUser.message)
-      setMessageType('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      setNotification(updatedUser.message, 'error')
     }
   }
 

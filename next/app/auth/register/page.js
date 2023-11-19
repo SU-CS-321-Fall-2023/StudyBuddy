@@ -17,12 +17,15 @@ import RegisterService from '@/app/services/register'
 import blogService from '@/app/services/blogs'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
+import { useNotification } from '@/app/contexts/NotificationContext';
 
 export default function RegisterPage() {
     const { email, setEmail, password, setPassword, name, setName } = useFormContext()
     const { message, setMessage, messageType, setMessageType } = useNotificationContext();
     const { user, setUser } = useAuthContext()
     const router = useRouter()
+
+    const { setNotification } = useNotification()
 
     if (user !== null ) {
         router.push('/')
@@ -43,36 +46,27 @@ export default function RegisterPage() {
     const handleRegister = async (event) => {
         event.preventDefault()
         try {
-        const response = await RegisterService.register({
-            name,
-            email,
-            password
-        })
-        console.log(response)
-        const { user, tokens } = response
-        if (window !== undefined) {
-            window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+            const response = await RegisterService.register({
+                name,
+                email,
+                password
+            })
+            console.log(response)
+            if ((typeof response.user !== 'undefined') && (response.user !== null)) {
+                const { user, tokens } = response
+                if (window !== undefined) {
+                    window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+                }
+                blogService.setToken(tokens.access.token)
+                setUser(user)
+                setEmail('')
+                setPassword('')
+                setName('')
+                setNotification(`Successfully registered as ${user.name} `, 'success')
+            } else  throw new Error(response.message)
+        }   catch (exception) {
+                setNotification(exception.message, 'error')
         }
-        blogService.setToken(tokens.access.token)
-        setUser(user)
-        setEmail('')
-        setPassword('')
-        setName('')
-        setMessage(`Successfully registered as ${user.name} and logged in`)
-        setMessageType('success')
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
-        }
-        catch (exception) {
-        console.log(exception)
-        setMessage(exception.response.data.message)
-        setMessageType('error')
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
-        }
-        console.log('logging in with', email, password)
     }
     return (
         <main className="flex min-h-screen flex-col items-center justify-between py-4">

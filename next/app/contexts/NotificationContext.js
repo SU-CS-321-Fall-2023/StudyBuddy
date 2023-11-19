@@ -25,3 +25,18 @@ export const NotificationProvider = ({ children }) => {
 export const useNotificationContext = () => {
   return useContext(NotificationContext);
 };
+
+export const useNotification = () => {
+  const { setMessage, setMessageType } = useNotificationContext();
+
+  const setNotification = (message, type, duration = 5000) => {
+    setMessage(message);
+    setMessageType(type);
+
+    setTimeout(() => {
+      setMessage(null);
+    }, duration);
+  };
+
+  return { setNotification };
+};
