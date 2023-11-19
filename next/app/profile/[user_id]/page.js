@@ -7,6 +7,8 @@ import ClassSearch from "@/app/components/ClassSearch";
 import { Button } from "@material-tailwind/react";
 
 import { useNotificationContext } from "@/app/contexts/NotificationContext";
+import userController from "@/app/controllers/user";
+
 export default function Page( {params}) {
   // TODO: Extract fetches into their own services
   const [fetchedUser, setFetchedUser] = useState(null)
@@ -14,20 +16,13 @@ export default function Page( {params}) {
   const { setMessage, setMessageType } = useNotificationContext();
 
   const [isLoading, setIsLoading] = useState(true);
-  console.log(user, 'user')
-  console.log(`token: ${token?.replace(/"/g, '')}`)
+
   // use useEffect to fetch instead of async function
   useEffect(() => {
     setIsLoading(true);
     async function fetchUser() {
-      const response = await fetch(`https://sb-node.onrender.com/v1/users/${params.user_id}`, {
-        headers: {
-          Authorization: `Bearer ${token?.replace(/"/g, '')}`,
-        },
-      });
-
-      const recievedUser = await response.json();
-      setFetchedUser(recievedUser);
+      const response = await userController.get(params.user_id, token)
+      setFetchedUser(response);
       setIsLoading(false);
     }
     fetchUser();

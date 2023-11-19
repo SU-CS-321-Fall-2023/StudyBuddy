@@ -1,6 +1,20 @@
 import userService from '@/app/services/user';
 import { useNotificationContext } from "@/app/contexts/NotificationContext";
 
+const get = async (query, token) => {
+    // TODO: trigger a notification if response is not ok
+    try {
+        const response = await userService.get(query, token).then((res) => res.json());
+        if (response.id) {
+            return response
+        } else {
+            console.log(response, 'userService Error')
+        }
+    } catch (error) {
+        console.log(error, 'userService error');
+    }
+}
+
 const update = async (user, token, classObj) => {
     try {
         // Check if class is already in user classes
@@ -45,4 +59,4 @@ const update = async (user, token, classObj) => {
     };
 };
 
-export default { update };
+export default { update, get };

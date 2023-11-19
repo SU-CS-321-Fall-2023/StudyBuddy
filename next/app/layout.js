@@ -14,6 +14,10 @@ export const metadata = {
   description: 'Find your herd',
 }
 
+// TODO: organize routes into (route) directory
+// TODO: make folders that aren't meant to be viewed by users private like this "_contexts"
+// so that it's not considered by routing features
+
 export default function RootLayout({ children }) {
 
   return (

@@ -23,6 +23,7 @@ export default function ComboBox() {
     }
     fetchData();
   } , [query]);
+  
   const handleQueryChange = (event, value) => {
     console.log(value, 'value')
     setQuery(event.target.value);
@@ -40,6 +41,8 @@ export default function ComboBox() {
         setMessage(null)
       }, 5000)
     } else {
+
+      // TODO: Implement stay DRY principle here      
       setMessage(updatedUser.message)
       setMessageType('error')
       setTimeout(() => {
