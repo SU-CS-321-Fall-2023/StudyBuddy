@@ -31,57 +31,24 @@ export default function Page( {params}) {
   // TODO: after extracting this function, make sure it can edit any received property
   // instead of explicitly editing classes
 
-  const removeClass = async (classToDelete) => {
-    const baseUrl = `https://sb-node.onrender.com/v1/users/${user.id}`
-    // make a fetch with patch request and bearer token
-    const transformedClasses = fetchedUser.classes.map((classObj) => classObj.id);
-    if (classToDelete) {
-      // handle case where user already has class
-      if (!transformedClasses.includes(classToDelete.id)) {
-        console.log('user does not has class')
-        setMessage(`You don't have this class!`)
-        setMessageType('error')
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-        return
-      }
-      try {
-      const response = await fetch(baseUrl, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token?.replace(/"/g, '')}`,
-        },
-
-        body: JSON.stringify({
-          classes: transformedClasses.filter((classId) => classId !== classToDelete.id),
-        }),
-      })
-
-      const data = await response.json();
-      console.log(data, 'data')
-
-      if (response.ok) {
-        setFetchedUser(data)
-        if (user.id === data.id) {
-          setUser(data)
-        }
-        setMessage(`Successfully removed  ${classToDelete.department_code} ${classToDelete.class_code} from your classes`)
-        setMessageType('success')
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      }
+  const handleDeleteButton = async (classToDelete) => {
+    const updatedUser = await userController.removeClass(fetchedUser, token, classToDelete)
+    if (updatedUser.ok) {
+      setUser(updatedUser.body)
+      setFetchedUser(updatedUser.body)
+      setMessage(updatedUser.message)
+      setMessageType('success')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } else {
+      // TODO: Implement stay DRY principle here      
+      setMessage(updatedUser.message)
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
-    catch (error) {
-      console.log(error)
-    }
-  }
-  }
-
-  const handleDeleteButton = (c) => {
-    removeClass(c)
   }
 
   if (isLoading) {

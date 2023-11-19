@@ -23,18 +23,19 @@ export default function ComboBox() {
     }
     fetchData();
   } , [query]);
-  
+
   const handleQueryChange = (event, value) => {
     console.log(value, 'value')
     setQuery(event.target.value);
     console.log(event.target.value);
   }
 
+
   const handleAddClass = async () => {
     const updatedUser = await userController.update(user, token, selectedClass)
     if (updatedUser.ok) {
+      console.log(updatedUser, 'updatedUser')
       setUser(updatedUser.body)
-      setFetchedUser(updatedUser.body)
       setMessage(updatedUser.message)
       setMessageType('success')
       setTimeout(() => {
