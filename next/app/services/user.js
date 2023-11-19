@@ -1,6 +1,9 @@
-// make baseurl an environment variable
+import apiBaseUrl from '@/app/services'
+
+const userApiUrl = `${apiBaseUrl}/users`
+
 const update = async (user, token, newObject) => {
-    const baseUrl = `https://sb-node.onrender.com/v1/users/${user.id}`
+    const baseUrl = `${userApiUrl}/${user.id}`
         const response = await fetch(baseUrl, {
         method: 'PATCH',
         headers: {
@@ -16,7 +19,7 @@ const update = async (user, token, newObject) => {
 
 // TODO: seperate the concern of reformatting the token from service
 const get = async(userId, token) => {
-    const response = await fetch(`https://sb-node.onrender.com/v1/users/${userId}`, {
+    const response = await fetch(`${userApiUrl}/${userId}`, {
         headers: {
           Authorization: `Bearer ${token?.replace(/"/g, '')}`,
         },

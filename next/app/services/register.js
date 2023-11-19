@@ -1,9 +1,9 @@
-import axios from 'axios'
+import apiBaseUrl from '@/app/services'
 
-const baseUrl = 'https://sb-node.onrender.com/v1/auth'
+const authApiUrl = `${apiBaseUrl}/auth`
 
 const register = async credentials => {
-  const url = `${baseUrl}/register`;
+  const url = `${authApiUrl}/register`;
   const options = {
     method: 'POST',
     headers: {

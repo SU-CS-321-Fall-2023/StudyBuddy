@@ -1,7 +1,8 @@
+import apiBaseUrl from '@/app/services'
+const classesApiUrl = `${apiBaseUrl}/classes`
 
 const get = async(query) => {
-    const baseUrl = 'https://sb-node.onrender.com/v1/classes'
-    const url = query ? `${baseUrl}?search=${query}` : baseUrl
+    const url = query ? `${classesApiUrl}?search=${query}` : classesApiUrl
     const response = await fetch(url)
     return response
 }
