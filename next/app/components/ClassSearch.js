@@ -4,8 +4,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@/app/contexts/AuthContext';
 import { Button } from "@material-tailwind/react";
-import classController from '@/app/controllers/class';
-import userController from '@/app/controllers/user';
+import { classController } from '@/app/controllers';
+import { userController } from '@/app/controllers';
 import { useNotification } from '@/app/contexts/NotificationContext';
 
 export default function ComboBox() {

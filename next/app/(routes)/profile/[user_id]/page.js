@@ -7,7 +7,7 @@ import ClassSearch from "@/app/components/ClassSearch";
 import { Button } from "@material-tailwind/react";
 
 import { useNotificationContext } from "@/app/contexts/NotificationContext";
-import userController from "@/app/controllers/user";
+import { userController } from "@/app/controllers";
 import { useNotification } from '@/app/contexts/NotificationContext';
 
 
