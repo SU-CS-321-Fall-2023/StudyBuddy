@@ -17,7 +17,7 @@ const get = async (query, token) => {
 
 
 // give it better name like addClass
-const update = async (user, token, classObj) => {
+const addClass = async (user, token, classObj) => {
     try {
         // Check if class is already in user classes
         const transformedClasses = user.classes.map((classObj) => classObj.id);
@@ -108,4 +108,4 @@ const removeClass = async (user, token, classObj) => {
     };
 };
 
-export default { get, update, removeClass };
+export default { get, addClass, removeClass };

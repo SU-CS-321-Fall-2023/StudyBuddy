@@ -9,9 +9,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormContext } from '@/app/contexts/FormContext'
-import { useNotificationContext } from '@/app/contexts/NotificationContext';
 import loginService from '@/app/services/login'
-import blogService from '@/app/services/blogs'
 import Link from 'next/link';
 import { useNotification } from '@/app/contexts/NotificationContext';
 
@@ -25,7 +23,6 @@ export default function LoginPage() {
     }
 
     const { email, setEmail, password, setPassword } = useFormContext()
-    const { message, setMessage, messageType, setMessageType } = useNotificationContext();
   
     const handleUsernameChange = (event) => {
       setEmail(event.target.value)

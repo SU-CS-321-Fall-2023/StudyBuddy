@@ -8,18 +8,14 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
-
-import { useRender } from '../contexts/RenderContext'
 import { useEffect, useContext } from 'react';
 import { useAuthContext } from "../contexts/AuthContext";
 import Link from 'next/link'
-import { useNotificationContext } from "../contexts/NotificationContext";
 import { useNotification } from "../contexts/NotificationContext";
+
 export default function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
-  const { render, setRender } = useRender()
   const { user, setUser } = useAuthContext()
-  const { message, setMessage, messageType, setMessageType } = useNotificationContext();
   const { setNotification } = useNotification()
   const router = useRouter()
   React.useEffect(() => {
@@ -55,9 +51,9 @@ export default function NavbarDefault() {
           />
         </svg> */}
  
-        <a href="#" className="flex items-center">
+        <Link href="#" className="flex items-center">
           Discover
-        </a>
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -79,9 +75,9 @@ export default function NavbarDefault() {
             fill="#90A4AE"
           />
         </svg> */}
-        <a href="#" className="flex items-center">
+        <Link href="#" className="flex items-center">
           Study Groups
-        </a>
+        </Link>
       </Typography>
       {/* <Typography
         as="li"
@@ -147,7 +143,6 @@ export default function NavbarDefault() {
         <Typography
           as="a"
           className="mr-4 cursor-pointer py-1.5 font-medium"
-          onClick={() => setRender('default')}
         >
           <Link href='/'>
           <b>StudyBuddy</b>@Stetson
