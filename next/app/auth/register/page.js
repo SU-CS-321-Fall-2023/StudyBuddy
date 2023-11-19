@@ -6,13 +6,9 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-
-import { useRender } from '@/app/contexts/RenderContext'
-
 import { useFormContext } from '@/app/contexts/FormContext'
 import { useNotificationContext } from '@/app/contexts/NotificationContext';
 import { useAuthContext } from '@/app/contexts/AuthContext';
-
 import RegisterService from '@/app/services/register'
 import blogService from '@/app/services/blogs'
 import Link from 'next/link';
@@ -21,7 +17,6 @@ import { useNotification } from '@/app/contexts/NotificationContext';
 
 export default function RegisterPage() {
     const { email, setEmail, password, setPassword, name, setName } = useFormContext()
-    const { message, setMessage, messageType, setMessageType } = useNotificationContext();
     const { user, setUser } = useAuthContext()
     const router = useRouter()
 

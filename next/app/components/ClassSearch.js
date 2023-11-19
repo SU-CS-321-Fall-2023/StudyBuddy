@@ -4,7 +4,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../contexts/AuthContext';
 import { Button } from "@material-tailwind/react";
-import { useNotificationContext } from '../contexts/NotificationContext';
 import classController from '@/app/controllers/class';
 import userController from '@/app/controllers/user';
 import { useNotification } from '@/app/contexts/NotificationContext';
@@ -15,8 +14,6 @@ export default function ComboBox() {
   const { user, setUser, token, setToken } = useAuthContext();
   const [selectedClass, setSelectedClass] = useState(null);
   const { setNotification } = useNotification();
-
-  const { setMessage, setMessageType } = useNotificationContext();
 
   useEffect(() => {
     async function fetchData() {
@@ -34,7 +31,7 @@ export default function ComboBox() {
 
 
   const handleAddClass = async () => {
-    const updatedUser = await userController.update(user, token, selectedClass)
+    const updatedUser = await userController.addClass(user, token, selectedClass)
     if (updatedUser.ok) {
       console.log(updatedUser, 'updatedUser')
       setUser(updatedUser.body)
