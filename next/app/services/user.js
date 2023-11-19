@@ -1,6 +1,6 @@
 // make baseurl an environment variable
 const update = async (user, token, newObject) => {
-    const baseUrl = `http://localhost:3000/v1/users/${user.id}`
+    const baseUrl = `https://sb-node.onrender.com/v1/users/${user.id}`
         const response = await fetch(baseUrl, {
         method: 'PATCH',
         headers: {
