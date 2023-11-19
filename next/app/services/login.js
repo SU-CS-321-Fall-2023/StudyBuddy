@@ -1,7 +1,9 @@
-const baseUrl = 'https://sb-node.onrender.com/v1/auth'
+import apiBaseUrl from '@/app/services'
+
+const authApiUrl = `${apiBaseUrl}/auth`
 
 const login = async (credentials) => {
-  const url = `${baseUrl}/login`;
+  const url = `${authApiUrl}/login`;
   const options = {
     method: 'POST',
     headers: {

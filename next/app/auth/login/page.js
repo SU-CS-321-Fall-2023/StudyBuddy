@@ -13,10 +13,12 @@ import { useNotificationContext } from '@/app/contexts/NotificationContext';
 import loginService from '@/app/services/login'
 import blogService from '@/app/services/blogs'
 import Link from 'next/link';
+import { useNotification } from '@/app/contexts/NotificationContext';
 
 export default function LoginPage() {
     const { user, setUser, setToken } = useAuthContext()
     const router = useRouter()
+    const { setNotification } = useNotification()
 
     if (user !== null) {
         router.push('/')
@@ -39,31 +41,24 @@ export default function LoginPage() {
         const response = await loginService.login({
           email, password,
         })
-        const { user } = response
-        const fetchedToken = response.tokens.access.token
-        if (window !== undefined) {
-            window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
-            window.localStorage.setItem('loggedStudyBuddyUserToken', JSON.stringify(fetchedToken))
-        }
-        // blogService.setToken(fetchedToken)
-        setUser(user)
-        setToken(fetchedToken)
-        setEmail('')
-        setPassword('')
-        router.push('/')
-        setMessage('Successfully logged in')
-        setMessageType('success')
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+          if ((typeof response.user !== 'undefined') && (response.user !== null)) {
+          const { user } = response
+          const fetchedToken = response.tokens.access.token
+          if (window !== undefined) {
+              window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+              window.localStorage.setItem('loggedStudyBuddyUserToken', JSON.stringify(fetchedToken))
+          }
+          // blogService.setToken(fetchedToken)
+          setUser(user)
+          setToken(fetchedToken)
+          setEmail('')
+          setPassword('')
+          router.push('/')
+          setNotification(`Successfully logged in as ${user.name} `, 'success')
+        } else throw new Error(response.message)
       }
       catch (exception) {
-        setMessage('wrong email or password')
-        setMessageType('error')
-        console.log(exception)
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+        setNotification(exception.message, 'error')
       }
       console.log('logging in with', email, password)
     }

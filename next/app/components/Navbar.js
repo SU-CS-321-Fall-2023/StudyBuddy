@@ -14,12 +14,13 @@ import { useEffect, useContext } from 'react';
 import { useAuthContext } from "../contexts/AuthContext";
 import Link from 'next/link'
 import { useNotificationContext } from "../contexts/NotificationContext";
-
+import { useNotification } from "../contexts/NotificationContext";
 export default function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
   const { render, setRender } = useRender()
   const { user, setUser } = useAuthContext()
   const { message, setMessage, messageType, setMessageType } = useNotificationContext();
+  const { setNotification } = useNotification()
   const router = useRouter()
   React.useEffect(() => {
     window.addEventListener(
@@ -137,11 +138,7 @@ export default function NavbarDefault() {
     }
     setUser(null)
     router.push('/')
-    setMessage('Successfully logged out')
-    setMessageType('success')
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
+    setNotification('Logged out successfully', 'success')
   }
  
   return (

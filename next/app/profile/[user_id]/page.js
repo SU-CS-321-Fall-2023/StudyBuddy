@@ -4,30 +4,46 @@ import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Loading from "@/app/components/Loading";
 import ClassSearch from "@/app/components/ClassSearch";
+import { Button } from "@material-tailwind/react";
+
+import { useNotificationContext } from "@/app/contexts/NotificationContext";
+import userController from "@/app/controllers/user";
+import { useNotification } from '@/app/contexts/NotificationContext';
+
 
 export default function Page( {params}) {
+  // TODO: Extract fetches into their own services
   const [fetchedUser, setFetchedUser] = useState(null)
-  const { user, token } = useAuthContext()
+  const { user, setUser, token } = useAuthContext()
+  const { setMessage, setMessageType } = useNotificationContext();
+  const { setNotification } = useNotification();
 
   const [isLoading, setIsLoading] = useState(true);
-  console.log(user, 'user')
-  console.log(`token: ${token?.replace(/"/g, '')}`)
+
   // use useEffect to fetch instead of async function
   useEffect(() => {
     setIsLoading(true);
     async function fetchUser() {
-      const response = await fetch(`https://sb-node.onrender.com/v1/users/${params.user_id}`, {
-        headers: {
-          Authorization: `Bearer ${token?.replace(/"/g, '')}`,
-        },
-      });
-
-      const user = await response.json();
-      setFetchedUser(user);
+      const response = await userController.get(params.user_id, token)
+      setFetchedUser(response);
       setIsLoading(false);
     }
     fetchUser();
   }, [user, params.user_id, token]);
+
+  // TODO: after extracting this function, make sure it can edit any received property
+  // instead of explicitly editing classes
+
+  const handleDeleteButton = async (classToDelete) => {
+    const updatedUser = await userController.removeClass(fetchedUser, token, classToDelete)
+    if (updatedUser.ok) {
+      setUser(updatedUser.body)
+      setFetchedUser(updatedUser.body)
+      setNotification(updatedUser.message, 'success')
+    } else {
+      setNotification(updatedUser.message, 'error')
+    }
+  }
 
   if (isLoading) {
     return <Loading />
@@ -102,6 +118,11 @@ export default function Page( {params}) {
                 {fetchedUser.classes.map(c =>
                 <li key={c.id}>
                   {c.department_code} {c.class_code}: {c.class_title}
+                  <Button
+                    color="red"
+                    onClick={()=> handleDeleteButton(c)}>
+                  x
+                  </Button>
                   </li>)}
                 </ul>
               </>
