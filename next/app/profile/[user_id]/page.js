@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Loading from "@/app/components/Loading";
 import ClassSearch from "@/app/components/ClassSearch";
+import { Button } from "@material-tailwind/react";
 
+import { useNotificationContext } from "@/app/contexts/NotificationContext";
 export default function Page( {params}) {
+  // TODO: Extract fetches into their own services
   const [fetchedUser, setFetchedUser] = useState(null)
-  const { user, token } = useAuthContext()
+  const { user, setUser, token } = useAuthContext()
+  const { setMessage, setMessageType } = useNotificationContext();
 
   const [isLoading, setIsLoading] = useState(true);
   console.log(user, 'user')
@@ -22,12 +26,68 @@ export default function Page( {params}) {
         },
       });
 
-      const user = await response.json();
-      setFetchedUser(user);
+      const recievedUser = await response.json();
+      setFetchedUser(recievedUser);
       setIsLoading(false);
     }
     fetchUser();
   }, [user, params.user_id, token]);
+
+  // TODO: after extracting this function, make sure it can edit any received property
+  // instead of explicitly editing classes
+
+  const removeClass = async (classToDelete) => {
+    const baseUrl = `https://sb-node.onrender.com/v1/users/${user.id}`
+    // make a fetch with patch request and bearer token
+    const transformedClasses = fetchedUser.classes.map((classObj) => classObj.id);
+    if (classToDelete) {
+      // handle case where user already has class
+      if (!transformedClasses.includes(classToDelete.id)) {
+        console.log('user does not has class')
+        setMessage(`You don't have this class!`)
+        setMessageType('error')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+        return
+      }
+      try {
+      const response = await fetch(baseUrl, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token?.replace(/"/g, '')}`,
+        },
+
+        body: JSON.stringify({
+          classes: transformedClasses.filter((classId) => classId !== classToDelete.id),
+        }),
+      })
+
+      const data = await response.json();
+      console.log(data, 'data')
+
+      if (response.ok) {
+        setFetchedUser(data)
+        if (user.id === data.id) {
+          setUser(data)
+        }
+        setMessage(`Successfully removed  ${classToDelete.department_code} ${classToDelete.class_code} from your classes`)
+        setMessageType('success')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+  }
+
+  const handleDeleteButton = (c) => {
+    removeClass(c)
+  }
 
   if (isLoading) {
     return <Loading />
@@ -102,6 +162,7 @@ export default function Page( {params}) {
                 {fetchedUser.classes.map(c =>
                 <li key={c.id}>
                   {c.department_code} {c.class_code}: {c.class_title}
+                  <Button onClick={()=> handleDeleteButton(c)}>x</Button>
                   </li>)}
                 </ul>
               </>

@@ -16,7 +16,7 @@ export default function ComboBox() {
 
   useEffect(() => {
     async function fetchData() {
-      const baseUrl = 'http://localhost:3000/v1/classes'
+      const baseUrl = 'https://sb-node.onrender.com/v1/classes'
       const url = query ? `${baseUrl}?search=${query}` : baseUrl
       const data = await fetch(url).then((res) => res.json());
       setResults(data.results);
