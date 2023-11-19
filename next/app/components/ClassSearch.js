@@ -2,7 +2,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useState, useEffect } from 'react';
-import { useAuthContext } from '../contexts/AuthContext';
+import { useAuthContext } from '@/app/contexts/AuthContext';
 import { Button } from "@material-tailwind/react";
 import classController from '@/app/controllers/class';
 import userController from '@/app/controllers/user';

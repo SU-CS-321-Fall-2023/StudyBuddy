@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import blogService from '@/app/services/blogs'
 
 const Blog = ({
   blog,

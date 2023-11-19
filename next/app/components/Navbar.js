@@ -9,9 +9,9 @@ import {
 } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useContext } from 'react';
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "@/app/contexts/AuthContext";
 import Link from 'next/link'
-import { useNotification } from "../contexts/NotificationContext";
+import { useNotification } from "@/app/contexts/NotificationContext";
 
 export default function NavbarDefault() {
   const [openNav, setOpenNav] = React.useState(false);
