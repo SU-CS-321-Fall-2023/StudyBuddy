@@ -7,7 +7,7 @@ import ClassSearch from "@/app/components/ClassSearch";
 import { Button } from "@material-tailwind/react";
 
 import { useNotificationContext } from "@/app/contexts/NotificationContext";
-import userController from "@/app/controllers/user";
+import { userController } from "@/app/controllers";
 import { useNotification } from '@/app/contexts/NotificationContext';
 
 
@@ -22,7 +22,9 @@ export default function Page( {params}) {
 
   // use useEffect to fetch instead of async function
   useEffect(() => {
-    setIsLoading(true);
+    if (!fetchedUser) {
+      setIsLoading(true);
+    }
     async function fetchUser() {
       const response = await userController.get(params.user_id, token)
       setFetchedUser(response);

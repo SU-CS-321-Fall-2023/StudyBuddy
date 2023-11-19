@@ -1,3 +1,4 @@
+// extract login.js and register.js into auth.js and add it to user controller
 import apiBaseUrl from '@/app/services'
 
 const authApiUrl = `${apiBaseUrl}/auth`

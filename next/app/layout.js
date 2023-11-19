@@ -24,12 +24,14 @@ export default function RootLayout({ children }) {
     <AuthProvider> 
         <NotificationProvider>
             <FormProvider>
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        <Notification />
-        {children}</body>
-    </html>
+              <html lang="en">
+                <body className={inter.className}>
+                  <Navbar />
+
+                    <Notification />
+                    {children}
+                  </body>
+              </html>
             </FormProvider>
         </NotificationProvider>
     </AuthProvider>

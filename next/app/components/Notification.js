@@ -1,7 +1,8 @@
 'use client'
-import { useNotificationContext } from "../contexts/NotificationContext"
+import { useNotificationContext } from "@/app/contexts/NotificationContext"
 import { Alert } from "@material-tailwind/react";
 
+// TODO: replace notification with a snack bar
 const Notification = () => {
 
   const { message, messageType } = useNotificationContext()

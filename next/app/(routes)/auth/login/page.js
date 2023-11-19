@@ -1,5 +1,5 @@
 'use client'
-import { useAuthContext } from '../../contexts/AuthContext'
+import { useAuthContext } from '@/app/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import React from 'react';
 import {
