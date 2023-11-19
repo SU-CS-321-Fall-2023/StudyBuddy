@@ -162,7 +162,11 @@ export default function Page( {params}) {
                 {fetchedUser.classes.map(c =>
                 <li key={c.id}>
                   {c.department_code} {c.class_code}: {c.class_title}
-                  <Button onClick={()=> handleDeleteButton(c)}>x</Button>
+                  <Button
+                    color="red"
+                    onClick={()=> handleDeleteButton(c)}>
+                  x
+                  </Button>
                   </li>)}
                 </ul>
               </>
