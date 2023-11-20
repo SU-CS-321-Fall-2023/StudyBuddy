@@ -17,6 +17,15 @@ const ProfileScreen = () => {
     fullName: 'Billy McBillerson',
     email: 'billysilly@gmail.com',
     profilePic: 'https://via.placeholder.com/150', // Replace with actual image path
+
+    
+
+    //BADGES FOR SKYLER
+    badges: ['Badge 1', 'Badge 2'],
+    //BADGES FOR SKYLER
+
+
+
     studyGroups: ['Study Group 1', 'Study Group 2'],
     classes: ['Class 1', 'Class 2'],
     likes: ['Like 1', 'Like 2'],
@@ -105,6 +114,23 @@ const ProfileScreen = () => {
           <Text style={styles.infoText}>Name: {userInfo.fullName}</Text>
         </View>
       </View>
+
+
+
+
+      {/*BADGES FOR SKYLER*/}
+      <Text style={styles.sectionTitle}>Badges</Text>
+      <FlatList
+        data={userInfo.badges}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <Text style={styles.listItem}>{item}</Text>}
+        horizontal
+      />
+      {/*BADGES FOR SKYLER*/}
+
+
+
+
 
       <Text style={styles.sectionTitle}>Study Groups</Text>
       <FlatList
