@@ -18,7 +18,7 @@ const ProfileScreen = () => {
     email: 'billysilly@gmail.com',
     profilePic: 'https://via.placeholder.com/150', // Replace with actual image path
     emailNotifications: 'turn off', //may be better to just have the user unsubsribe through
-    //the email that's been sent
+    //the email that's been sent(gmail may automatically have that set up i believe)
     
 
     //BADGES FOR SKYLER
