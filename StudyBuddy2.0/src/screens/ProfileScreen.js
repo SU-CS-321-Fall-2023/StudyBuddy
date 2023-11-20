@@ -17,7 +17,8 @@ const ProfileScreen = () => {
     fullName: 'Billy McBillerson',
     email: 'billysilly@gmail.com',
     profilePic: 'https://via.placeholder.com/150', // Replace with actual image path
-
+    emailNotifications: 'turn off', //may be better to just have the user unsubsribe through
+    //the email that's been sent
     
 
     //BADGES FOR SKYLER
@@ -111,6 +112,7 @@ const ProfileScreen = () => {
         <Image source={{ uri: userInfo.profilePic }} style={styles.profilePic} />
         <View style={styles.infoSection}>
           <Text style={styles.infoText}>Email: {userInfo.email}</Text>
+          <Text style={styles.infoText}>Email Notifications: {userInfo.emailNotifications}</Text>
           <Text style={styles.infoText}>Name: {userInfo.fullName}</Text>
         </View>
       </View>
