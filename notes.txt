@@ -30,4 +30,16 @@ TO-DO:
  - add badges portion under profile pages for the front end 
  - add turn off email notifications on profile(user settings)
 
-  WILL TALK WITH REST OF GROUP TMR (11/20)
+
+
+
+
+ FOR SKYLER:
+ - In StuddyBuddy2.0 folder, head to 'screens' folder, then 'ProfileScreen.js'
+
+  - there will be text in there labled 'BADGES FOR SKYLER' commented out where the badges should display
+  and where you can add in functionality to display them on the profile page
+
+  - I've spaced out the portion that's for backend to work with so it's easier to find ^-^
+
+
