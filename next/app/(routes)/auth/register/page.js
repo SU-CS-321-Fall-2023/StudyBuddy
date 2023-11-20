@@ -7,13 +7,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormContext } from '@/app/contexts/FormContext'
-import { useNotificationContext } from '@/app/contexts/NotificationContext';
 import { useAuthContext } from '@/app/contexts/AuthContext';
-import RegisterService from '@/app/services/register'
-import blogService from '@/app/services/blogs'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import { useNotification } from '@/app/contexts/NotificationContext';
+import { authController } from '@/app/controllers'
 
 export default function RegisterPage() {
     const { email, setEmail, password, setPassword, name, setName } = useFormContext()
@@ -41,7 +39,7 @@ export default function RegisterPage() {
     const handleRegister = async (event) => {
         event.preventDefault()
         try {
-            const response = await RegisterService.register({
+            const response = await authController.register({
                 name,
                 email,
                 password
@@ -52,7 +50,6 @@ export default function RegisterPage() {
                 if (window !== undefined) {
                     window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
                 }
-                blogService.setToken(tokens.access.token)
                 setUser(user)
                 setEmail('')
                 setPassword('')

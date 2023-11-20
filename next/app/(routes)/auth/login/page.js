@@ -9,9 +9,9 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormContext } from '@/app/contexts/FormContext'
-import loginService from '@/app/services/login'
 import Link from 'next/link';
 import { useNotification } from '@/app/contexts/NotificationContext';
+import { authController } from '@/app/controllers'
 
 export default function LoginPage() {
     const { user, setUser, setToken } = useAuthContext()
@@ -35,7 +35,7 @@ export default function LoginPage() {
     const handleLogin = async (event) => {
       event.preventDefault()
       try {
-        const response = await loginService.login({
+        const response = await authController.login({
           email, password,
         })
           if ((typeof response.user !== 'undefined') && (response.user !== null)) {
