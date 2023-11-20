@@ -23,4 +23,10 @@ in the TEMPLATE to other parts, each of which I have to find individually to cha
   - or operation Apocalypse: Delete everything in the expo file and restart (Definitely should be 
   the last choice)
 
+- 11/20 NOTES
+ - add feature where when user hits 'join' and 'connect' for the study group from the study group 
+ then chat bubble appears under messages tab
+ - add badges portion under profile pages for the front end 
+ - add turn off email notifications on profile(user settings)
+
   WILL TALK WITH REST OF GROUP TMR (11/20)
