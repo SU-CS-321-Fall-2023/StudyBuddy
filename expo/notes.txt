@@ -1,0 +1,26 @@
+EXPO TEMPLATE NOTES:
+
+- in expo/app/navigators/screens
+    - navigators and screens are the two focuses to get the navigators and screens added to TEMPLATE
+
+-ISSUES:
+- 1. Written in .tsx files not .js files. Will need to figure out how to transfer .js files over to .tsk maybe
+
+- 2. expo start starts up the index.js whereas yarn expo:start starts up the app.js
+
+- 3. App.js reads from app.tsx
+    - no matter what, I am unsure how to get it to read the screens I've implemented instead
+
+- 4. Something in node modules called AppEntryPoint that determines where the app starts from. I feel like
+I need to find that and change the entry point to the app.js without any extra add ons(i.e. the ignite
+splash screen, reading from the .tsx files still, etc.)
+
+- 5. All in all unsure of how to get the .js files implemented as their seems to be multiple routes pre-set 
+in the TEMPLATE to other parts, each of which I have to find individually to change so that it works with the 
+.js code instead 
+
+- 6. May need to re-run multiple times and create a chart tracking where things link to, 
+  - or operation Apocalypse: Delete everything in the expo file and restart (Definitely should be 
+  the last choice)
+
+  WILL TALK WITH REST OF GROUP TMR (11/20)
