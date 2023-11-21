@@ -9,16 +9,19 @@ import { Button } from "@material-tailwind/react";
 import { useNotificationContext } from "@/app/contexts/NotificationContext";
 import { userController } from "@/app/controllers";
 import { useNotification } from '@/app/contexts/NotificationContext';
-
+import { useRouter } from 'next/navigation'
 
 export default function Page( {params}) {
   // TODO: Extract fetches into their own services
-  const [fetchedUser, setFetchedUser] = useState(null)
-  const { user, setUser, token } = useAuthContext()
+  const { user, fetchedUser, setFetchedUser, setUser, token } = useAuthContext()
   const { setMessage, setMessageType } = useNotificationContext();
   const { setNotification } = useNotification();
-
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true);
+
+  if (user && user.id !== params.user_id) {
+    router.push(`/profile/${user.id}`)
+  }
 
   // use useEffect to fetch instead of async function
   useEffect(() => {
@@ -31,7 +34,7 @@ export default function Page( {params}) {
       setIsLoading(false);
     }
     fetchUser();
-  }, [user, params.user_id, token]);
+  }, [params.user_id, token]);
 
   // TODO: after extracting this function, make sure it can edit any received property
   // instead of explicitly editing classes

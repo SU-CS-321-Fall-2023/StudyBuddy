@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [fetchedUser, setFetchedUser] = useState(null);
   const [token, setToken] = useState(null);
   if ((user === null || user === '') && typeof window !== 'undefined') {
     const storedUser = window.localStorage.getItem('loggedStudyBuddyUser')
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
+    <AuthContext.Provider value={{ user, setUser, fetchedUser, setFetchedUser, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );

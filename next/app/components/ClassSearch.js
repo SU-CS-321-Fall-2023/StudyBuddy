@@ -11,7 +11,7 @@ import { useNotification } from '@/app/contexts/NotificationContext';
 export default function ComboBox() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const { user, setUser, token, setToken } = useAuthContext();
+  const { user, setUser, fetchedUser, setFetchedUser, token, setToken } = useAuthContext();
   const [selectedClass, setSelectedClass] = useState(null);
   const { setNotification } = useNotification();
 
@@ -31,10 +31,10 @@ export default function ComboBox() {
 
 
   const handleAddClass = async () => {
-    const updatedUser = await userController.addClass(user, token, selectedClass)
+    const updatedUser = await userController.addClass(fetchedUser, token, selectedClass)
     if (updatedUser.ok) {
       console.log(updatedUser, 'updatedUser')
-      setUser(updatedUser.body)
+      setFetchedUser(updatedUser.body)
       setNotification(updatedUser.message, 'success')
     } else {
       setNotification(updatedUser.message, 'error')
