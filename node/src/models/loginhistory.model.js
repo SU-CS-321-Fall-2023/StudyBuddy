@@ -27,9 +27,9 @@ module.exports = LoginHistory;
 
 //function to calculate time difference
 //when login occurs
-const login_date = new Date();
+//const login_date = new Date();
 //when logout occurs
-const logout_date = new Date();
+//const logout_date = new Date();
 //add login_date, logout_date, and user_email to the login_history collection--
 //is it automatically linked to the user collection too now?
 
@@ -55,13 +55,13 @@ console.log(typeof(session_minutes)) // a number
   // add User.setLoginEntry(email) # syntax for email?
 // in logout function auth.controller
   //add class_whatever.updateLoginHistory(email)
-
+/*
 function setLoginEntry(email) {
   const login_date = new Date();
   // add new entry to mongo based on email
 }
 
-function getSessionMinutes(date1, date2) {
+function setSessionMinutes(date1, date2) {
     return (date2 - date1)/60000
 }
 
@@ -69,11 +69,41 @@ function updateLoginHistory(email) {
   logout_date = getCurrentDateTime()
   // get the last entry for this email, get login_date
   login_date = // Mongo get with email
-  session_minutes = getSessionMinutes(login_date, logout_date);
+  session_minutes = setSessionMinutes(login_date, logout_date);
   //add entry
   //updateUser(
   //look at login req.body email, password for form
-  //geuser by id is mongoose code
+  //getuser by id is mongoose code
+}
+*/
+function setSessionMinutes(date1, date2) {
+    return (date2 - date1)/60000
 }
 
+async function addLoginHistory(user_email, login_time, logout_time, session_minutes) {
+  try {
+    const loginHistory = new UserLoginHistory({
+    user_email,
+    login_time,
+    logout_time,
+    session_minutes,
+    });
+    await loginHistory.save();
+  } catch (error) {
+    console.error('Error adding login history to the database:', error);
+  }
+}
+
+//every time someone logs out make sure to update the interaction time too for the user
+//functions to make:
+//get_total_interaction_time, from the user schema (based on user id)
+//get session_minutes (for one session, based on date)
+//mongo entry functions above
+//for badges:
+//check total interaction time
+//number of logins
+//number of chat interactions
+//number of friends?
+
+//need to create endpoint/ routes for each function
 }

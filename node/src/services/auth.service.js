@@ -16,6 +16,10 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
+  //get the current time of login
+  //call login history function with logout time and session minutes as null
+  const login_time = new Date();
+  await addLoginHistory(user.email, login_time, null, null);
   return user;
 };
 
@@ -29,6 +33,8 @@ const logout = async (refreshToken) => {
   if (!refreshTokenDoc) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
+  const logout_time = new Date();
+
   await refreshTokenDoc.remove();
 };
 
