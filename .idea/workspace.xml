@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c4298cb-1881-4491-ac4d-2348cd6a30d2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/node/src/socket.io/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/src/models/user.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/models/user.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/models/loginhistory.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/models/loginhistory.model.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
