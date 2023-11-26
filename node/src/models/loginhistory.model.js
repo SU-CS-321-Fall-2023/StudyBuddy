@@ -76,13 +76,10 @@ function updateLoginHistory(email) {
   //getuser by id is mongoose code
 }
 */
-function setSessionMinutes(date1, date2) {
-    return (date2 - date1)/60000
-}
 
 async function addLoginHistory(user_email, login_time, logout_time, session_minutes) {
   try {
-    const loginHistory = new UserLoginHistory({
+    const loginHistory = new LoginHistory({
     user_email,
     login_time,
     logout_time,

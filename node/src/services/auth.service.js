@@ -18,6 +18,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   }
   //get the current time of login
   //call login history function with logout time and session minutes as null
+  //add a token to the user?
   const login_time = new Date();
   await addLoginHistory(user.email, login_time, null, null);
   return user;
@@ -28,14 +29,43 @@ const loginUserWithEmailAndPassword = async (email, password) => {
  * @param {string} refreshToken
  * @returns {Promise}
  */
+ //replace email with user schema instead, or change search to email here
+//could put all this in a function
+//where to put add LoginHistory function?
 const logout = async (refreshToken) => {
+  //get the token
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
   if (!refreshTokenDoc) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-  const logout_time = new Date();
 
-  await refreshTokenDoc.remove();
+  //update total user interaction time and login history
+  //get the user from the token schema (and search in the login schema for it)
+  if (refreshTokenDoc && refreshTokenDoc.user) {
+
+    //update login history for the user (could put this in a function)
+    const logout_time = new Date();
+    const user = await User.findById(refreshTokenDoc.user);
+    //sort login times in descending order to get last login (by finding associated user)
+    const last_login = await LoginHistory.findOne({ user }).sort({ login_time: -1 });
+    // could get the user email to search instead of user if keeping email in login schema
+    //const email = refreshTokenDoc.user.email;
+
+    //update login entry
+    if (last_login) {
+      last_login.logout_time = logout_time;
+      last_login.session_minutes = (last_login.logout_time - last_login.login_time)/60000;
+      await last_login.save(); //save updates to the mongo entry
+    } else {
+    res.status(404).send('No login records found for this user');
+    }
+
+    //update total user interaction to include this session's total minutes
+    user.interactionTime = user.interactionTime + last_login.session_minutes;
+    await user.interactionTime.save();
+
+    //await refreshTokenDoc.remove();
+  }
 };
 
 /**
