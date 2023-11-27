@@ -92,6 +92,47 @@ async function addLoginHistory(user_email, login_time, logout_time, session_minu
   }
 }
 
+//TODO: for email notif list of user emails
+function create_email_reminder_list() {
+  const all_last_logins = await loginHistory.aggregate([
+      {
+        $sort: { login_time: -1 } // Sort by login_time in descending order
+      },
+      {
+        $group: {
+          _id: '$user_id', // Group by user_id
+          last_login: { $first: '$login_time' } // Get the first most recent login_time for each user
+        }
+      }
+    ]);
+
+
+
+  // all_last_logins is a list of user_ids login times for each user
+  /*
+  [
+  { _id: 'user_id_1', latestLogin: new Date('2023-11-24') },
+  { _id: 'user_id_2', latestLogin: new Date('2023-11-25') },
+  ]*/
+  // Sort all_last_logins so that latestLogin is in descending order (most recent at front)
+  //find where date difference is less than 14, and stop adding people to the list (because everyone after has logged in in good time)
+  all_last_logins.sort((a, b) => a.last_login - b.last_login);
+  // this is called arrow function syntax, same as :
+  //function (a, b){
+  //return a - b;
+//}
+
+  //loop through the list
+  all_last_logins.forEach(login => {
+    user_id = login._id
+    last_login = login.last_login
+
+    if last_login
+  }
+})
+
+}
+
 // for user stats
 //should I make a stats schema instead of making functions to get all of these things?
 //if I do, I need to update the stats schema anytime any info changes--is it really that much simpler?
@@ -99,7 +140,7 @@ async function addLoginHistory(user_email, login_time, logout_time, session_minu
 
 //TODO:
 //return as a JSON? or a response?
-async function get_user_stats(user_id) {
+function get_user_stats(user_id) {
   const user = await User.findById(user_id);
   //faster to not call the functions and just do them here instead so you dont have to look for the user so many times
   stats = [
@@ -226,7 +267,7 @@ function get_buddy_count(user_id) { //check # of friends everytime they make a n
 
 //TODO: checking functions to do badges
 // make check functions for each of these get functions for badges
-async function check_buddy_count(user_id) {
+function check_buddy_count(user_id) {
   count = get_buddy_count(user_id);
   if (count = 20) {
     // give the expert buddy badge for reaching max_threshold
@@ -237,7 +278,7 @@ async function check_buddy_count(user_id) {
   }
 }
 
-async function check_group_count(user_id) {
+function check_group_count(user_id) {
   count = get_group_count(user_id);
   if (count = 10) {
     // give the smarty-pants buddy badge for reaching max_threshold
@@ -248,7 +289,7 @@ async function check_group_count(user_id) {
   }
 }
 
-async function check_login_streak(user_id) {
+function check_login_streak(user_id) {
   day_count = get_login_streak(user_id)
     if (day_count > 30) {
       // "on the overachiever path" streak badge
@@ -286,7 +327,7 @@ async function check_login_streak(user_id) {
   //login streak--when they login
   //number of friends--everytime they make a friend, check
   //number of study groups--separate into created/ joined
-
+//last_login for email list function
 
 //take the repetitiveness out of getting / checking counts somehow-- a list of related schemas
 //do I need to run the updateuser by id function at any time to save info?
