@@ -45,6 +45,8 @@ const HomePage = () => {
       // Show an alert or some indication that the user is already in the group
       alert("You're already a member of this group!");
     }
+
+    {/*FIRST STUDY GROUP JOINED BADGE -- CHECK GROUP COUNT WITH USER ID* -- CAN CALL OUT OF FOLDER*/}
   };
   
 

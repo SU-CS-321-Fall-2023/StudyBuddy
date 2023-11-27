@@ -94,6 +94,8 @@ const ProfileScreen = () => {
     const updatedWeaknesses = weaknesses.filter((_, weaknessIndex) => weaknessIndex !== index);
     setWeaknesses(updatedWeaknesses);
   }
+
+  {/*FIRST BUDDY BADGE FUNCTION*/}
   
 
   return (

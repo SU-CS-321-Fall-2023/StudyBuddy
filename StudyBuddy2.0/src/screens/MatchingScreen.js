@@ -68,6 +68,7 @@ const MatchingScreen = () => {
 
   // The current user profile to display.
 
+{/* FIRST BUDDY BADGE FUNCTION WILL GO -- CHECK BUDDY COUNT -- CAN CALL OUT OF FOLDER */}
 
   return (
     <ScrollView style={styles.container}>
@@ -96,10 +97,15 @@ const MatchingScreen = () => {
           </View>
         </View>
         <TouchableOpacity style={styles.connectButton}>
+
           <Text style = {styles.connectButtonText}>Connect</Text>
+            {/*FIRST BUDDY BADGE -- CHECK BUDDY COUNT*/}
+
         </TouchableOpacity>
+
+        
       </View>
-)}
+)} 
 
       {/* Navigation arrows */}
       {filteredUsers.length > 1 && ( // Only show navigation if there are users to navigate through

@@ -7,6 +7,8 @@ const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  {/*LOGIN STREAK BADGE -- CHECK LOGIN STREAK FUNCTION */}
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Sign In</Text>
