@@ -32,8 +32,29 @@ const getClasses = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+//get all classes
+const getAllClasses = catchAsync(async (req, res) => {
+  const classes = await classService.getAllClasses();
+  res.send(classes);
+});
+
+
+//get by ID
+const getClassById = catchAsync(async (req, res) => {
+  const classId = req.params.id; 
+  
+  const foundClass = await classService.getClassById(classId);
+
+  if (!foundClass) {
+    return res.status(404).send({ error: 'Class not found' });
+  }
+
+  res.send(foundClass);
+});
 
 
 module.exports = {
-  getClasses
+  getAllClasses,
+  getClassById,
+  getClasses,
 };

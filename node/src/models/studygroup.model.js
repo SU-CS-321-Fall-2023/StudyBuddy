@@ -12,7 +12,14 @@ const studyGroupSchema = mongoose.Schema({
       ref: 'User',
     },
   ],
+  classes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Class',
+    },
+  ],
   // Add other properties related to the study group if needed
+
 });
 
 const StudyGroup = mongoose.model('StudyGroup', studyGroupSchema);
