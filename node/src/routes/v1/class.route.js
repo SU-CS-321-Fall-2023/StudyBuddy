@@ -6,10 +6,14 @@ const classController = require('../../controllers/class.controller');
 
 const router = express.Router();
 
-router.route('/').get(validate(classValidation.getClasses), classController.getClasses);
-
-//get all class
+//get all class with filters as params (?sortBy= &limit=  &page= )
 router.route('/classes').get(validate(classValidation.getClasses), classController.getAllClasses);
+
+//get spefic class by Id 
+router
+  .route('/:id') 
+  .get(validate(classValidation.getClass), classController.getClassById);
+
 
 module.exports = router;
 
