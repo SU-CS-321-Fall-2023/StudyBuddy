@@ -29,7 +29,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /classes/Classes:
+ * /classes/all:
  *   get:
  *     summary: Get all classes
  *     description: Retrieve all classes with optional filters.
