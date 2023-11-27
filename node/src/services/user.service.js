@@ -3,6 +3,20 @@ const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
+ * Get inactive users
+ * @returns {Promise<User>}
+ */
+const checkInactiveUsers = async () => {
+  const inactiveUsers = await User.find({
+    'activity.lastLogin': {
+      $lte: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  return inactiveUsers;
+};
+
+/**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
@@ -89,4 +103,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  checkInactiveUsers
 };

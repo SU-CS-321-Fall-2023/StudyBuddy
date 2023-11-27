@@ -58,6 +58,18 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    emailPreferences: {
+      notifications: {
+        type: Boolean,
+        default: true, // User is opted-in by default
+      },
+    },
+    activity: {
+      lastLogin: {
+        type: Date
+      }
+    },
+
   },
   {
     timestamps: true,
