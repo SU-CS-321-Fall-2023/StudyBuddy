@@ -59,10 +59,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    interactionTime: {
-      type: number,
-      default: 0,
-    },
+   // interactionTime: {
+   //   type: number,
+   //   default: 0,
+   // },
     loginHistory: [ //could instead make this a list and not create a whole schema for it?
       {
         // type: Date

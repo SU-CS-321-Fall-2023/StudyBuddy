@@ -21,6 +21,10 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   //add a token to the user?
   const login_time = new Date();
   await addLoginHistory(user.email, login_time, null, null);
+
+  //check the user login streak to see if they get a badge
+  await check_login_streak(user_id);
+
   return user;
 };
 
@@ -42,12 +46,13 @@ const logout = async (refreshToken) => {
   //update total user interaction time and login history
   //get the user from the token schema (and search in the login schema for it)
   if (refreshTokenDoc && refreshTokenDoc.user) {
-
+//TODO: will user by okay? not user.id??
     //update login history for the user (could put this in a function)
     const logout_time = new Date();
     const user = await User.findById(refreshTokenDoc.user);
     //sort login times in descending order to get last login (by finding associated user)
-    const last_login = await LoginHistory.findOne({ user }).sort({ login_time: -1 });
+    //const last_login = await LoginHistory.findOne({ user }).sort({ login_time: -1 });
+    const last_login = await get_last_login(user);
     // could get the user email to search instead of user if keeping email in login schema
     //const email = refreshTokenDoc.user.email;
 
@@ -60,9 +65,10 @@ const logout = async (refreshToken) => {
     res.status(404).send('No login records found for this user');
     }
 
+    //took this out of the schema
     //update total user interaction to include this session's total minutes
-    user.interactionTime = user.interactionTime + last_login.session_minutes;
-    await user.interactionTime.save();
+    //user.interactionTime = user.interactionTime + last_login.session_minutes;
+    //await user.interactionTime.save();
 
     //await refreshTokenDoc.remove();
   }
