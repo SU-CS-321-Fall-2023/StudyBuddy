@@ -17,20 +17,6 @@ const queryClasses = async (filter, options) => {
 };
 
 
-/**
- * Get class by ID
- * @param {string} classId
- * @returns {Promise<Class>}
- */
-const getClassById = async (classId) => {
-  const classObj = await Class.findById(classId);
-  if (!classObj) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Class not found');
-  }
-  return classObj;
-};
-
 module.exports = {
-  queryClasses,
-  getClassById,
+  queryClasses
 };
