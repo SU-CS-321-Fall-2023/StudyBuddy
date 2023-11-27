@@ -32,8 +32,14 @@ const getClasses = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+//get all classes
+const getAllClasses = catchAsync(async (req, res) => {
+  const classes = await classService.getAllClasses();
+  res.send(classes);
+});
 
 
 module.exports = {
-  getClasses
+  getAllClasses,
+  getClasses,
 };

@@ -6,9 +6,10 @@ const classController = require('../../controllers/class.controller');
 
 const router = express.Router();
 
-router
-    .route('/')
-    .get(validate(classValidation.getClasses), classController.getClasses);
+router.route('/').get(validate(classValidation.getClasses), classController.getClasses);
+
+//get all class
+router.route('/classes').get(validate(classValidation.getClasses), classController.getAllClasses);
 
 module.exports = router;
 
