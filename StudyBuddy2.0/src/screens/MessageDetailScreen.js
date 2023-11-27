@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity,KeyboardAvoidingView,
     Platform } from 'react-native';
-
 const MessageDetailScreen = ({ route }) => {
   const { name, message } = route.params;
 

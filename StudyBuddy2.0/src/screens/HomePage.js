@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+global.messages = global.messages || [];
 const HomePage = () => {
   const navigation = useNavigation();
   const [studyGroups, setStudyGroups] = useState([]);
@@ -24,6 +25,28 @@ const HomePage = () => {
     // Navigate back to the Sign In screen
     navigation.navigate('SignIn');
   };
+  
+  const handleJoinGroup = (group) => {
+    // Check if the group is already in the global messages
+    const isAlreadyJoined = global.messages.some(message => message.id === group.id);
+  
+    if (!isAlreadyJoined) {
+      // Add the group to the global messages array with a personalized message
+      global.messages.push({
+        id: group.id,
+        name: group.name,
+        lastMessage: `You joined ${group.name}!`, // Personalized message
+        sender: "UserName", // Replace "UserName" with the actual user's name
+      });
+      
+      // Optionally navigate to the Messages screen
+      navigation.navigate('Messages');
+    } else {
+      // Show an alert or some indication that the user is already in the group
+      alert("You're already a member of this group!");
+    }
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -43,15 +66,15 @@ const HomePage = () => {
         style={styles.searchBar}
       />
       <FlatList
-        data={filteredGroups}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.groupItem}>
-            <Text>{item.name}</Text>
-            <Button title="Join" onPress={() => {}} />
-          </View>
-        )}
-      />
+      data={filteredGroups}
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => (
+        <View style={styles.groupItem}>
+          <Text>{item.name}</Text>
+          <Button title="Join" onPress={() => handleJoinGroup(item)} />
+        </View>
+      )}
+    />
       {/* Modal for creating a new study group */}
       <Modal
         animationType="slide"

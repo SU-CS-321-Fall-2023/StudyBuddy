@@ -1,17 +1,18 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const MessagesScreen = () => {
   const navigation = useNavigation();
-  // Placeholder for messages data
-  const messages = [
-    { id: '1', name: 'Alice', preview: 'Hi, how are you?' },
-    // ... more messages
-  ];
+  const [messages, setMessages] = useState(global.messages || []);
 
-  const openMessage = (name, preview) => {
-    navigation.navigate('MessageDetail', { name, message: preview });
+  useEffect(() => {
+    // Update messages from global state
+    setMessages(global.messages);
+  }, []);
+
+  const openMessageDetail = (message) => {
+    navigation.navigate('MessageDetail', { name: message.name, message: message.lastMessage });
   };
 
   return (
@@ -29,12 +30,12 @@ const MessagesScreen = () => {
         data={messages}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-            <TouchableOpacity
+          <TouchableOpacity 
             style={styles.messageItem}
-            onPress={() => openMessage(item.name, item.preview)}
+            onPress={() => openMessageDetail(item)}
           >
             <Text style={styles.messageName}>{item.name}</Text>
-            <Text style={styles.messagePreview}>{item.preview}</Text>
+            <Text style={styles.messagePreview}>{item.lastMessage}</Text>
           </TouchableOpacity>
         )}
       />
