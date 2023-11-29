@@ -4,6 +4,9 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity,KeyboardAvoidingVie
 const MessageDetailScreen = ({ route }) => {
   const { name, message } = route.params;
 
+
+  {/*FUNCTION FOR CHAT MESSAGING WILL GO HERE */}
+
   return (
     <KeyboardAvoidingView 
       style={styles.container}

@@ -67,6 +67,8 @@ const HomePage = () => {
         onChangeText={setSearchQuery}
         style={styles.searchBar}
       />
+
+      
       <FlatList
       data={filteredGroups}
       keyExtractor={item => item.id}
@@ -77,6 +79,8 @@ const HomePage = () => {
         </View>
       )}
     />
+
+
       {/* Modal for creating a new study group */}
       <Modal
         animationType="slide"
