@@ -66,6 +66,29 @@ const MatchingScreen = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % filteredUsers.length);
   };
 
+  const handleConnection = (user) => {
+    // Check if the group is already in the global messages
+    const isAlreadyJoined = global.messages.some(message => message.id === user.id);
+  
+    if (!isAlreadyJoined) {
+      // Add the group to the global messages array with a personalized message
+      global.messages.push({
+        id: user.id,
+        name: user.name,
+        lastMessage: `You joined ${user.name}!`, // Personalized message
+        sender: "UserName", // Replace "UserName" with the actual user's name
+      });
+      
+      // Optionally navigate to the Messages screen
+      navigation.navigate('Messages');
+    } else {
+      // Show an alert or some indication that the user is already in the group
+      alert("You're already a member of this group!");
+    }
+
+    {/*FIRST STUDY GROUP JOINED BADGE -- CHECK GROUP COUNT WITH USER ID* -- CAN CALL OUT OF FOLDER*/}
+  };
+
   // The current user profile to display.
 
 {/* FIRST BUDDY BADGE FUNCTION WILL GO -- CHECK BUDDY COUNT -- CAN CALL OUT OF FOLDER */}
@@ -96,11 +119,13 @@ const MatchingScreen = () => {
             <Text>Strengths: {currentUser.strengths.join(', ')}</Text>
           </View>
         </View>
+
         <TouchableOpacity style={styles.connectButton}>
+          <TouchableOpacity onPress = {handleConnection}>
 
           <Text style = {styles.connectButtonText}>Connect</Text>
             {/*FIRST BUDDY BADGE -- CHECK BUDDY COUNT*/}
-
+          </TouchableOpacity>
         </TouchableOpacity>
 
         
