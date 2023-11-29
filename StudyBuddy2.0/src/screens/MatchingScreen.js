@@ -65,9 +65,21 @@ const MatchingScreen = () => {
   const nextUser = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % filteredUsers.length);
   };
+  const handleConnect = (user) => {
+    // Check if a chat with this user already exists
+    const chatExists = global.messages.some(message => message.id === user.id);
 
+    if (!chatExists) {
+      global.messages.push({
+        id: user.id,
+        name: user.fullName,
+        lastMessage: "Start a conversation!", // Default start message
+      });
+    }
+  }
   // The current user profile to display.
-
+  
+  
 {/* FIRST BUDDY BADGE FUNCTION WILL GO -- CHECK BUDDY COUNT -- CAN CALL OUT OF FOLDER */}
 
   return (
@@ -96,12 +108,12 @@ const MatchingScreen = () => {
             <Text>Strengths: {currentUser.strengths.join(', ')}</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.connectButton}>
-
-          <Text style = {styles.connectButtonText}>Connect</Text>
-            {/*FIRST BUDDY BADGE -- CHECK BUDDY COUNT*/}
-
-        </TouchableOpacity>
+        <TouchableOpacity 
+            style={styles.connectButton}
+            onPress={() => handleConnect(currentUser)}
+          >
+            <Text style={styles.connectButtonText}>Connect</Text>
+          </TouchableOpacity>
 
         
       </View>
