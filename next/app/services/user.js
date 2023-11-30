@@ -29,4 +29,9 @@ const get = async(userId, token) => {
     return response
 }
 
-export default { update, get }
+const getAll = async() => {
+  const response = await fetch(`${userApiUrl}/?limit=1000`);
+  return response
+}
+
+export default { update, get, getAll}

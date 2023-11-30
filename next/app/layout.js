@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import { FormProvider } from './contexts/FormContext'
 import { NotificationProvider } from './contexts/NotificationContext'
 import Notification from './components/Notification'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
