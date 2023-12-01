@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-global.messages = [];
+if (!global.messages) global.messages = [];
 
 const MatchingScreen = () => {
   const navigation = useNavigation();
@@ -31,21 +31,24 @@ const MatchingScreen = () => {
       strengths: ['Critical Thinking']
     },
 
-    // {
-    //   id: '3',
-    //   fullName: 'Jym Doe',
-    //   profilePic: 'https://via.placeholder.com/150',
-    //   classes: ['Carpentry 101', 'Software 301'],
-    //   likes: ['Reading', 'Gardening'],
-    //   skills: ['Time Management', 'Organization'],
-    //   weaknesses: ['Public Speaking'],
-    //   strengths: ['Critical Thinking']
-    // },
+    {
+      id: '3',
+      fullName: 'Jym Doe',
+      profilePic: 'https://via.placeholder.com/150',
+      classes: ['Carpentry 101', 'Software 301'],
+      likes: ['Reading', 'Gardening'],
+      skills: ['Time Management', 'Organization'],
+      weaknesses: ['Public Speaking'],
+      strengths: ['Critical Thinking']
+    },
     // ... other user profiles
   ]);
 
+
   const [searchQuery, setSearchQuery] = useState('');
   const [connectedUsers, setConnectedUsers] = useState(new Set()); // Track connected users
+  // Index to keep track of the current user being displayed.
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const filteredUsers = searchQuery
     ? users.filter(user =>
@@ -54,18 +57,16 @@ const MatchingScreen = () => {
         )
       )
     : users;
+    const currentUser = filteredUsers[currentIndex % filteredUsers.length];
 
-
-  // Index to keep track of the current user being displayed.
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const safeIndex = currentIndex % filteredUsers.length;
-  const currentUser = filteredUsers[safeIndex];
-
+  
 
   const handleConnection = (user) => {
     if (!connectedUsers.has(user.id)) {
-      setConnectedUsers(new Set(connectedUsers).add(user.id));
+      // Update the connected users set and trigger a re-render
+      setConnectedUsers(new Set([...connectedUsers, user.id]));
   
       // Add a new message to global.messages with the user's full name
       global.messages.push({
@@ -81,6 +82,7 @@ const MatchingScreen = () => {
     }
   };
   
+  
   // Move to the previous user profile.
   const prevUser = () => {
     setCurrentIndex(prevIndex => (prevIndex - 1 + filteredUsers.length) % filteredUsers.length);
@@ -91,7 +93,11 @@ const MatchingScreen = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % filteredUsers.length);
   };
 
- 
+ // UseEffect for debugging
+ useEffect(() => {
+  console.log('Current user:', currentUser);
+  console.log('Connected users:', connectedUsers);
+}, [currentUser, connectedUsers]);
   
 
   // The current user profile to display.
@@ -128,12 +134,17 @@ const MatchingScreen = () => {
 
         
 
-        <TouchableOpacity 
+        {/* <TouchableOpacity 
     style={styles.connectButton}
     onPress={() => handleConnection(currentUser)} // Pass the entire currentUser object
 >
     <Text style={styles.connectButtonText}>Connect</Text>
-</TouchableOpacity>
+</TouchableOpacity> */}
+<Button
+      title="Connect"
+      onPress={() => handleConnection(currentUser)}
+      color="black" // You can adjust the color
+    />
 
 
 
