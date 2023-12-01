@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+
+global.messages = [];
 
 const MatchingScreen = () => {
+  const navigation = useNavigation();
   // Dummy data array for other users. This would be fetched from your backend.
   const [users, setUsers] = useState([
     {
@@ -16,31 +20,32 @@ const MatchingScreen = () => {
       strengths: ['Critical Thinking']
     },
 
-    {
-      id: '2',
-      fullName: 'John Doe',
-      profilePic: 'https://via.placeholder.com/150',
-      classes: ['Chemistry 101', 'Software 201'],
-      likes: ['Reading', 'Gardening'],
-      skills: ['Time Management', 'Organization'],
-      weaknesses: ['Public Speaking'],
-      strengths: ['Critical Thinking']
-    },
+    // {
+    //   id: '2',
+    //   fullName: 'John Doe',
+    //   profilePic: 'https://via.placeholder.com/150',
+    //   classes: ['Chemistry 101', 'Software 201'],
+    //   likes: ['Reading', 'Gardening'],
+    //   skills: ['Time Management', 'Organization'],
+    //   weaknesses: ['Public Speaking'],
+    //   strengths: ['Critical Thinking']
+    // },
 
-    {
-      id: '3',
-      fullName: 'Jym Doe',
-      profilePic: 'https://via.placeholder.com/150',
-      classes: ['Carpentry 101', 'Software 301'],
-      likes: ['Reading', 'Gardening'],
-      skills: ['Time Management', 'Organization'],
-      weaknesses: ['Public Speaking'],
-      strengths: ['Critical Thinking']
-    },
+    // {
+    //   id: '3',
+    //   fullName: 'Jym Doe',
+    //   profilePic: 'https://via.placeholder.com/150',
+    //   classes: ['Carpentry 101', 'Software 301'],
+    //   likes: ['Reading', 'Gardening'],
+    //   skills: ['Time Management', 'Organization'],
+    //   weaknesses: ['Public Speaking'],
+    //   strengths: ['Critical Thinking']
+    // },
     // ... other user profiles
   ]);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [connectedUsers, setConnectedUsers] = useState(new Set()); // Track connected users
 
   const filteredUsers = searchQuery
     ? users.filter(user =>
@@ -56,6 +61,25 @@ const MatchingScreen = () => {
 
   const safeIndex = currentIndex % filteredUsers.length;
   const currentUser = filteredUsers[safeIndex];
+
+  // const handleConnection = (user) => {
+  //   const chatExists = global.messages.some(message => message.id === user.id);
+  
+  //   if (!chatExists) {
+  //     global.messages.push({
+  //       id: user.id,
+  //       name: user.fullName,
+  //       lastMessage: "Start a conversation!",
+  //     });
+  
+  //     // Optionally navigate to the Messages screen
+  //     navigation.navigate('Messages');
+  //   } else {
+  //     alert("You're already connected with this user!");
+  //   }
+  // };
+
+  
   // Move to the previous user profile.
   const prevUser = () => {
     setCurrentIndex(prevIndex => (prevIndex - 1 + filteredUsers.length) % filteredUsers.length);
@@ -66,28 +90,8 @@ const MatchingScreen = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % filteredUsers.length);
   };
 
-  const handleConnection = (user) => {
-    // Check if the group is already in the global messages
-    const isAlreadyJoined = global.messages.some(message => message.id === user.id);
+ 
   
-    if (!isAlreadyJoined) {
-      // Add the group to the global messages array with a personalized message
-      global.messages.push({
-        id: user.id,
-        name: user.name,
-        lastMessage: `You joined ${user.name}!`, // Personalized message
-        sender: "UserName", // Replace "UserName" with the actual user's name
-      });
-      
-      // Optionally navigate to the Messages screen
-      navigation.navigate('Messages');
-    } else {
-      // Show an alert or some indication that the user is already in the group
-      alert("You're already a member of this group!");
-    }
-
-    {/*FIRST STUDY GROUP JOINED BADGE -- CHECK GROUP COUNT WITH USER ID* -- CAN CALL OUT OF FOLDER*/}
-  };
 
   // The current user profile to display.
 
@@ -120,13 +124,17 @@ const MatchingScreen = () => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.connectButton}>
-          <TouchableOpacity onPress = {handleConnection}>
 
-          <Text style = {styles.connectButtonText}>Connect</Text>
-            {/*FIRST BUDDY BADGE -- CHECK BUDDY COUNT*/}
+        
+
+                  <TouchableOpacity 
+            style={styles.connectButton}
+            onPress={() => handleConnection(currentUser)}
+          >
+            <Text style={styles.connectButtonText}>Connect</Text>
           </TouchableOpacity>
-        </TouchableOpacity>
+
+
 
         
       </View>
