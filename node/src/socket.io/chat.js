@@ -8,8 +8,6 @@ useEffect(() => {
     setMessages((messages) => [...messages, message]);
   });
 }, []);
-
-
 // still in chat.js
 // connect to the connection created by our client from server.js
 io.on("connection", (socket) => {
@@ -19,7 +17,7 @@ io.on("connection", (socket) => {
 
     socket.emit("message", {
       user: "Admin",
-      text: `Welocome to ${user.room}`,
+      text: `Welcome to ${user.room}`,
     });
 
 //now we're at the actual sending messages point

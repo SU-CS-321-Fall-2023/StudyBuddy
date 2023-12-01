@@ -62,9 +62,7 @@ const userSchema = mongoose.Schema(
     badges: {
       type: mongoose.Schema.Types.Mixed,
       default:
-      {key: 'Daily Login Streak Badges:', },
-      {key: 'Buddy Badges:', },
-      {key: 'Study Group Badges', }
+      {}
   }
 });
     },

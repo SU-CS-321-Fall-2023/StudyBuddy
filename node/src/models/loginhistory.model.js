@@ -151,8 +151,9 @@ function get_user_stats(user_id) {
     {key: 'Daily Login Streak', value: get_login_streak(user_id)},
     {key: 'Number of Buddies', value: user.buddies.length},
     {key: 'Number of Study Groups', value: user.studyGroups.length},
-  ]
-return stats; //convert to json
+  ];
+  const statsJSON = JSON.stringify(stats); // Convert to JSON
+  return statsJSON;
 }
 /*
 function get_login_count(user_id) {
@@ -267,7 +268,7 @@ function get_buddy_count(user_id) { //check # of friends everytime they make a n
 
 //TODO: checking functions to do badges
 //just add badges to user schema--figure out how to do this properly
-//add buddy id list to user schema too
+//add buddy id list to user schema too -- but not yet becuase they dont hva efriends yet
 // make check functions for each of these get functions for badges
 // so do a dictionary of badge options (each is a string)
 //when they get the proper count change the badge entry to be the new one in the database
@@ -278,23 +279,24 @@ function get_buddy_count(user_id) { //check # of friends everytime they make a n
 //connecting with buddies is matchingscreen.js
 
 //ask Anas about calling the update method and how it should look in the schema
-// when badges are displayed, make a function to say "no badges to display yet" if no badges
+// call check buddy count/ group count when groups/ buddies added or removed
 function check_buddy_count(user_id) {
 //updateUserById(user_id, updateBody)
   count = get_buddy_count(user_id);
   const user = await User.findById(user_id);
   if (count = 20) {
     // give the expert buddy badge for reaching max_threshold
-    user.badges['Buddy Badges:'] = 'Loyal Buddy'
+    user.badges['Buddy Badge:'] = 'Loyal Buddy'
   } else if (count = 10) {
     //give friendly buddy badge for lots of buddies
-    user.badges['Buddy Badges:'] = 'Friendly Buddy'
+    user.badges['Buddy Badge:'] = 'Friendly Buddy'
   } else if (count = 1) {
     //give beginning buddy badge for first buddy
-    user.badges['Buddy Badges:'] = 'Beginner Buddy'
-  } else ...
-
-  user.save()
+    user.badges['Buddy Badge:'] = 'Beginner Buddy'
+  } else if (count = 0) {
+    user.badges['Buddy Badge:'] = 'No buddies yet, but keep trying!'
+  }
+  user.save();
 }
 
 function check_group_count(user_id) {
@@ -302,14 +304,17 @@ function check_group_count(user_id) {
   const user = await User.findById(user_id);
   if (count = 10) {
     // give the smarty-pants buddy badge for reaching max_threshold
-    user.badges['Study Group Buddy Badges:'] = 'Smarty-Pants Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Smarty-Pants Study Buddy'
   } else if (count = 4) {
     //give super-studious buddy badge for lots of buddies
-    user.badges['Study Group Buddy Badges:'] = 'Super-Studious Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Super-Studious Study Buddy'
   } else if (count = 1) {
     //give involved buddy badge for first group
-    user.badges['Study Group Buddy Badges:'] = 'Beginner Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Beginner Study Buddy'
+  } else if (count = 0) {
+    user.badges['Study Group Buddy Badge:'] = 'No groups yet, but keep trying!'
   }
+  user.save();
 }
 
 function check_login_streak(user_id) {
@@ -332,10 +337,11 @@ function check_login_streak(user_id) {
       user.badges['Daily Login Streak Badges:'] = 'Getting-Serious Level'
       // "week-long warrior" streak badge
     } else if (day_count == 0) {
-    // take away any streak badges--delete all streak_badge keys in the badge dictionary
+    // take away any streak badge earned, or set to this the first time they login
       user.badges['Daily Login Streak Badges:'] = 'No streak badge available for today. Maybe tomorrow!'
     //notify them that they lost their streak
   }
+  user.save();
 }
 
 //make buddy connection function (add them to database)
@@ -343,13 +349,11 @@ function check_login_streak(user_id) {
 //go to matchingscreen.js
 
 
-//TODO:
 //every time someone logs out make sure to:
   //add a new login entry--DONE
-  //separate the logic into functions?
-  //change email to user schema in login history?
-  //took out interaction time from user schema
-  //does login history need to be in user schema?
+  //separate the logic into functions--DONE
+  //change email to user schema in login history--DONE
+  //does login history need to be in user schema--DONE
 //for stats:
   //TODO: get_online_users, get_median_session_time
   //get_total_interaction_time, from the user schema (based on user id)
@@ -357,8 +361,6 @@ function check_login_streak(user_id) {
   //get user stats function
   //get online_users
 //for badges:
-  //TODO: actual badge creation--talk to Sisi for frontend implementation
-  //TODO: call the checking functions on relevant methods
   //login streak--when they login
   //number of friends--everytime they make a friend, check
   //number of study groups--separate into created/ joined
@@ -373,3 +375,16 @@ function check_login_streak(user_id) {
 
 //need to create endpoint/ routes for each function
 }
+
+
+//TODO:
+//email list function
+//call stats function
+//do average or median session time for a user
+//login streak badge function checked everytime they login--DONE
+//group badge checked everytime they join a group--find the join function
+//buddy badge checked everytime they join a group--find the join function
+//check badges functions and make sure they can be displayed (testing)
+//make sure functions exist to join a study group and make buddies
+//set up rooms / connect to database for linking study groups and users
+//make sure the routes work!!
