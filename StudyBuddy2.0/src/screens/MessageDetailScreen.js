@@ -15,7 +15,7 @@ const MessageDetailScreen = ({ route }) => {
     >
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>{name}</Text>
+        {/* <Text style={styles.headerTitle}>{name}</Text> */}
       </View>
       <View style={styles.messageContainer}>
         <Text style={styles.messageText}>{message}</Text>
