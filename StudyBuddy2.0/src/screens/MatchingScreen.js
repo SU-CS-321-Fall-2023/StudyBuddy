@@ -140,11 +140,14 @@ const MatchingScreen = () => {
 >
     <Text style={styles.connectButtonText}>Connect</Text>
 </TouchableOpacity> */}
-<Button
-      title="Connect"
-      onPress={() => handleConnection(currentUser)}
-      color="black" // You can adjust the color
-    />
+{/* <View style = {styles.connectButton}> */}
+  <Button
+    title="Connect"
+    onPress={() => handleConnection(currentUser)}
+    color="black" // This will set the text color
+  />
+{/* </View> */}
+
 
 
 
