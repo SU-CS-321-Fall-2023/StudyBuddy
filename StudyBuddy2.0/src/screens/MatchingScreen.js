@@ -20,16 +20,16 @@ const MatchingScreen = () => {
       strengths: ['Critical Thinking']
     },
 
-    // {
-    //   id: '2',
-    //   fullName: 'John Doe',
-    //   profilePic: 'https://via.placeholder.com/150',
-    //   classes: ['Chemistry 101', 'Software 201'],
-    //   likes: ['Reading', 'Gardening'],
-    //   skills: ['Time Management', 'Organization'],
-    //   weaknesses: ['Public Speaking'],
-    //   strengths: ['Critical Thinking']
-    // },
+    {
+      id: '2',
+      fullName: 'John Doe',
+      profilePic: 'https://via.placeholder.com/150',
+      classes: ['Chemistry 101', 'Software 201'],
+      likes: ['Reading', 'Gardening'],
+      skills: ['Time Management', 'Organization'],
+      weaknesses: ['Public Speaking'],
+      strengths: ['Critical Thinking']
+    },
 
     // {
     //   id: '3',
@@ -62,23 +62,24 @@ const MatchingScreen = () => {
   const safeIndex = currentIndex % filteredUsers.length;
   const currentUser = filteredUsers[safeIndex];
 
-  // const handleConnection = (user) => {
-  //   const chatExists = global.messages.some(message => message.id === user.id);
-  
-  //   if (!chatExists) {
-  //     global.messages.push({
-  //       id: user.id,
-  //       name: user.fullName,
-  //       lastMessage: "Start a conversation!",
-  //     });
-  
-  //     // Optionally navigate to the Messages screen
-  //     navigation.navigate('Messages');
-  //   } else {
-  //     alert("You're already connected with this user!");
-  //   }
-  // };
 
+  const handleConnection = (user) => {
+    if (!connectedUsers.has(user.id)) {
+      setConnectedUsers(new Set(connectedUsers).add(user.id));
+  
+      // Add a new message to global.messages with the user's full name
+      global.messages.push({
+        id: user.id,
+        name: user.fullName,
+        lastMessage: `Connected with ${user.fullName}`,
+      });
+  
+      // Optionally navigate to the Messages screen
+      navigation.navigate('Messages');
+    } else {
+      alert("You're already connected with this user!");
+    }
+  };
   
   // Move to the previous user profile.
   const prevUser = () => {
@@ -127,12 +128,13 @@ const MatchingScreen = () => {
 
         
 
-                  <TouchableOpacity 
-            style={styles.connectButton}
-            onPress={() => handleConnection(currentUser)}
-          >
-            <Text style={styles.connectButtonText}>Connect</Text>
-          </TouchableOpacity>
+        <TouchableOpacity 
+    style={styles.connectButton}
+    onPress={() => handleConnection(currentUser)} // Pass the entire currentUser object
+>
+    <Text style={styles.connectButtonText}>Connect</Text>
+</TouchableOpacity>
+
 
 
 
