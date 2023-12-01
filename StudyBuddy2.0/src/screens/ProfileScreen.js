@@ -21,9 +21,10 @@ const ProfileScreen = () => {
     //the email that's been sent(gmail may automatically have that set up i believe)
     
 
-    //BADGES FOR SKYLER
+    //STATS AND BADGES FOR SKYLER
+    stats: ['Stat 1', 'Stat 2'],
     badges: ['Badge 1', 'Badge 2'],
-    //BADGES FOR SKYLER
+    //STATS AND BADGES FOR SKYLER
 
 
 
@@ -123,6 +124,13 @@ const ProfileScreen = () => {
 
 
       {/*BADGES FOR SKYLER*/}
+      <Text style={styles.sectionTitle}>Stats</Text>
+      <FlatList
+        data={userInfo.stats}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <Text style={styles.listItem}>{item}</Text>}
+        horizontal
+      />
       <Text style={styles.sectionTitle}>Badges</Text>
       <FlatList
         data={userInfo.badges}
