@@ -141,11 +141,11 @@ const MatchingScreen = () => {
     <Text style={styles.connectButtonText}>Connect</Text>
 </TouchableOpacity> */}
 {/* <View style = {styles.connectButton}> */}
-  <Button
+  {/* <Button
     title="Connect"
     onPress={() => handleConnection(currentUser)}
     color="black" // This will set the text color
-  />
+  /> */}
 {/* </View> */}
 
 
@@ -162,6 +162,15 @@ const MatchingScreen = () => {
           <TouchableOpacity onPress={prevUser}>
             <Ionicons name="arrow-back-circle" size={40} color="#000" />
           </TouchableOpacity>
+
+          <View style = {styles.btnBackground}>
+          <Button
+          title="Connect"
+          onPress={() => handleConnection(currentUser)}
+          color="white" // This will set the text color
+        />
+        </View>
+
           <TouchableOpacity onPress={nextUser}>
             <Ionicons name="arrow-forward-circle" size={40} color="#000" />
           </TouchableOpacity>
@@ -186,6 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: 425,
     justifyContent: 'space-between', // This will distribute the children evenly
+    
   },
   fullName: {
     fontSize: 20,
@@ -200,11 +210,13 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginRight: 20,
+    bottom: 150
   },
   userInfo: {
     flex: 1,
      // Allow text to wrap within the container
     alignContent: 'space-between', // Evenly distribute wrapped lines
+    bottom: 150
   },
   connectButton: {
     backgroundColor: 'black',
@@ -225,6 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+   
   },
 
   searchBar: {
@@ -234,6 +247,13 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
   },
+  btnBackground: {
+    backgroundColor: 'black',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+ 
+  }
   // ... additional styles as needed
 });
 
