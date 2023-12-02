@@ -92,8 +92,16 @@ async function addLoginHistory(user_email, login_time, logout_time, session_minu
   }
 }
 
-//TODO: for email notif list of user emails
+function get_day_difference(time1, time2) { // passed in as a date
+  time1 = moment(time1).startOf('day'); // make them moments and set HMS = 0
+  time2 = moment(time2).startOf('day');
+  time_diff = Math.abs(time1.getTime() - time2.getTime());
+  day_diff = Math.ceil(time_diff / (1000 * 3600 * 24));
+  return day_diff;
+}
+
 function create_email_reminder_list() {
+  const email_list = [];
   const all_last_logins = await loginHistory.aggregate([
       {
         $sort: { login_time: -1 } // Sort by login_time in descending order
@@ -105,8 +113,6 @@ function create_email_reminder_list() {
         }
       }
     ]);
-
-
 
   // all_last_logins is a list of user_ids login times for each user
   /*
@@ -124,13 +130,24 @@ function create_email_reminder_list() {
 
   //loop through the list
   all_last_logins.forEach(login => {
-    user_id = login._id
-    last_login = login.last_login
+    user_id = login.user._id; //get user from login schema, then id from user schema
+    //user_id = login._id
+    last_login = login.last_login;
 
-    if last_login
-  }
-})
+    if (last_login) {
+      last_login_date = get_last_login_time(user_id);
+      current_date = date;
+      day_diff = get_day_difference(current_date, last_login_date);
 
+      if (day_diff <= 14) {
+        break; // all users after this will be within two weeks
+      } else {
+        // add user email and number of days to a list since diff > 14
+        email_list.push({user_email: login.user.email, user_name: login.user.name, days_since_login: day_diff});
+      }
+    }
+  })
+  return email_list;
 }
 
 // for user stats
@@ -138,8 +155,6 @@ function create_email_reminder_list() {
 //if I do, I need to update the stats schema anytime any info changes--is it really that much simpler?
 //by using the functions, don't have to store more info that could just be gotten with a function
 
-//TODO:
-//return as a JSON? or a response?
 function get_user_stats(user_id) {
   const user = await User.findById(user_id);
   //faster to not call the functions and just do them here instead so you dont have to look for the user so many times
@@ -155,7 +170,7 @@ function get_user_stats(user_id) {
   const statsJSON = JSON.stringify(stats); // Convert to JSON
   return statsJSON;
 }
-/*
+/* Don't need this for anything, not a very helpful stat
 function get_login_count(user_id) {
     const user = await User.findById(user_id);
     const loginCount = user.loginHistory.length;
@@ -227,13 +242,16 @@ function get_login_streak(user_id) {
   streak = 0;
   if (all_logins.length > 0) { // if they've logged in before
     // Get today's date to compare to first entry; start of day sets to midnight of the day so hours, min, sec not considered
-    current_date = moment().startOf('day');
+    //current_date = moment().startOf('day');
+    current_date = date();
     //loop through login time list
     for (i = 0; i < all_logins.length; i++) {
       //get last_login_date in matching format to current date
-      last_login_date = moment(all_logins[i].login_time).startOf('day');
-      time_diff = Math.abs(current_date.getTime() - last_login_date.getTime());
-      day_diff = Math.ceil(time_diff / (1000 * 3600 * 24));
+      //last_login_date = moment(all_logins[i].login_time).startOf('day');
+      last_login_date = all_logins[i].login_time;
+      day_diff = get_day_difference(current_date, last_login_date);
+      //time_diff = Math.abs(current_date.getTime() - last_login_date.getTime());
+      //day_diff = Math.ceil(time_diff / (1000 * 3600 * 24));
       if (day_diff > 1) { //days are NOT sequential, there is a gap in time, stop the streak at current value
           break;
       } else if (day_diff == 1) { // days ARE sequential
@@ -265,19 +283,6 @@ function get_buddy_count(user_id) { //check # of friends everytime they make a n
     //return buddiesUser.findById(user_id);.countDocuments({ user_id }); //SLOW
 }
 
-
-//TODO: checking functions to do badges
-//just add badges to user schema--figure out how to do this properly
-//add buddy id list to user schema too -- but not yet becuase they dont hva efriends yet
-// make check functions for each of these get functions for badges
-// so do a dictionary of badge options (each is a string)
-//when they get the proper count change the badge entry to be the new one in the database
-//the badges
-
-
-//for actually joining groups, go to homepage.js
-//connecting with buddies is matchingscreen.js
-
 //ask Anas about calling the update method and how it should look in the schema
 // call check buddy count/ group count when groups/ buddies added or removed
 function check_buddy_count(user_id) {
@@ -286,15 +291,15 @@ function check_buddy_count(user_id) {
   const user = await User.findById(user_id);
   if (count = 20) {
     // give the expert buddy badge for reaching max_threshold
-    user.badges['Buddy Badge:'] = 'Loyal Buddy'
+    user.badges['Buddy Badge:'] = 'Loyal Buddy';
   } else if (count = 10) {
     //give friendly buddy badge for lots of buddies
-    user.badges['Buddy Badge:'] = 'Friendly Buddy'
+    user.badges['Buddy Badge:'] = 'Friendly Buddy';
   } else if (count = 1) {
     //give beginning buddy badge for first buddy
-    user.badges['Buddy Badge:'] = 'Beginner Buddy'
+    user.badges['Buddy Badge:'] = 'Beginner Buddy';
   } else if (count = 0) {
-    user.badges['Buddy Badge:'] = 'No buddies yet, but keep trying!'
+    user.badges['Buddy Badge:'] = 'No buddies yet, but keep trying!';
   }
   user.save();
 }
@@ -304,15 +309,15 @@ function check_group_count(user_id) {
   const user = await User.findById(user_id);
   if (count = 10) {
     // give the smarty-pants buddy badge for reaching max_threshold
-    user.badges['Study Group Buddy Badge:'] = 'Smarty-Pants Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Smarty-Pants Study Buddy';
   } else if (count = 4) {
     //give super-studious buddy badge for lots of buddies
-    user.badges['Study Group Buddy Badge:'] = 'Super-Studious Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Super-Studious Study Buddy';
   } else if (count = 1) {
     //give involved buddy badge for first group
-    user.badges['Study Group Buddy Badge:'] = 'Beginner Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Beginner Study Buddy';
   } else if (count = 0) {
-    user.badges['Study Group Buddy Badge:'] = 'No groups yet, but keep trying!'
+    user.badges['Study Group Buddy Badge:'] = 'No groups yet, but keep trying!';
   }
   user.save();
 }
@@ -322,31 +327,27 @@ function check_login_streak(user_id) {
   const user = await User.findById(user_id);
     if (day_count > 30) {
       // "on the overachiever path" streak badge
-      user.badges['Daily Login Streak Badges:'] = 'Overacheiver-Level'
+      user.badges['Daily Login Streak Badges:'] = 'Overachiever Level';
       // include day_count in the badge
     } else if (day_count > 14) {
       // "steady study-er" streak badge
-      user.badges['Daily Login Streak Badges:'] = 'Steady-Studier Level'
+      user.badges['Daily Login Streak Badges:'] = 'Steady Studier Level';
       // include day_count in the badge
     } else if (day_count > 5) {
     // include day_count in the badge
-      user.badges['Daily Login Streak Badges:'] = 'Week-Long Warrior Level'
+      user.badges['Daily Login Streak Badges:'] = 'Week-Long Warrior Level';
     // "week-long warrior" streak badge
     } else if (day_count > 3) {
       // include day_count in the badge
-      user.badges['Daily Login Streak Badges:'] = 'Getting-Serious Level'
+      user.badges['Daily Login Streak Badges:'] = 'Getting Studious Level';
       // "week-long warrior" streak badge
     } else if (day_count == 0) {
     // take away any streak badge earned, or set to this the first time they login
-      user.badges['Daily Login Streak Badges:'] = 'No streak badge available for today. Maybe tomorrow!'
+      user.badges['Daily Login Streak Badges:'] = 'No streak badge available for today. Maybe tomorrow!';
     //notify them that they lost their streak
   }
   user.save();
 }
-
-//make buddy connection function (add them to database)
-//make study group connection (add them to database)
-//go to matchingscreen.js
 
 
 //every time someone logs out make sure to:
@@ -378,13 +379,20 @@ function check_login_streak(user_id) {
 
 
 //TODO:
-//email list function
-//call stats function
+//email list function--DONE
+//call stats function -- Sisi
+//set up rooms / connect to database for linking study groups and users --
 //do average or median session time for a user
 //login streak badge function checked everytime they login--DONE
 //group badge checked everytime they join a group--find the join function
 //buddy badge checked everytime they join a group--find the join function
 //check badges functions and make sure they can be displayed (testing)
 //make sure functions exist to join a study group and make buddies
-//set up rooms / connect to database for linking study groups and users
 //make sure the routes work!!
+
+//for actually joining groups, go to homepage.js
+//connecting with buddies is matchingscreen.js
+//make buddy connection function (add them to database)
+//add buddy id list to user schema
+//make study group connection (add them to database)
+//go to matchingscreen.js
