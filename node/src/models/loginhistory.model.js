@@ -173,7 +173,7 @@ function get_user_stats(user_id) {
   const statsJSON = JSON.stringify(stats); // Convert to JSON
   return statsJSON;
 }
-/*
+/* Don't need this for anything, not a very helpful stat
 function get_login_count(user_id) {
     const user = await User.findById(user_id);
     const loginCount = user.loginHistory.length;
@@ -286,19 +286,6 @@ function get_buddy_count(user_id) { //check # of friends everytime they make a n
     //return buddiesUser.findById(user_id);.countDocuments({ user_id }); //SLOW
 }
 
-
-//TODO: checking functions to do badges
-//just add badges to user schema--figure out how to do this properly
-//add buddy id list to user schema too -- but not yet becuase they dont hva efriends yet
-// make check functions for each of these get functions for badges
-// so do a dictionary of badge options (each is a string)
-//when they get the proper count change the badge entry to be the new one in the database
-//the badges
-
-
-//for actually joining groups, go to homepage.js
-//connecting with buddies is matchingscreen.js
-
 //ask Anas about calling the update method and how it should look in the schema
 // call check buddy count/ group count when groups/ buddies added or removed
 function check_buddy_count(user_id) {
@@ -307,15 +294,15 @@ function check_buddy_count(user_id) {
   const user = await User.findById(user_id);
   if (count = 20) {
     // give the expert buddy badge for reaching max_threshold
-    user.badges['Buddy Badge:'] = 'Loyal Buddy'
+    user.badges['Buddy Badge:'] = 'Loyal Buddy';
   } else if (count = 10) {
     //give friendly buddy badge for lots of buddies
-    user.badges['Buddy Badge:'] = 'Friendly Buddy'
+    user.badges['Buddy Badge:'] = 'Friendly Buddy';
   } else if (count = 1) {
     //give beginning buddy badge for first buddy
-    user.badges['Buddy Badge:'] = 'Beginner Buddy'
+    user.badges['Buddy Badge:'] = 'Beginner Buddy';
   } else if (count = 0) {
-    user.badges['Buddy Badge:'] = 'No buddies yet, but keep trying!'
+    user.badges['Buddy Badge:'] = 'No buddies yet, but keep trying!';
   }
   user.save();
 }
@@ -325,15 +312,15 @@ function check_group_count(user_id) {
   const user = await User.findById(user_id);
   if (count = 10) {
     // give the smarty-pants buddy badge for reaching max_threshold
-    user.badges['Study Group Buddy Badge:'] = 'Smarty-Pants Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Smarty-Pants Study Buddy';
   } else if (count = 4) {
     //give super-studious buddy badge for lots of buddies
-    user.badges['Study Group Buddy Badge:'] = 'Super-Studious Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Super-Studious Study Buddy';
   } else if (count = 1) {
     //give involved buddy badge for first group
-    user.badges['Study Group Buddy Badge:'] = 'Beginner Study Buddy'
+    user.badges['Study Group Buddy Badge:'] = 'Beginner Study Buddy';
   } else if (count = 0) {
-    user.badges['Study Group Buddy Badge:'] = 'No groups yet, but keep trying!'
+    user.badges['Study Group Buddy Badge:'] = 'No groups yet, but keep trying!';
   }
   user.save();
 }
@@ -343,31 +330,27 @@ function check_login_streak(user_id) {
   const user = await User.findById(user_id);
     if (day_count > 30) {
       // "on the overachiever path" streak badge
-      user.badges['Daily Login Streak Badges:'] = 'Overacheiver-Level'
+      user.badges['Daily Login Streak Badges:'] = 'Overachiever Level';
       // include day_count in the badge
     } else if (day_count > 14) {
       // "steady study-er" streak badge
-      user.badges['Daily Login Streak Badges:'] = 'Steady-Studier Level'
+      user.badges['Daily Login Streak Badges:'] = 'Steady Studier Level';
       // include day_count in the badge
     } else if (day_count > 5) {
     // include day_count in the badge
-      user.badges['Daily Login Streak Badges:'] = 'Week-Long Warrior Level'
+      user.badges['Daily Login Streak Badges:'] = 'Week-Long Warrior Level';
     // "week-long warrior" streak badge
     } else if (day_count > 3) {
       // include day_count in the badge
-      user.badges['Daily Login Streak Badges:'] = 'Getting-Serious Level'
+      user.badges['Daily Login Streak Badges:'] = 'Getting Studious Level';
       // "week-long warrior" streak badge
     } else if (day_count == 0) {
     // take away any streak badge earned, or set to this the first time they login
-      user.badges['Daily Login Streak Badges:'] = 'No streak badge available for today. Maybe tomorrow!'
+      user.badges['Daily Login Streak Badges:'] = 'No streak badge available for today. Maybe tomorrow!';
     //notify them that they lost their streak
   }
   user.save();
 }
-
-//make buddy connection function (add them to database)
-//make study group connection (add them to database)
-//go to matchingscreen.js
 
 
 //every time someone logs out make sure to:
@@ -399,9 +382,9 @@ function check_login_streak(user_id) {
 
 
 //TODO:
-//email list function--check
+//email list function--DONE
+//call stats function -- Sisi
 //set up rooms / connect to database for linking study groups and users
-//call stats function
 //do average or median session time for a user
 //login streak badge function checked everytime they login--DONE
 //group badge checked everytime they join a group--find the join function
@@ -409,3 +392,10 @@ function check_login_streak(user_id) {
 //check badges functions and make sure they can be displayed (testing)
 //make sure functions exist to join a study group and make buddies
 //make sure the routes work!!
+
+//for actually joining groups, go to homepage.js
+//connecting with buddies is matchingscreen.js
+//make buddy connection function (add them to database)
+//add buddy id list to user schema
+//make study group connection (add them to database)
+//go to matchingscreen.js
