@@ -55,9 +55,19 @@ If you did not create an account, then ignore this email.`;
   await sendEmail(to, subject, text);
 };
 
+// skyler's function passes in email, username, and daysdiff (days since last logged in)
+const sendComeBackEmail = async(to, token) => {
+  const subject = 'Come Back to StudyBuddy!';
+  const usr = username; // uses username from skyler's function
+  const daysDiff = daysdiff; // uses daysdiff from skyler's function
+  const text = 'Hello ${usr},\n You have not logged into StudyBuddy in ${daysDiff} days. Please come back, we miss you!';
+  await sendEmail(to, subject, text);
+};
+
 module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
   sendVerificationEmail,
+  sendComeBackEmail,
 };
