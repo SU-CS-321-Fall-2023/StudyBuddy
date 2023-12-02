@@ -15,6 +15,16 @@ const get = async (query, token) => {
     }
 }
 
+const getAll = async () => {
+    try {
+        const response = await userService.getAll().then((res) => res.json());
+        return response
+    }
+    catch (error) {
+        console.log(error, 'userService error');
+    }
+}
+
 
 // give it better name like addClass
 const addClass = async (user, token, classObj) => {
@@ -108,4 +118,4 @@ const removeClass = async (user, token, classObj) => {
     };
 };
 
-export default { get, addClass, removeClass };
+export default { get, getAll, addClass, removeClass };

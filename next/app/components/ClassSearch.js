@@ -35,6 +35,7 @@ export default function ComboBox() {
     if (updatedUser.ok) {
       console.log(updatedUser, 'updatedUser')
       setFetchedUser(updatedUser.body)
+      setUser(updatedUser.body)
       setNotification(updatedUser.message, 'success')
     } else {
       setNotification(updatedUser.message, 'error')

@@ -51,7 +51,7 @@ export default function NavbarDefault() {
           />
         </svg> */}
  
-        <Link href="#" className="flex items-center">
+        <Link href="/discover" className="flex items-center">
           Discover
         </Link>
       </Typography>
