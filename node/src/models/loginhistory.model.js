@@ -92,8 +92,17 @@ async function addLoginHistory(user_email, login_time, logout_time, session_minu
   }
 }
 
+function get_day_difference(time1, time2) { // passed in as a date
+  time1 = moment(time1).startOf('day'); // make them moments and set HMS = 0
+  time2 = moment(time2).startOf('day');
+  time_diff = Math.abs(time1.getTime() - time2.getTime());
+  day_diff = Math.ceil(time_diff / (1000 * 3600 * 24));
+  return day_diff;
+}
+
 //TODO: for email notif list of user emails
 function create_email_reminder_list() {
+  const email_list = [];
   const all_last_logins = await loginHistory.aggregate([
       {
         $sort: { login_time: -1 } // Sort by login_time in descending order
@@ -124,10 +133,19 @@ function create_email_reminder_list() {
 
   //loop through the list
   all_last_logins.forEach(login => {
-    user_id = login._id
+    user_id = login.user._id //get user from login schema, then id from user schema
+    //user_id = login._id
     last_login = login.last_login
 
-    if last_login
+    if (last_login) {
+      last_login_date = get_last_login_time(user_id);
+      current_date = date;
+      day_diff = get_day_difference(current_date, last_login_date);
+
+      if (day_diff > 14) {
+        // add user email and number of days to a list
+        email_list.push({user_email: login.user.email, user_name: login.user.name, days_since_login: day_diff})
+      }
   }
 })
 
@@ -227,13 +245,16 @@ function get_login_streak(user_id) {
   streak = 0;
   if (all_logins.length > 0) { // if they've logged in before
     // Get today's date to compare to first entry; start of day sets to midnight of the day so hours, min, sec not considered
-    current_date = moment().startOf('day');
+    //current_date = moment().startOf('day');
+    current_date = date();
     //loop through login time list
     for (i = 0; i < all_logins.length; i++) {
       //get last_login_date in matching format to current date
-      last_login_date = moment(all_logins[i].login_time).startOf('day');
-      time_diff = Math.abs(current_date.getTime() - last_login_date.getTime());
-      day_diff = Math.ceil(time_diff / (1000 * 3600 * 24));
+      //last_login_date = moment(all_logins[i].login_time).startOf('day');
+      last_login_date = all_logins[i].login_time;
+      day_diff = get_day_difference(current_date, last_login_date);
+      //time_diff = Math.abs(current_date.getTime() - last_login_date.getTime());
+      //day_diff = Math.ceil(time_diff / (1000 * 3600 * 24));
       if (day_diff > 1) { //days are NOT sequential, there is a gap in time, stop the streak at current value
           break;
       } else if (day_diff == 1) { // days ARE sequential
@@ -378,7 +399,8 @@ function check_login_streak(user_id) {
 
 
 //TODO:
-//email list function
+//email list function--check
+//set up rooms / connect to database for linking study groups and users
 //call stats function
 //do average or median session time for a user
 //login streak badge function checked everytime they login--DONE
@@ -386,5 +408,4 @@ function check_login_streak(user_id) {
 //buddy badge checked everytime they join a group--find the join function
 //check badges functions and make sure they can be displayed (testing)
 //make sure functions exist to join a study group and make buddies
-//set up rooms / connect to database for linking study groups and users
 //make sure the routes work!!
