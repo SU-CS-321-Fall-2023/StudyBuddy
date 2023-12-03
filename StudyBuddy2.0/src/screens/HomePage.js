@@ -160,6 +160,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     top: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: .20,
+    shadowRadius: 3.84,
+
+    // Elevation for Android
+    elevation: 5,
   },
   // ... other styles
   centeredView: {
@@ -214,6 +221,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Center button content vertically
     backgroundColor: '#75B2B1', // Transparent background
     width:80, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: .40,
+    shadowRadius: 3.84,
+
+    // Elevation for Android
+    elevation: 5,
   },
   joinbuttonText:{
     color: 'white',

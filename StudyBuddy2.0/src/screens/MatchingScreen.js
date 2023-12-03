@@ -200,6 +200,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: 425,
     justifyContent: 'space-between', // This will distribute the children evenly
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: .30,
+    shadowRadius: 3.84,
+
+    // Elevation for Android
+    elevation: 5,
     
   },
   fullName: {
@@ -214,8 +221,8 @@ const styles = StyleSheet.create({
   },
   profilePic: {
     width: 100,
-    height: 100,
-    borderRadius: 50,
+    height: 125,
+    borderRadius: 30,
     marginRight: 20,
     bottom: 60,
     borderWidth:1,
@@ -236,6 +243,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     bottom: -80 // Stretch button to match the parent's width
     // Remove bottom: -270 if you are using justifyContent: 'space-between'
+    
   },
 
   connectButtonText: {
@@ -280,6 +288,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#6DB4CA',
     top: 80,
+    
   },
   // ... additional styles as needed
 });

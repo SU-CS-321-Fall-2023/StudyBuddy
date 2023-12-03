@@ -86,6 +86,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ddd',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: .15,
+    shadowRadius: 3.84,
+
+    // Elevation for Android
+    elevation: 5,
   },
   messageName: {
     fontWeight: 'bold',
