@@ -70,12 +70,16 @@ const SignUpScreen = () => {
         style={styles.input}
         secureTextEntry
       />
-      <Button
-        title="Sign Up"
-        onPress={() => navigation.navigate('Home')} // Navigate to Home when pressed
-      />
+      <TouchableOpacity
+  style={styles.signupButton}
+  onPress={() => navigation.navigate('Home')}
+>
+  <Text style={styles.buttonText}>Sign Up</Text>
+</TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>{/* <Button title="Sign Up" onPress={handleSignUp} /> */}
-        <Text style={styles.linkText}>Already have an account? Sign in</Text>
+        <Text style={styles.linkText}>Already have an account? 
+        Sign in</Text>
       </TouchableOpacity>
     </View>
     </ImageBackground>
@@ -87,32 +91,51 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: 120,
   },
   header: {
-    fontSize: 22,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 20,
     color: 'white',
+    textDecorationLine: 'underline'
   },
   input: {
     width: '100%',
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 10,
+    width: 250,
+    height:60,
     borderRadius: 5,
     marginBottom: 10,
+    backgroundColor: 'white',
   },
   linkText: {
-    color: 'blue',
+    color: 'white',
     marginTop: 20,
     textDecorationLine: 'underline',
+    fontSize: 18,
   },
   backgroundImage: {
     flex: 1,
     width: '100%',
     height: '100%',
     justifyContent: 'center',
+  },
+  signupButton: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: 'white',
+    width: 100,
+  },
+  buttonText: {
+    color: 'black',
+    textAlign: 'center',
+    fontSize:20,
+    // You might want to set a specific font size or weight
   },
 });
 
