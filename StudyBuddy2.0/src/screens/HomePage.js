@@ -79,7 +79,13 @@ const HomePage = () => {
       renderItem={({ item }) => (
         <View style={styles.groupItem}>
           <Text>{item.name}</Text>
-          <Button title="Join" onPress={() => handleJoinGroup(item)} />
+          <TouchableOpacity
+  style={styles.borderedButton}
+  onPress={() => handleJoinGroup(item)}
+>
+  <Text style={styles.joinbuttonText}>Join</Text>
+</TouchableOpacity>
+
         </View>
       )}
     />
@@ -199,6 +205,20 @@ const styles = StyleSheet.create({
     color: 'white', // choose a text color that suits your app
 
   },
+  borderedButton: {
+    padding: 10,
+    // borderWidth: 1, // Specify border width
+    borderColor: '#000', // Specify border color
+    borderRadius: 20, // Rounded corners
+    alignItems: 'center', // Center the text inside the button
+    justifyContent: 'center', // Center button content vertically
+    backgroundColor: '#75B2B1', // Transparent background
+    width:80, 
+  },
+  joinbuttonText:{
+    color: 'white',
+   fontSize: 15,
+  }
   // ... other styles
 });
 
