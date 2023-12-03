@@ -38,7 +38,7 @@ const createUser = async (userBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
-  const newOptions = {...options, populate: 'classes'}
+  const newOptions = { ...options, populate: 'classes'}
   const users = await User.paginate(filter, newOptions);
   return users;
   
@@ -50,7 +50,11 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  return User.findById(id).populate('classes').populate('studyGroups');
+  return User.findById(id)
+  .populate('classes')
+  .populate('studyGroups')
+  .populate('friends')
+  .populate('friendRequests');
 };
 
 /**
@@ -59,7 +63,11 @@ const getUserById = async (id) => {
  * @returns {Promise<User>}
  */
 const getUserByEmail = async (email) => {
-  return User.findOne({ email }).populate('classes').populate('studyGroups');
+  return User.findOne({ email })
+  .populate('classes')
+  .populate('studyGroups')
+  .populate('friends')
+  .populate('friendRequests');
 };
 
 /**
@@ -79,7 +87,11 @@ const updateUserById = async (userId, updateBody) => {
   Object.assign(user, updateBody);
   await user.save();
   // Retrieve the user again to populate the fields
-  const updatedUser = await User.findById(userId).populate('classes').populate('studyGroups')
+  const updatedUser = await User.findById(userId)
+  .populate('classes')
+  .populate('studyGroups')
+  .populate('friends')
+  .populate('friendRequests');
 
   return updatedUser;
 };
@@ -98,6 +110,70 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const sendFriendRequest = async (senderId, recipientId) => {
+  // Fetch sender and recipient user data
+  const senderUser = await User.findById(senderId);
+  const recipientUser = await User.findById(recipientId);
+
+  // Validate the existence of sender and recipient
+  if (!senderUser || !recipientUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // Check for existing relationships
+  if (
+    senderUser.friendRequests.includes(recipientId) ||
+    senderUser.friends.includes(recipientId) ||
+    recipientUser.friends.includes(senderId) ||
+    recipientUser.friendRequests.includes(senderId)
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Friend request already sent or user is already a friend');
+  }
+
+  if (senderId.toString() === recipientId.toString()) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Cannot send friend request to self');
+  }
+
+  // Add friend request
+  recipientUser.friendRequests.push(senderId);
+
+  await recipientUser.save();
+};
+
+const acceptFriendRequest = async (accepterId, requesterId) => {
+  // Fetch accepter and requester user data
+  const accepterUser = await User.findById(accepterId);
+  const requesterUser = await User.findById(requesterId);
+
+  // Validate the existence of accepter and requester
+  if (!accepterUser || !requesterUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // Check if there is a friend request from the requester
+  if (!accepterUser.friendRequests.includes(requesterId)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `No friend request from ${requesterUser.name}`);
+  }
+
+  // Add each user to the other's friend list
+  accepterUser.friends.push(requesterId);
+  requesterUser.friends.push(accepterId);
+
+  // Remove friend request
+  accepterUser.friendRequests = accepterUser.friendRequests.filter((id) => id.toString() !== requesterId.toString());
+
+  // Save changes to both users' data
+  await accepterUser.save();
+  await requesterUser.save();
+
+  // Return the updated accepter user data with additional populated fields
+  return User.findById(accepterId)
+    .populate('classes')
+    .populate('studyGroups')
+    .populate('friends')
+    .populate('friendRequests');
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -105,5 +181,7 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
-  checkInactiveUsers
+  checkInactiveUsers,
+  sendFriendRequest,
+  acceptFriendRequest,
 };
