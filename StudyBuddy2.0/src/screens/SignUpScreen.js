@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ImageBackground } from 'react-native';
 // import auth from '@react-native-firebase/auth';
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -30,6 +31,10 @@ const SignUpScreen = () => {
   }, []);
 
   return (
+    <ImageBackground
+      source={require('./images/SignUp.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
     <View style={styles.container}>
       <Text style={styles.header}>Sign Up</Text>
       <TextInput
@@ -73,6 +78,7 @@ const SignUpScreen = () => {
         <Text style={styles.linkText}>Already have an account? Sign in</Text>
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 };
 
@@ -87,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: 'white',
   },
   input: {
     width: '100%',
@@ -100,6 +107,12 @@ const styles = StyleSheet.create({
     color: 'blue',
     marginTop: 20,
     textDecorationLine: 'underline',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
   },
 });
 
