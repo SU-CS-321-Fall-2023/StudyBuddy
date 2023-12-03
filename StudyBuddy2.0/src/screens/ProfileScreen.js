@@ -7,6 +7,7 @@ import {
   Image, 
   ScrollView, 
   TouchableOpacity, 
+  Linking,
   FlatList 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,6 +20,7 @@ const ProfileScreen = () => {
     profilePic: 'https://via.placeholder.com/150', // Replace with actual image path
     emailNotifications: 'turn off', //may be better to just have the user unsubsribe through
     //the email that's been sent(gmail may automatically have that set up i believe)
+
     
 
     //STATS AND BADGES FOR SKYLER
@@ -117,6 +119,25 @@ const ProfileScreen = () => {
           <Text style={styles.infoText}>Email: {userInfo.email}</Text>
           <Text style={styles.infoText}>Email Notifications: {userInfo.emailNotifications}</Text>
           <Text style={styles.infoText}>Name: {userInfo.fullName}</Text>
+
+
+
+
+          
+
+          {/* LINK TO PRIVACY POLICY GOES HERE*/}
+          <Text style={styles.infoText}>
+          Privacy Policy: 
+          <TouchableOpacity onPress={() => {
+          Linking.openURL('https://your-privacy-policy-url.com').catch(err => console.error("Couldn't load page", err));
+          }}>
+          <Text style={styles.linkText}>Click Here</Text>
+          </TouchableOpacity>
+          </Text>
+          {/* LINK TO PRIVACY POLICY GOES HERE*/}
+
+
+
         </View>
       </View>
 
@@ -302,6 +323,13 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 16,
+  },
+  linkText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+    fontSize:16,
+    right: -5,
+    top: 4,
   },
   sectionTitle: {
     fontSize: 18,
