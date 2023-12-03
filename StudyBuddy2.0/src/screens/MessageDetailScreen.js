@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity,KeyboardAvoidingView,
-    Platform } from 'react-native';
+    Platform, ImageBackground } from 'react-native';
 const MessageDetailScreen = ({ route }) => {
   const { name, message } = route.params;
 
@@ -68,10 +68,17 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    padding: 10,
+    padding: 15,
     borderRadius: 5,
     margin: 10,
+    backgroundColor: 'white',
     // Other styling properties
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
   },
   // Add other styles as needed
 });
