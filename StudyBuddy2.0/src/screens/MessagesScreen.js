@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const MessagesScreen = () => {
@@ -16,6 +16,10 @@ const MessagesScreen = () => {
   };
 
   return (
+    <ImageBackground
+      source={require('./images/HomePage.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -43,6 +47,7 @@ const MessagesScreen = () => {
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 };
 
@@ -56,21 +61,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     paddingTop: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#ddd',
+    // backgroundColor: 'white',
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     textDecorationLine: 'underline',
     fontWeight: 'bold',
+    color: 'white',
   },
   backButton: {
     fontSize: 18,
-    color: 'blue',
+    color: 'white',
   },
   logoutButton: {
     fontSize: 18,
-    color: 'blue',
+    color: 'white',
   },
   messageItem: {
     backgroundColor: 'white',
@@ -101,6 +108,12 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontSize: 24,
     color: 'blue',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
   },
   // ... other styles you may need
 });

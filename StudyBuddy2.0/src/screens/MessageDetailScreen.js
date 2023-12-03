@@ -13,6 +13,10 @@ const MessageDetailScreen = ({ route }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
+    <ImageBackground
+      source={require('./images/HomePage.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
     <View style={styles.container}>
       <View style={styles.header}>
         {/* <Text style={styles.headerTitle}>{name}</Text> */}
@@ -26,6 +30,7 @@ const MessageDetailScreen = ({ route }) => {
         // Add additional TextInput props as needed
       />
     </View>
+    </ImageBackground>
     </KeyboardAvoidingView>
   );
 };
