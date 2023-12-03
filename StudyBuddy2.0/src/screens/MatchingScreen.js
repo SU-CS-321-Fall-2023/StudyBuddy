@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textDecorationLine: 'underline',
-    color: '#17c1e8'
+    color: '#6DB4CA'
   },
   profileSection: {
     flexDirection: 'row',
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     bottom: 60,
     borderWidth:1,
-    borderColor: '#17c1e8'
+    borderColor: '#6DB4CA'
   },
   userInfo: {
     flex: 1,
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#17c1e8',
+    borderColor: '#6DB4CA',
     top: 80,
   },
   // ... additional styles as needed
