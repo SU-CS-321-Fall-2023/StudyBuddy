@@ -123,11 +123,17 @@ const sendFriendRequest = async (senderId, recipientId) => {
   // Check for existing relationships
   if (
     senderUser.friendRequests.includes(recipientId) ||
-    senderUser.friends.includes(recipientId) ||
-    recipientUser.friends.includes(senderId) ||
+  
     recipientUser.friendRequests.includes(senderId)
   ) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Friend request already sent or user is already a friend');
+    throw new ApiError(httpStatus.BAD_REQUEST, `Friend request already sent or received`);
+  }
+
+  if (
+    senderUser.friends.includes(recipientId) ||
+    recipientUser.friends.includes(senderId)
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `${recipientUser.name} is already a friend`);
   }
 
   if (senderId.toString() === recipientId.toString()) {
