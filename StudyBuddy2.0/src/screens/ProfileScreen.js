@@ -124,8 +124,22 @@ const ProfileScreen = () => {
           <Text style={styles.infoText}>Email: {userInfo.email}</Text>
           <Text style={styles.infoText}>Email Notifications: {userInfo.emailNotifications}</Text>
           <Text style={styles.infoText}>Name: {userInfo.fullName}</Text>
+
+
+
+          {/* LINK TO PRIVACY POLICY GOES HERE*/}
+          <Text style={styles.infoText}>
+          Privacy Policy: 
+          <TouchableOpacity onPress={() => {
+          Linking.openURL('https://your-privacy-policy-url.com').catch(err => console.error("Couldn't load page", err));
+          }}>
+          <Text style={styles.linkText}>Click Here</Text>
+          </TouchableOpacity>
+          </Text>
+          {/* LINK TO PRIVACY POLICY GOES HERE*/}
         </View>
       </View>
+
 
 
 
@@ -366,6 +380,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
+  },
+  linkText: {
+    color: 'white',
+    textDecorationLine: 'underline',
+    fontSize:18,
+    right: -5,
+    top: 4,
   },
   // Define additional styles as needed
 });
