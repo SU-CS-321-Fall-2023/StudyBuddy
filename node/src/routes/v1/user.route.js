@@ -17,6 +17,9 @@ router
   .patch(validate(userValidation.updateUser), userController.updateUser)
   .delete(validate(userValidation.deleteUser), userController.deleteUser);
 
+router.post('/send-friend-request/:requesterId', userController.sendFriendRequest);
+router.post('/accept-friend-request/:requesterId', userController.acceptFriendRequest)
+
 module.exports = router;
 
 /**

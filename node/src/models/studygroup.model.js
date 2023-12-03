@@ -12,6 +12,19 @@ const studyGroupSchema = mongoose.Schema({
       ref: 'User',
     },
   ],
+  messages: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      content: String,
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   // Add other properties related to the study group if needed
 });
 

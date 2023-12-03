@@ -13,6 +13,18 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    friendRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     email: {
       type: String,
       required: true,
