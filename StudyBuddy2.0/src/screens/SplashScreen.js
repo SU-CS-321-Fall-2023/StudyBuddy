@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, StyleSheet } from 'react-native';
+import { View, Text, Animated, StyleSheet, ImageBackground } from 'react-native';
 
 const SplashScreen = ({ navigation }) => {
   // Opacity value for the splash text
@@ -29,9 +29,15 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <ImageBackground
+      source={require('./images/StartingPage.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
       <Animated.View style={[styles.fadeContainer, { opacity: fadeAnim }]}>
         <Text style={styles.fadeText}>Study Buddy</Text>
+
       </Animated.View>
+      </ImageBackground>
     </View>
   );
 };
@@ -48,9 +54,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   fadeText: {
-    fontSize: 28,
+    fontSize: 50,
     fontWeight: 'bold',
+    color: 'white',
     // Include other styling for your text
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
   },
 });
 
