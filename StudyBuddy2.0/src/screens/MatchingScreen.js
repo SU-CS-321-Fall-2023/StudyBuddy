@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView, Button } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView, Button, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -105,6 +105,10 @@ const MatchingScreen = () => {
 {/* FIRST BUDDY BADGE FUNCTION WILL GO -- CHECK BUDDY COUNT -- CAN CALL OUT OF FOLDER */}
 
   return (
+    <ImageBackground
+      source={require('./images/Matching.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
     <ScrollView style={styles.container}>
       {/* Search Bar */}
       <TextInput
@@ -123,11 +127,11 @@ const MatchingScreen = () => {
         <View style={styles.profileSection}>
           <Image source={{ uri: currentUser.profilePic }} style={styles.profilePic} />
           <View style={styles.userInfo}>
-            <Text>Classes: {currentUser.classes.join(', ')}</Text>
-            <Text>Likes: {currentUser.likes.join(', ')}</Text>
-            <Text>Skills: {currentUser.skills.join(', ')}</Text>
-            <Text>Weaknesses: {currentUser.weaknesses.join(', ')}</Text>
-            <Text>Strengths: {currentUser.strengths.join(', ')}</Text>
+            <Text style = {styles.userStuff}>Classes: {currentUser.classes.join(', ')}</Text>
+            <Text style = {styles.userStuff}>Likes: {currentUser.likes.join(', ')}</Text>
+            <Text style = {styles.userStuff}>Skills: {currentUser.skills.join(', ')}</Text>
+            <Text style = {styles.userStuff}>Weaknesses: {currentUser.weaknesses.join(', ')}</Text>
+            <Text style = {styles.userStuff}>Strengths: {currentUser.strengths.join(', ')}</Text>
           </View>
         </View>
 
@@ -178,6 +182,7 @@ const MatchingScreen = () => {
       )}
 
     </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -198,8 +203,9 @@ const styles = StyleSheet.create({
     
   },
   fullName: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
   profileSection: {
     flexDirection: 'row',
@@ -210,13 +216,15 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginRight: 20,
-    bottom: 150
+    bottom: 60
   },
   userInfo: {
     flex: 1,
      // Allow text to wrap within the container
     alignContent: 'space-between', // Evenly distribute wrapped lines
-    bottom: 150
+    bottom: 150,
+    // size: 50,
+    width: 40,
   },
   connectButton: {
     backgroundColor: 'black',
@@ -246,6 +254,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 10,
+    backgroundColor: 'white',
   },
   btnBackground: {
     backgroundColor: 'black',
@@ -253,7 +262,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 20,
  
-  }
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  userStuff:{
+    backgroundColor: 'white',
+    padding: 5,
+    margin: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    top: 80,
+  },
   // ... additional styles as needed
 });
 

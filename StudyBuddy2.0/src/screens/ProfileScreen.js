@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
+    textDecorationLine: 'underline',
   },
   logoutButton: {
     fontSize: 18,
