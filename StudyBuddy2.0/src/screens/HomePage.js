@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Modal} from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Modal,ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 global.messages = global.messages || [];
@@ -51,6 +51,10 @@ const HomePage = () => {
   
 
   return (
+    <ImageBackground
+      source={require('./images/HomePage.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
     <View style={styles.container}>
       <View style={styles.header}>
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.button}>
@@ -104,12 +108,14 @@ const HomePage = () => {
         </View>
       </Modal>
     </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
   },
   header: {
     flexDirection: 'row',
@@ -126,14 +132,16 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: -20,
     textAlign: 'center', // Center the text
+    color: 'white',
   },
   searchBar: {
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
+    borderRadius: 20,
     padding: 10,
     margin: 10,
     bottom: -17,
+    backgroundColor: 'white',
   },
   groupItem: {
     backgroundColor: 'white',
@@ -145,6 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ddd',
+    top: 30,
   },
   // ... other styles
   centeredView: {
@@ -175,13 +184,20 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 200,
   },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+  },
   // button: {
   //   backgroundColor: 'lightblue', // or any color you want
   //   padding: 8,
   //   borderRadius: 5,
   // },
   buttonText: {
-    // color: 'white', // choose a text color that suits your app
+    color: 'white', // choose a text color that suits your app
+
   },
   // ... other styles
 });
