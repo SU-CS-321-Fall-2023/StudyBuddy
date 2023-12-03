@@ -7,11 +7,14 @@ import {
   Image, 
   ScrollView, 
   TouchableOpacity, 
-  FlatList 
+  FlatList,
+  ImageBackground, 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
   // Dummy data for the example. Replace with state and context where necessary.
   const userInfo = {
     fullName: 'Billy McBillerson',
@@ -100,14 +103,18 @@ const ProfileScreen = () => {
   
 
   return (
+    <ImageBackground
+      source={require('./images/UserProfile.png')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => {}}>
-          <Ionicons name="arrow-back" size={24} color="#000" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{userInfo.fullName}</Text>
-        <TouchableOpacity onPress={() => {}}>
-          <Text>Logout</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <Text style={styles.logoutButton}>Logout</Text>
         </TouchableOpacity>
       </View>
 
@@ -270,6 +277,7 @@ const ProfileScreen = () => {
       
       {/* Rest of the profile sections... */}
     </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -284,8 +292,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+  },
+  logoutButton: {
+    fontSize: 18,
+    color: 'white',
   },
   profileSection: {
     flexDirection: 'row',
@@ -299,18 +312,22 @@ const styles = StyleSheet.create({
   },
   infoSection: {
     marginLeft: 20,
+    
   },
   infoText: {
-    fontSize: 16,
+    fontSize: 18,
+    color: 'white',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     paddingVertical: 10,
     paddingHorizontal: 20,
+    color: 'white',
   },
   listItem: {
     margin: 10,
+    color: 'white'
   },
   classesList: {
     flexDirection: 'row',
@@ -329,9 +346,18 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   classInput: {
-    borderBottomWidth: 1,
     flex: 1,
     marginRight: 10,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 40,
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
   },
   // Define additional styles as needed
 });
