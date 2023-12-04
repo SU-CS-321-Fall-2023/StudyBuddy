@@ -127,7 +127,7 @@ const ProfileScreen = () => {
 
 
 
-          {/* LINK TO PRIVACY POLICY GOES HERE*/}
+          {/* LINK TO PRIVACY POLICY GOES HERE - IS PRIVACY POLICY.TXT FILE*/}
           <Text style={styles.infoText}>
           Privacy Policy: 
           <TouchableOpacity onPress={() => {
@@ -136,7 +136,7 @@ const ProfileScreen = () => {
           <Text style={styles.linkText}>Click Here</Text>
           </TouchableOpacity>
           </Text>
-          {/* LINK TO PRIVACY POLICY GOES HERE*/}
+          {/* LINK TO PRIVACY POLICY GOES HERE - IS PRIVACY POLICY.TXT FILE*/}
         </View>
       </View>
 
