@@ -34,4 +34,29 @@ const getAll = async() => {
   return response
 }
 
-export default { update, get, getAll}
+const sendFriendRequest = async (senderUser, recipientUser) => {
+  const response = await fetch(`${userApiUrl}/send-friend-request/${recipientUser}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user: { id: senderUser.id }}),
+  });
+
+  return response
+}
+
+const acceptFriendRequest = async (accepterUser, requesterUser) => {
+  const response = await fetch(`${userApiUrl}/accept-friend-request/${requesterUser}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user: { id: accepterUser.id }}),
+  });
+
+  console.log (response, 'accept friend request response')
+  return response
+}
+
+export default { update, get, getAll, sendFriendRequest, acceptFriendRequest}

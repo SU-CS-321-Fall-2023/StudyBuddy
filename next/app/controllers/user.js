@@ -118,4 +118,94 @@ const removeClass = async (user, token, classObj) => {
     };
 };
 
-export default { get, getAll, addClass, removeClass };
+const sendFriendRequest = async (senderUser, recipientUser) => {
+    const response = await userService.sendFriendRequest(senderUser, recipientUser);
+    return response
+}
+
+const acceptFriendRequest = async (accepterUser, requesterUser) => {
+    const response = await userService.acceptFriendRequest(accepterUser, requesterUser);
+    return response
+}
+
+const cancelFriendRequest = async (cancelerUser, recipientUser) => {
+    try {
+        const token = 'token'
+        if (recipientUser && recipientUser.friendRequests.includes(cancelerUser.id)) {
+            const newObject = {
+                friendRequests: recipientUser.friendRequests.filter((id) => id.toString() !== cancelerUser.id.toString()),
+            };
+            const response = await userService.update(recipientUser, token, newObject);
+            if (response.ok) {
+                return {
+                    ok: true,
+                    body: await response.json(),
+                    message: `Successfully cancelled friend request to ${recipientUser.name}`,
+                };
+            }
+        }
+    } catch (error) {
+        return {
+            ok: false,
+            error,
+            message: 'Failed to cancel friend request. Please try again.',
+        };
+    }
+}
+
+const removeFriend = async (removerUser, removeeUser) => {
+    try {
+        const token = 'token'
+        const transformedRemoverIds = removerUser.friends.map((friendObj) => friendObj.id);
+        console.log(removerUser, 'removerUser')
+        console.log(removeeUser, 'removeeUser')
+        if (!removeeUser) {
+            return {
+                ok: false,
+                message: 'Please select a friend to remove',
+            };
+        }
+        if (!transformedRemoverIds.includes(removeeUser.id)) {
+            return {
+                ok: false,
+                message: 'Friend is not added to your profile',
+            };
+        }
+        if (removeeUser && removeeUser.friends.includes(removerUser.id)) {
+            const newRemoveeObject = {
+                friends: removeeUser.friends.filter((id) => id.toString() !== removerUser.id.toString()),
+            };
+            const newRemoverObject = {
+                friends: transformedRemoverIds.filter((id) => id.toString() !== removeeUser.id.toString()),
+            };
+            const response = await userService.update(removeeUser, token, newRemoveeObject);
+            const response2 = await userService.update(removerUser, token, newRemoverObject);
+            console.log (response2, 'response2')
+            if (response.ok && response2.ok) {
+                return {
+                    ok: true,
+                    body: await response2.json(),
+                    message: `Successfully removed ${removeeUser.name} from your friends`,
+                };
+            }
+        }
+    }
+    catch (error) {
+        return {
+            ok: false,
+            error,
+            message: 'Failed to remove friend. Please try again.',
+        };
+    }
+}
+
+
+export default { get,
+    getAll,
+    addClass,
+    removeClass,
+    sendFriendRequest,
+    acceptFriendRequest,
+    cancelFriendRequest,
+    removeFriend    
+ };
