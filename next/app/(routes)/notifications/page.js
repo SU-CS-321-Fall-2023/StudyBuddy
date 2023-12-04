@@ -38,7 +38,7 @@ export default function Page() {
             <Typography variant='h4'> Buddy Requests </Typography>
             {user?.friendRequests?.map((request) => {
                 return (
-                    <div>
+                    <div key={request.id}>
                         <Typography> {request.name} </Typography>
                         <div className='grid-cols-2'>
                         <Button color='green' onClick={() => handleAccept(request)}> Accept </Button>
