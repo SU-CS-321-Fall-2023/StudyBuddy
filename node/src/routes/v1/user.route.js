@@ -14,11 +14,12 @@ router
 router
   .route('/:userId')
   .get(validate(userValidation.getUser), userController.getUser)
-  .patch(validate(userValidation.updateUser), userController.updateUser)
+  .patch( userController.updateUser)
   .delete(validate(userValidation.deleteUser), userController.deleteUser);
 
 router.post('/send-friend-request/:requesterId', userController.sendFriendRequest);
 router.post('/accept-friend-request/:requesterId', userController.acceptFriendRequest)
+router.post('/reject-friend-request/:requesterId', userController.rejectFriendRequest)
 
 module.exports = router;
 

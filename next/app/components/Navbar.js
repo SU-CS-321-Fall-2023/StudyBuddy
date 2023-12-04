@@ -79,6 +79,11 @@ export default function NavbarDefault() {
           Study Groups
         </Link>
       </Typography>
+      <Typography>
+       <Link href="/notifications" className="flex items-center">
+          Notifications
+        </Link>
+      </Typography>
       {/* <Typography
         as="li"
         variant="small"
@@ -125,6 +130,7 @@ export default function NavbarDefault() {
           Docs
         </a>
       </Typography> */}
+
     </ul>
   );
 

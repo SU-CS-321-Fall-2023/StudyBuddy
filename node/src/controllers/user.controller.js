@@ -14,6 +14,11 @@ const acceptFriendRequest = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const rejectFriendRequest = catchAsync(async (req, res) => {
+  const user = await userService.rejectFriendRequest(req.body.user.id, req.params.requesterId);
+  res.send(user);
+})
+
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   res.status(httpStatus.CREATED).send(user);
@@ -51,5 +56,6 @@ module.exports = {
   updateUser,
   deleteUser,
   sendFriendRequest,
-  acceptFriendRequest
+  acceptFriendRequest,
+  rejectFriendRequest
 };

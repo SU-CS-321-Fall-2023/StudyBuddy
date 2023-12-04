@@ -31,6 +31,9 @@ export default function Page( {params}) {
     async function fetchUser() {
       const response = await userController.get(params.user_id, token)
       setFetchedUser(response);
+      if (response.id === user.id) {
+        setUser(response)
+      }
       setIsLoading(false);
     }
     fetchUser();
@@ -49,6 +52,16 @@ export default function Page( {params}) {
       setNotification(updatedUser.message, 'error')
     }
   }
+  const handleRemoveBuddy = async (removeeUser) => {
+    const response = await userController.removeFriend(fetchedUser, removeeUser)
+
+    if (response.ok) {
+        setNotification(`Successfully removed ${removeeUser.name} as a buddy`, 'success')
+        setFetchedUser(response.body)
+    } else {
+    setNotification(`Error removing ${removeeUser.name} as a buddy`, 'error')
+    }
+}
 
   if (isLoading) {
     return <Loading />
@@ -114,6 +127,24 @@ export default function Page( {params}) {
         <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
           <div className="flex flex-wrap justify-center">
             <div className="w-full lg:w-9/12 px-4">
+            <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
+              {fetchedUser?.friends?.length 
+              ? 
+              <>
+                <a className="text-md font-bold"> Buddies </a>
+                <ul className="text-sm font-medium">
+                {fetchedUser.friends.map(f =>
+                <li key={f.id}>
+                  {f.name}
+                  {/* <Button color='red' onClick={()=> handleRemoveBuddy(f)}> x </Button> */}
+                  </li>)}
+                </ul>
+              </>
+              
+              : 
+              <p>{`You don't have any friends yet`}</p>
+              }
+              </p>
               <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
               {fetchedUser?.classes?.length 
               ? 

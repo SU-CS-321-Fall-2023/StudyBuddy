@@ -123,11 +123,17 @@ const sendFriendRequest = async (senderId, recipientId) => {
   // Check for existing relationships
   if (
     senderUser.friendRequests.includes(recipientId) ||
-    senderUser.friends.includes(recipientId) ||
-    recipientUser.friends.includes(senderId) ||
+  
     recipientUser.friendRequests.includes(senderId)
   ) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Friend request already sent or user is already a friend');
+    throw new ApiError(httpStatus.BAD_REQUEST, `Friend request already sent or received`);
+  }
+
+  if (
+    senderUser.friends.includes(recipientId) ||
+    recipientUser.friends.includes(senderId)
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `${recipientUser.name} is already a friend`);
   }
 
   if (senderId.toString() === recipientId.toString()) {
@@ -174,6 +180,37 @@ const acceptFriendRequest = async (accepterId, requesterId) => {
     .populate('friendRequests');
 };
 
+const rejectFriendRequest = async (rejecterId, requesterId) => {
+
+  // Fetch rejecter and requester user data
+  const rejecterUser = await User.findById(rejecterId);
+  const requesterUser = await User.findById(requesterId);
+
+  // Validate the existence of rejecter and requester
+  if (!rejecterUser || !requesterUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // Check if there is a friend request from the requester
+  if (!rejecterUser.friendRequests.includes(requesterId)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `No friend request from ${requesterUser.name}`);
+  }
+
+  // Remove friend request
+  rejecterUser.friendRequests = rejecterUser.friendRequests.filter((id) => id.toString() !== requesterId.toString());
+
+  // Save changes to both users' data
+  await rejecterUser.save();
+
+  // Return the updated rejecter user data with additional populated fields
+  return User.findById(rejecterId)
+    .populate('classes')
+    .populate('studyGroups')
+    .populate('friends')
+    .populate('friendRequests');
+
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -184,4 +221,5 @@ module.exports = {
   checkInactiveUsers,
   sendFriendRequest,
   acceptFriendRequest,
+  rejectFriendRequest,
 };
