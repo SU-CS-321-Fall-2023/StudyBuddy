@@ -22,7 +22,7 @@ in the TEMPLATE to other parts, each of which I have to find individually to cha
 - 6. May need to re-run multiple times and create a chart tracking where things link to, 
   - or operation Apocalypse: Delete everything in the expo file and restart (Definitely should be 
   the last choice)
-
+-change for github-
 - 11/20 NOTES
 TO-DO:
  - add feature where when user hits 'join' and 'connect' for the study group from the study group 
