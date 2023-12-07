@@ -27,27 +27,28 @@ const HomePage = () => {
   };
   
   const handleJoinGroup = (group) => {
-    // Check if the group is already in the global messages
-    const isAlreadyJoined = global.messages.some(message => message.id === group.id);
+    // Check if the group is already in the user's study groups
+    const isAlreadyJoined = global.userStudyGroups.includes(group.name);
   
     if (!isAlreadyJoined) {
+      // Add the group to the user's study groups
+      global.userStudyGroups.push(group.name);
+  
       // Add the group to the global messages array with a personalized message
       global.messages.push({
         id: group.id,
         name: group.name,
-        lastMessage: `You joined ${group.name}!`, // Personalized message
-        sender: "UserName", // Replace "UserName" with the actual user's name
+        lastMessage: `You joined ${group.name}!`,
+        sender: "UserName", // Replace with the actual user's name
       });
-      
+  
       // Optionally navigate to the Messages screen
       navigation.navigate('Messages');
     } else {
-      // Show an alert or some indication that the user is already in the group
       alert("You're already a member of this group!");
     }
-
-    {/*FIRST STUDY GROUP JOINED BADGE -- CHECK GROUP COUNT WITH USER ID* -- CAN CALL OUT OF FOLDER*/}
   };
+  
   
 
   return (

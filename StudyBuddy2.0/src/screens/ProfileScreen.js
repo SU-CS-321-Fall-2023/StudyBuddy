@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -31,7 +31,7 @@ const ProfileScreen = () => {
 
 
 
-    studyGroups: ['Study Group 1', 'Study Group 2'],
+    // studyGroups: ['Study Group 1', 'Study Group 2'],
     classes: ['Class 1', 'Class 2'],
     likes: ['Like 1', 'Like 2'],
     skills: ['Skill 1', 'Skill 2'],
@@ -101,6 +101,11 @@ const ProfileScreen = () => {
 
   {/*FIRST BUDDY BADGE FUNCTION*/}
   
+  const [studyGroups, setStudyGroups] = useState(global.userStudyGroups || []);
+  
+  useEffect(() => {
+    setStudyGroups(global.userStudyGroups);
+}, [global.userStudyGroups]);
 
   return (
     <ImageBackground
@@ -165,13 +170,14 @@ const ProfileScreen = () => {
 
 
 
+   
       <Text style={styles.sectionTitle}>Study Groups</Text>
-      <FlatList
-        data={userInfo.studyGroups}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Text style={styles.listItem}>{item}</Text>}
-        horizontal
-      />
+            <FlatList
+                data={studyGroups}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => <Text style={styles.listItem}>{item}</Text>}
+                horizontal
+            />
 
       <Text style={styles.sectionTitle}>Classes</Text>
       <View style={styles.classesList}>
