@@ -7,7 +7,6 @@ const Class = require('./class.model.js'); // Import the Class model
 const StudyGroup = require('./studygroup.model.js'); // Import the StudyGroup model
 const LoginHistory = require('./loginhistory.model.js'); // Import the LoginHistory model
 
-
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -72,6 +71,19 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    badges: {
+      type: mongoose.Schema.Types.Mixed,
+      default:{}
+      required: true
+    },
+    loginHistory: [ //could instead make this a list and not create a whole schema for it?
+      {
+        // type: Date
+        // required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'LoginHistory',
+      },
+    ],
     emailPreferences: {
       notifications: {
         type: Boolean,
@@ -94,10 +106,9 @@ const userSchema = mongoose.Schema(
         type: Date
       }
     },
-
   },
   {
-    timestamps: true,
+    timestamps: true, // what does this do?
   }
 );
 
