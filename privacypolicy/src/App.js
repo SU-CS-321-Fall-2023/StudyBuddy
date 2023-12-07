@@ -1,23 +1,16 @@
-import logo from './logo.svg';
+
 import './App.css';
 
 function App() {
+  // State declarations
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>StuddyBuddy Privacy Policy</h2>
+      <h2>Leave those password guessing games behind</h2>
+      <div style={{ display: 'inline-flex', gap: '10px', marginBottom: '20px' }}>
+        
+      </div>
     </div>
   );
 }
