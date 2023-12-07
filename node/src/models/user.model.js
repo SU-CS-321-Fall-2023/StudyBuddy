@@ -14,6 +14,18 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    friendRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     email: {
       type: String,
       required: true,
@@ -61,10 +73,8 @@ const userSchema = mongoose.Schema(
     },
     badges: {
       type: mongoose.Schema.Types.Mixed,
-      default:
-      {}
-  }
-});
+      default:{}
+      required: true
     },
     loginHistory: [ //could instead make this a list and not create a whole schema for it?
       {
@@ -74,6 +84,28 @@ const userSchema = mongoose.Schema(
         ref: 'LoginHistory',
       },
     ],
+    emailPreferences: {
+      notifications: {
+        type: Boolean,
+        default: true, // User is opted-in by default
+      },
+    },
+    badges: {
+      type: mongoose.Schema.Types.Mixed,
+      default:{}
+    },
+    loginHistory: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'LoginHistory',
+      },
+    ],
+  },
+    activity: {
+      lastLogin: {
+        type: Date
+      }
+    },
   },
   {
     timestamps: true, // what does this do?

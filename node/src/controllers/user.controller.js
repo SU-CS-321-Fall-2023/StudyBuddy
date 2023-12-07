@@ -4,6 +4,21 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 
+const sendFriendRequest = catchAsync(async (req, res) => {
+  await userService.sendFriendRequest(req.body.user.id, req.params.requesterId);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+const acceptFriendRequest = catchAsync(async (req, res) => {
+  const user = await userService.acceptFriendRequest(req.body.user.id, req.params.requesterId);
+  res.send(user);
+});
+
+const rejectFriendRequest = catchAsync(async (req, res) => {
+  const user = await userService.rejectFriendRequest(req.body.user.id, req.params.requesterId);
+  res.send(user);
+})
+
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   res.status(httpStatus.CREATED).send(user);
@@ -40,4 +55,7 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  sendFriendRequest,
+  acceptFriendRequest,
+  rejectFriendRequest
 };

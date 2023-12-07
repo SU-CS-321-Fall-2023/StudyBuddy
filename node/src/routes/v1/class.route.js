@@ -1,25 +1,14 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const classValidation = require('../../validations/class.validation');
+const classController = require('../../controllers/class.controller');
 
 const router = express.Router();
 
 router
-  .route('/')
-  .post(validate(userValidation.createUser), userController.createUser)
-  .get(validate(userValidation.getUsers), userController.getUsers);
-
-router
-  .route('/:userId')
-  .get(validate(userValidation.getUser), userController.getUser)
-  .patch( userController.updateUser)
-  .delete(validate(userValidation.deleteUser), userController.deleteUser);
-
-router.post('/send-friend-request/:requesterId', userController.sendFriendRequest);
-router.post('/accept-friend-request/:requesterId', userController.acceptFriendRequest)
-router.post('/reject-friend-request/:requesterId', userController.rejectFriendRequest)
+    .route('/')
+    .get(validate(classValidation.getClasses), classController.getClasses);
 
 module.exports = router;
 
