@@ -16,18 +16,18 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 
-const app = express();
+//const app = express();
 //create HTTP server to handle HTTP requests coming into express app
-const server = http.createServer(app);
+//const server = http.createServer(app);
 //integrate socket.io with the HTTP server
 //(socketio instance bound to server instance, allowing real-time communication)
-const io = socketIO(server);
+//const io = socketIO(server);
 
 // Start the socket.io server -- only one server needed for multiple chat instances
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+//const PORT = process.env.PORT || 3000;
+//server.listen(PORT, () => {
+  //console.log(`Server running on port ${PORT}`);
+//});
 
 
 if (config.env !== 'test') {
