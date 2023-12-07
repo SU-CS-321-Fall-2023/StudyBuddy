@@ -5,6 +5,8 @@ const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 const Class = require('./class.model.js'); // Import the Class model
 const StudyGroup = require('./studygroup.model.js'); // Import the StudyGroup model
+const LoginHistory = require('./loginhistory.model.js'); // Import the LoginHistory model
+
 
 const userSchema = mongoose.Schema(
   {
@@ -76,6 +78,17 @@ const userSchema = mongoose.Schema(
         default: true, // User is opted-in by default
       },
     },
+    badges: {
+      type: mongoose.Schema.Types.Mixed,
+      default:{}
+    },
+    loginHistory: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'LoginHistory',
+      },
+    ],
+  },
     activity: {
       lastLogin: {
         type: Date
