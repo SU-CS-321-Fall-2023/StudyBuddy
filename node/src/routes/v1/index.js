@@ -4,6 +4,7 @@ const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const classRoute = require('./class.route');
 const config = require('../../config/config');
+const studygroupRoute = require('./studyGroup.route')
 
 const router = express.Router();
 
@@ -19,6 +20,10 @@ const defaultRoutes = [
   {
     path: '/classes',
     route: classRoute,
+  },
+  {
+    path: '/studygroups',
+    route: studygroupRoute,
   }
 ];
 
