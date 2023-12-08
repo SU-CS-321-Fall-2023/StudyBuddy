@@ -5,6 +5,8 @@ import { ImageBackground } from 'react-native';
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 // import auth from '@react-native-firebase/auth';
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -102,7 +104,8 @@ const SignUpScreen = () => {
       source={require('./images/SignUp.png')} // Replace with your image path
       style={styles.backgroundImage}
     >
-    <View style={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+    <View style={{ marginVertical: 100 }}>
       <Text style={styles.header}>Sign Up</Text>
       <TextInput
         placeholder="First Name"
@@ -197,6 +200,7 @@ const SignUpScreen = () => {
       </Text>
 
     </View>
+    </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };

@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import React, { useState } from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -22,7 +23,8 @@ const SignUp = () => {
   };
   
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+    <View style={{ marginVertical: 100 }}>
       <Text style={styles.signUpText}>Sign Up</Text>
 
       <View style={{ marginHorizontal: 24 }}>
@@ -63,6 +65,7 @@ const SignUp = () => {
         {JSON.stringify({ name, email, password })}
       </Text>
     </View>
+    </KeyboardAwareScrollView>
   );
 };
 

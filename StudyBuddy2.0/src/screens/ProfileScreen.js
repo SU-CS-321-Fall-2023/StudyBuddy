@@ -103,6 +103,9 @@ const ProfileScreen = () => {
   {/*FIRST BUDDY BADGE FUNCTION*/}
   
   const [studyGroups, setStudyGroups] = useState(global.userStudyGroups || []);
+
+  const[stats, setStats] = useState('');
+
   
   useEffect(() => {
     setStudyGroups(global.userStudyGroups);
