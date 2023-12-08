@@ -140,7 +140,7 @@ const SignUpScreen = () => {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         style={styles.input}
-        secureTextEntry = {true} autoComplteType='password'
+        secureTextEntry = {true} autoCompleteType='password'
       />
 
       
@@ -195,9 +195,9 @@ const SignUpScreen = () => {
       </TouchableOpacity>
 
 
-      <Text style={{ marginHorizontal: 24 }}>
+      {/* <Text style={{ marginHorizontal: 24 }}>
         {JSON.stringify({ firstName, lastName, email, password, confirmPassword })}
-      </Text>
+      </Text> */}
 
     </View>
     </KeyboardAwareScrollView>

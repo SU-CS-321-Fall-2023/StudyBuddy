@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -9,30 +10,46 @@ const SignInScreen = () => {
 
   {/*LOGIN STREAK BADGE -- CHECK LOGIN STREAK FUNCTION */}
 
+  const handleSubmit = async () => {
+    if (email === "" || password === "") {
+      alert("All fields are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8001/api/signup", { firstName, lastName, email, password, confirmPassword});
+      alert("Sign Up Successful");
+    } catch (error) {
+      // Handle the error appropriately
+      alert("Signup failed: " + error.message);
+    }
+  };
+
   return (
     <ImageBackground
       source={require('./images/SignUp.png')} // Replace with your image path
       style={styles.backgroundImage}
     >
-    <View style={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+    <View style={{ marginVertical: 100 }}>
       <Text style={styles.header}>Sign In</Text>
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         style={styles.input}
-        keyboardType="email-address"
+        autoComplete='email' keyboardType='email-address'
       />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         style={styles.input}
-        secureTextEntry
+        secureTextEntry = {true} autoCompleteType='password'
       />
       <TouchableOpacity
   style={styles.signinButton}
-  onPress={() => navigation.navigate('Home')}
+  onPress={handleSubmit}
 >
   <Text style={styles.buttonText}>Sign In</Text>
 </TouchableOpacity>
@@ -49,6 +66,7 @@ const SignInScreen = () => {
         <Text style={styles.linkText}>Don't have an account? Sign up</Text>
       </TouchableOpacity>
     </View>
+    </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };

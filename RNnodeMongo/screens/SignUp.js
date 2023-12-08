@@ -61,8 +61,12 @@ const SignUp = () => {
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
-      <Text style={{ marginHorizontal: 24 }}>
+      {/* <Text style={{ marginHorizontal: 24 }}>
         {JSON.stringify({ name, email, password })}
+      </Text> */}
+
+      <Text style = {{fontSize: 12, textAlign: 'center'}}>
+        Already Joined? Sign in
       </Text>
     </View>
     </KeyboardAwareScrollView>
