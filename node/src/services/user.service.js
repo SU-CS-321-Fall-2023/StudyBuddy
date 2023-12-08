@@ -1,19 +1,52 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
-
+const emailService = require('./email.service');
 /**
- * Get inactive users
+ * Get inactive users and send collaboration reminder emails
  * @returns {Promise<User>}
  */
 const checkInactiveUsers = async () => {
+  console.log('Checking for inactive users...');
   const inactiveUsers = await User.find({
     'activity.lastLogin': {
       $lte: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
     },
   });
+  console.log(`Inactive users: ${inactiveUsers}`);
 
-  return inactiveUsers;
+  // Send collaboration reminder emails to inactive users
+    if (inactiveUsers.length > 0) {
+    for (const user of inactiveUsers) {
+      const { email, name, classes } = user;
+
+      // Check if the user has an email, a reset password token, and enrolled in courses
+      if (email) {
+        try {
+          // Construct a message for collaboration reminder email
+          const subject = 'StudyBuddy Collaboration Reminder';
+          const collaborationEmailText = `Hi ${name},\n\n` +
+            `We miss you on StudyBuddy! It's been a while since your last login.\n\n` +
+            `You are enrolled in the following courses: ${classes.join(', ')}.\n\n` +
+            `Don't miss out on the opportunity to collaborate with classmates. ` +
+            `Log in to StudyBuddy and start connecting with fellow students today!\n\n` +
+            `Best regards,\nThe StudyBuddy Team`;
+
+          // Send collaboration reminder email'
+          console.log(`Sending collaboration reminder email to ${email}`);
+          await emailService.sendEmail(email, subject, collaborationEmailText);
+          console.log(`Collaboration reminder email sent to ${email}`);
+        } catch (error) {
+          console.error(`Error sending collaboration reminder email to ${email}: ${error.message}`);
+        }
+      }
+    }
+    return inactiveUsers;
+  }
+  else {
+    console.log('No inactive users found');
+    return [];
+  }
 };
 
 /**
