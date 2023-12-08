@@ -16,6 +16,7 @@ const SignUp = () => {
           style={styles.signupInput}
           value={name}
           onChangeText={text => setName(text)}
+          autoCapitalize='words' autoCorrect = {false}
         />
       </View>
 
@@ -25,6 +26,7 @@ const SignUp = () => {
           style={styles.signupInput}
           value={email}
           onChangeText={text => setEmail(text)}
+          autoComplete='email' keyboardType='email-address'
         />
       </View>
 
@@ -34,6 +36,7 @@ const SignUp = () => {
           style={styles.signupInput}
           value={password}
           onChangeText={text => setPassword(text)}
+          secureTextEntry = {true} autoComplteType='password'
         />
       </View>
 

@@ -95,33 +95,35 @@ const SignUpScreen = () => {
         value={firstName}
         onChangeText={setFirstName}
         style={styles.input}
+        autoCapitalize='words' autoCorrect = {false}
       />
       <TextInput
         placeholder="Last Name"
         value={lastName}
         onChangeText={setLastName}
         style={styles.input}
+        autoCapitalize='words' autoCorrect = {false}
       />
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         style={styles.input}
-        keyboardType="email-address"
+        autoComplete='email' keyboardType='email-address'
       />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         style={styles.input}
-        secureTextEntry
+        secureTextEntry = {true} autoComplteType='password'
       />
       <TextInput
         placeholder="Re-enter Password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         style={styles.input}
-        secureTextEntry
+        secureTextEntry = {true} autoComplteType='password'
       />
       <TouchableOpacity
   style={styles.signupButton}
@@ -177,7 +179,7 @@ const SignUpScreen = () => {
       <Text style={{ marginHorizontal: 24 }}>
         {JSON.stringify({ firstName, lastName, email, password, confirmPassword })}
       </Text>
-      
+
     </View>
     </ImageBackground>
   );
