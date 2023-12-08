@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
 import React, { useState } from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -26,7 +26,9 @@ const SignUp = () => {
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
     <View style={{ marginVertical: 100 }}>
       <Text style={styles.signUpText}>Sign Up</Text>
-
+      <View style={styles.imageContainer}>
+                <Image source={require("../assets/icon.png")} style={styles.imageStyles} />
+            </View>
       <View style={{ marginHorizontal: 24 }}>
         <Text style={{ fontSize: 16, color: '#8e93a1' }}>NAME</Text>
         <TextInput
@@ -104,6 +106,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "bold"
   },
+  imageContainer: { justifyContent: "center", alignItems: "center" },
+    imageStyles: { width: 100, height: 100, marginVertical: 20 }
 });
 
 export default SignUp;
