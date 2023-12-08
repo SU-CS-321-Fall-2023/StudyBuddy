@@ -36,6 +36,14 @@ const SignInScreen = () => {
 >
   <Text style={styles.buttonText}>Sign In</Text>
 </TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.signUpGoogleButton}
+  onPress={() => navigation.navigate('Home')}
+>
+  <Text style={styles.buttonText}>Sign Up with Google</Text>
+</TouchableOpacity>
+
       {/* <Button title="Sign in" onPress={handleSignIn} /> */}
       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.linkText}>Don't have an account? Sign up</Text>
@@ -95,6 +103,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize:20,
     // You might want to set a specific font size or weight
+  },
+  signUpGoogleButton: {
+    backgroundColor: 'white',
+    padding: 1,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: 'white',
+    width: 150,
+    top: 10,
   },
 });
 
