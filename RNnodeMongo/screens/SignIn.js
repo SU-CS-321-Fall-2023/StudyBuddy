@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'reac
 import React, { useState } from 'react'
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-const SignIn = () => {
+const SignIn = ({navigation}) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,8 +32,29 @@ const SignIn = () => {
                 <TouchableOpacity onPress={handleSubmit} style={styles.buttonStyle}>
                     <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
-                <Text style={{ fontSize: 12, textAlign: 'center' }}>Not yet registered? Sign Up</Text>
+
+
+
+                <Text style={{ fontSize: 12, textAlign: 'center' }}>
+        Not yet registered? {" "}
+        <Text style={{ color: 'darkred', fontWeight: 'bold' }} onPress={() => navigation.navigate('SignUp')}>
+          Sign Up
+        </Text>
+                    
+                    
+                     
+                    
+                    
+                    
+                    
+                    
+                    </Text>
+
+
+
                 <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 10 }}>Forgot Password?</Text>
+
+
             </View>
         </KeyboardAwareScrollView>
     )

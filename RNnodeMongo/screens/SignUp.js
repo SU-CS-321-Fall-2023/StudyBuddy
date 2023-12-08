@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image} from 'react
 import React, { useState } from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,7 +68,14 @@ const SignUp = () => {
       </Text> */}
 
       <Text style = {{fontSize: 12, textAlign: 'center'}}>
-        Already Joined? Sign in
+        Already Joined? {" "}
+        <Text
+        style = {{color: 'darkred', fontWeight: 'bold'}}
+        onPress={() => navigation.navigate("SignIn")}     
+        >
+          Sign in
+        </Text>
+        
       </Text>
     </View>
     </KeyboardAwareScrollView>
