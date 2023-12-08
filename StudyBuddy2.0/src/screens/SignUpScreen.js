@@ -130,7 +130,7 @@ const SignUpScreen = () => {
   <Text style={styles.buttonText}>Sign Up</Text>
 </TouchableOpacity>
 
-<View style={styles.container2}>
+{/* <View style={styles.container2}>
 {!userInfo ? (
         <Button
           title="Sign in with Google"
@@ -159,14 +159,14 @@ const SignUpScreen = () => {
       //     </Text>
       //     <Text style={styles.text}>Name: {userInfo.name}</Text>
       //     {/* <Text style={styles.text}>{JSON.stringify(userInfo, null, 2)}</Text> */}
-      //   </View>
+      {/* //   </View>
       // )
     }
     <Button
         title="remove local store"
         onPress={async () => await AsyncStorage.removeItem("@user")}
       />
-</View>
+</View> */} 
 
       <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>{/* <Button title="Sign Up" onPress={handleSignUp} /> */}
         <Text style={styles.linkText}>Already have an account? 
