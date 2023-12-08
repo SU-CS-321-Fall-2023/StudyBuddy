@@ -76,14 +76,6 @@ const userSchema = mongoose.Schema(
       default:{}
       required: true
     },
-    loginHistory: [ //could instead make this a list and not create a whole schema for it?
-      {
-        // type: Date
-        // required: true
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'LoginHistory',
-      },
-    ],
     emailPreferences: {
       notifications: {
         type: Boolean,
@@ -91,16 +83,26 @@ const userSchema = mongoose.Schema(
       },
     },
     badges: {
-      type: mongoose.Schema.Types.Mixed,
-      default:{}
+      type: [{
+        key: String,
+        value: String
+       }],
+       default: [{}]
     },
-    loginHistory: [
+    stats: {
+      type: [{
+        key: String,
+        value: mongoose.Schema.Types.Mixed
+       }],
+       default: [{}]
+    },
+    /*loginHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'LoginHistory',
       },
     ],
-  },
+  },*/
     activity: {
       lastLogin: {
         type: Date

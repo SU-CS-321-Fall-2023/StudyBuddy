@@ -41,7 +41,7 @@ const queryUsers = async (filter, options) => {
   const newOptions = { ...options, populate: 'classes'}
   const users = await User.paginate(filter, newOptions);
   return users;
-  
+
 };
 
 /**
@@ -54,7 +54,9 @@ const getUserById = async (id) => {
   .populate('classes')
   .populate('studyGroups')
   .populate('friends')
-  .populate('friendRequests');
+  .populate('friendRequests')
+  .populate('badges')
+  .populate('stats');
 };
 
 /**
@@ -67,7 +69,9 @@ const getUserByEmail = async (email) => {
   .populate('classes')
   .populate('studyGroups')
   .populate('friends')
-  .populate('friendRequests');
+  .populate('friendRequests')
+  .populate('badges')
+  .populate('stats');
 };
 
 /**
@@ -91,7 +95,9 @@ const updateUserById = async (userId, updateBody) => {
   .populate('classes')
   .populate('studyGroups')
   .populate('friends')
-  .populate('friendRequests');
+  .populate('friendRequests')
+  .populate('badges')
+  .populate('stats');
 
   return updatedUser;
 };
@@ -123,7 +129,7 @@ const sendFriendRequest = async (senderId, recipientId) => {
   // Check for existing relationships
   if (
     senderUser.friendRequests.includes(recipientId) ||
-  
+
     recipientUser.friendRequests.includes(senderId)
   ) {
     throw new ApiError(httpStatus.BAD_REQUEST, `Friend request already sent or received`);
@@ -177,7 +183,9 @@ const acceptFriendRequest = async (accepterId, requesterId) => {
     .populate('classes')
     .populate('studyGroups')
     .populate('friends')
-    .populate('friendRequests');
+    .populate('friendRequests')
+    .populate('badges')
+    .populate('stats');
 };
 
 const rejectFriendRequest = async (rejecterId, requesterId) => {
@@ -207,7 +215,9 @@ const rejectFriendRequest = async (rejecterId, requesterId) => {
     .populate('classes')
     .populate('studyGroups')
     .populate('friends')
-    .populate('friendRequests');
+    .populate('friendRequests')
+    .populate('badges')
+    .populate('stats');
 
 };
 

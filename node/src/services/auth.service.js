@@ -20,10 +20,11 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   //call login history function with logout time and session minutes as null
   //add a token to the user?
   const login_time = new Date();
-  await addLoginHistory(user.email, login_time, null, null);
+  await helper.addLoginHistory(user._id, login_time, null, null);
+  //create new entry with login time and
 
   //check the user login streak to see if they get a badge
-  await check_login_streak(user_id);
+  await helper.check_login_streak(user._id);
 
   return user;
 };
@@ -52,7 +53,7 @@ const logout = async (refreshToken) => {
     const user = await User.findById(refreshTokenDoc.user);
     //sort login times in descending order to get last login (by finding associated user)
     //const last_login = await LoginHistory.findOne({ user }).sort({ login_time: -1 });
-    const last_login = await get_last_login(user);
+    const last_login = await helper.get_last_login_entry(user._id);
     // could get the user email to search instead of user if keeping email in login schema
     //const email = refreshTokenDoc.user.email;
 
