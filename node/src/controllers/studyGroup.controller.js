@@ -1,6 +1,7 @@
 const httpStatus = require('http-status')
 const { studygroupService } = require('../services')
 const catchAsync = require('../utils/catchAsync')
+const mongoose = require('mongoose');
 
 const createStudyGroup = catchAsync(async(req, res) => {
     const studygroup = await studygroupService.createStudyGroup(req.body)
@@ -8,7 +9,8 @@ const createStudyGroup = catchAsync(async(req, res) => {
 })
 
 const getStudyGroups = catchAsync(async(req, res) => {
-    const studyGroups = await studygroupService.getStudyGroups(req.params.userId)
+    const id = mongoose.Types.ObjectId(req.body.user.id);
+    const studyGroups = await studygroupService.getStudyGroups(id)
     res.send(studyGroups)
 })
 

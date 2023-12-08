@@ -4,7 +4,13 @@ const studygroupApiUrl = `${apiBaseUrl}/studygroups`
 
 //fetch user study groups
 const getAll = async (userId) => {
-  const response = await fetch(`${studygroupApiUrl}/${userId}`);
+  const response = await fetch(`${studygroupApiUrl}/mygroups`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user: { id: userId } }),
+  });
   return response
 }
 

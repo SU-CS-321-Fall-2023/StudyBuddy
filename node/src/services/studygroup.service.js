@@ -17,7 +17,7 @@ const createStudyGroup = async(studygroup) => {
  */
 
 const getStudyGroups = async(userId) => {
-    return await StudyGroup.find({ messages: userId});
+    return await StudyGroup.find({ users: userId});
 }
 
 /**

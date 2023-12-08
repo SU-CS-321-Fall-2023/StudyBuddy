@@ -1,7 +1,6 @@
 import studygroupService from '@/app/services/studygroup'
 
 const getAllStudyGroups = async (user) => {
-    console.log('user1', user)
     if(user == null || user == undefined) {
         return {
             ok: false,
@@ -11,6 +10,7 @@ const getAllStudyGroups = async (user) => {
     try {
         const response = await studygroupService.getAll(user.id)
             .then((res) => res.json());
+            console.log(response)
         return response
     }
     catch (error) {
@@ -35,7 +35,7 @@ const createStudyGroup = async (name) => {
 
 const joinStudyGroup = async(studygroup, user) => {
     // Check if user is in the group
-    if (studygroup && studygroup.messages.includes(studygroup.id)) {
+    if (studygroup && studygroup.users.includes(user.id)) {
         return {
             ok: false,
             message: 'You already joined the group!',

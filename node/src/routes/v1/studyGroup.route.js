@@ -17,8 +17,9 @@ router
 router
   .route('/search')
   .post(studyGroupController.searchStudyGroup)
+
 router
-  .route('/:userId')
-  .get(studyGroupController.getStudyGroups)
+  .route('/mygroups')
+  .post(studyGroupController.getStudyGroups)
 
 module.exports = router;

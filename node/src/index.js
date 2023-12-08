@@ -3,11 +3,26 @@ const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
 
+const http = require('http').Server(app);
+
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
-  server = app.listen(config.port, () => {
+  server = http.listen(config.port, () => {
     logger.info(`Listening to port ${config.port}`);
+  });
+});
+
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3002",
+  },
+})
+
+io.on('connection', (socket) => {
+  console.log('connected')
+  socket.on('disconnect', () => {
+    console.log('disconnecte')
   });
 });
 
@@ -36,3 +51,4 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
+
