@@ -83,6 +83,20 @@ const SignUpScreen = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    if (firstName === "" || email === "" || password === "" || lastName === "" || confirmPassword == "") {
+      alert("All fields are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8001/api/signup", { firstName, lastName, email, password, confirmPassword});
+      alert("Sign Up Successful");
+    } catch (error) {
+      // Handle the error appropriately
+      alert("Signup failed: " + error.message);
+    }
+  };
   return (
     <ImageBackground
       source={require('./images/SignUp.png')} // Replace with your image path
@@ -125,9 +139,11 @@ const SignUpScreen = () => {
         style={styles.input}
         secureTextEntry = {true} autoComplteType='password'
       />
+
+      
       <TouchableOpacity
   style={styles.signupButton}
-  onPress={() => navigation.navigate('Home')}
+  onPress={handleSubmit}
 >
   <Text style={styles.buttonText}>Sign Up</Text>
 </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 
 const SignUp = () => {
@@ -6,6 +6,21 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleSubmit = async () => {
+    if (name === "" || email === "" || password === "") {
+      alert("All fields are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8001/api/signup", { name, email, password });
+      alert("Sign Up Successful");
+    } catch (error) {
+      // Handle the error appropriately
+      alert("Signup failed: " + error.message);
+    }
+  };
+  
   return (
     <View style={styles.container}>
       <Text style={styles.signUpText}>Sign Up</Text>
@@ -40,6 +55,10 @@ const SignUp = () => {
         />
       </View>
 
+      <TouchableOpacity onPress={handleSubmit} style={styles.buttonStyle}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+
       <Text style={{ marginHorizontal: 24 }}>
         {JSON.stringify({ name, email, password })}
       </Text>
@@ -61,6 +80,22 @@ const styles = StyleSheet.create({
     height: 48,
     borderBottomColor: '#8e93a1',
     marginBottom: 30,
+  },
+
+  buttonStyle: {
+    backgroundColor: "darkmagenta",
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
+    marginHorizontal: 15,
+    borderRadius: 15,
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#fff",
+    textTransform: "uppercase",
+    fontWeight: "bold"
   },
 });
 
