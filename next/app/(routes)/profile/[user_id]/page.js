@@ -111,6 +111,10 @@ export default function Page( {params}) {
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
             {fetchedUser?.name}
           </h3>
+          {fetchedUser?.activity.lastLogin && <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+            <i className="fas fa-clock mr-2 text-lg text-blueGray-400" />
+            Last login: {new Date(fetchedUser.activity.lastLogin).toLocaleString()}
+          </div>}
           {/* <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
             <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400" />
             Los Angeles, California
