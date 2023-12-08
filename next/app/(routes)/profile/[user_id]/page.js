@@ -10,6 +10,8 @@ import { useNotificationContext } from "@/app/contexts/NotificationContext";
 import { userController } from "@/app/controllers";
 import { useNotification } from '@/app/contexts/NotificationContext';
 import { useRouter } from 'next/navigation'
+import { FormControlLabel, Checkbox, Typography } from '@mui/material';
+
 
 export default function Page( {params}) {
   // TODO: Extract fetches into their own services
@@ -58,10 +60,29 @@ export default function Page( {params}) {
     if (response.ok) {
         setNotification(`Successfully removed ${removeeUser.name} as a buddy`, 'success')
         setFetchedUser(response.body)
+        setUser(response.body)
     } else {
     setNotification(`Error removing ${removeeUser.name} as a buddy`, 'error')
     }
 }
+const toggleEmailNotifications = async () => {
+  try {
+    const updatedEmailNotifications = await userController.toggleEmailNotifications(user, token);
+
+    if (updatedEmailNotifications.ok) {
+      setNotification(updatedEmailNotifications.message
+        , 'success');
+      setFetchedUser(updatedEmailNotifications.body);
+      setUser(updatedEmailNotifications.body);
+    } else {
+      setNotification(updatedEmailNotifications.message
+      , 'error');
+    }
+  } catch (error) {
+    console.error('Error toggling email notifications:', error);
+    setNotification('An error occurred while toggling email notifications.', 'error');
+  }
+};
 
   if (isLoading) {
     return <Loading />
@@ -115,6 +136,18 @@ export default function Page( {params}) {
             <i className="fas fa-clock mr-2 text-lg text-blueGray-400" />
             Last login: {new Date(fetchedUser.activity.lastLogin).toLocaleString()}
           </div>}
+          <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+            Email Notifications:
+          </h3>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={user.emailPreferences.notifications}
+            onChange={toggleEmailNotifications}
+          />
+        }
+        label="Toggle Email Notifications"
+      />
           {/* <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
             <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400" />
             Los Angeles, California
