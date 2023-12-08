@@ -172,6 +172,12 @@ const SignUpScreen = () => {
         <Text style={styles.linkText}>Already have an account? 
         Sign in</Text>
       </TouchableOpacity>
+
+
+      <Text style={{ marginHorizontal: 24 }}>
+        {JSON.stringify({ firstName, lastName, email, password, confirmPassword })}
+      </Text>
+      
     </View>
     </ImageBackground>
   );
