@@ -129,7 +129,7 @@ const ProfileScreen = () => {
           <Text style={styles.infoText}>
           Privacy Policy: 
           <TouchableOpacity onPress={() => {
-          Linking.openURL('https://your-privacy-policy-url.com').catch(err => console.error("Couldn't load page", err));
+          Linking.openURL('https://study-buddy-privacy-policy.vercel.app/').catch(err => console.error("Couldn't load page", err));
           }}>
           <Text style={styles.linkText}>Click Here</Text>
           </TouchableOpacity>
