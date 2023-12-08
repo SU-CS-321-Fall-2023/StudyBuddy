@@ -1,48 +1,101 @@
+const emailservice = require('./services/email.service2');
+const loginhistory = require('./models/loginhistory.model');
+const usr = require('./models/user.model');
+
+
+function comeBackEmail() {
+    if(usr.emailPreferences) {
+        emaillist = loginhistory.create_email_reminder_list;
+        if(usr.user_email in emaillist) {
+            emailservice.sendComeBackEmail;
+        };
+    };
+};
+
+//*
+
+function ratelimit(lastnotif) { // ratelimit function to make sure there's no spam for any particular notif
+    current = moment(current_date).startOf('hour');
+    lastnotif = moment(lastnotif).startOf('hour');
+    timediff = Math.abs(current.getTime() - lastnotif.getTime());
+    hourdiff = Math.ceil(timediff / (1000 * 3600));
+    return hourdiff;
+}
+
+const lastnotifmsg;
+const lastnotifmatch;
+const lastnotifreq;
+const lastnotifjoined;
+const lastnotifinv;
+
 const notiflist = [];
 
-function newNotif(type) {
+function newNotif(type) { // needs passed type of notification when called
     let notifmessage;
     let notifbody;
+    let ratelimited = false;
 
     switch (type) {
         case 'newmessage':
             notifmessage = "New Message!";
             notifbody = "You have a new message, check it out!";
-            // add badge indicating unread message next to corresponding chat
+            // add unread message indicator to corresponding chat
+            if (ratelimit(lastnotifmsg) <= 6) {
+                ratelimited = true;
+            }
             break;
         case 'match':
             notifmessage = "Match Found!";
             notifbody = "You've found a study buddy, say hi!";
+            if (ratelimit(lastnotifmatch) < 1) {
+                ratelimited = true;
+            }
             break;
         case 'friendrequest':
             notifmessage = "Incoming Friend Request!";
             notifbody = "You have a friend request! Say hi!";
+            if (ratelimit(lastnotifreq) <= 1) {
+                ratelimited = true;
+            }
             break;
         case 'groupjoined':
             notifmessage = "Member Joined!";
             notifbody = "Your study group has a new member, say hi!";
+            if (ratelimit(lastnotifjoined) <= 2) {
+                ratelimited = true;
+            }
             break;
         case 'groupinvite':
             notifmessage = "New Group Invite!";
             notifbody = "You have been invited to join a study group!";
+            if (ratelimit(lastnotifinv) < 1) {
+                ratelimited = true;
+            }
             break;
         default:
             // shouldn't be needed, but just in case
             break;
-    }
+    };
 
     if (type !== 'newmessage') {
         // add notification to front of notif array
         notiflist.unshift(notifmessage);
-        // this now gets the notification page
-    }
+        // this now gets shown on the notification page
+    };
 
+    /*
     // check if push notifications are enabled
     if (pushNotificationsEnabled) {
         pushNotif(notifmessage, notifbody);
     }
+    */
+
+    if (!ratelimited) {
+        // email notifs
+    }
 }
 
+/*
 // send push notifications
 function pushNotif(notifmessage, notifbody) {
     if('serviceWorker' in navigator) {
@@ -81,3 +134,4 @@ function pushNotif(notifmessage, notifbody) {
     }
 }
 
+*/
