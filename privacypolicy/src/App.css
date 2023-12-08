@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+.privacy-policy-container {
+  max-width: 600px; /* or any other width you prefer */
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left; /* This will align all text to the left */
+}
+
+
+
