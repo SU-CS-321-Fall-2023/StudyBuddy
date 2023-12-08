@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import { useNotification } from '@/app/contexts/NotificationContext';
 import { authController } from '@/app/controllers'
+import { useState } from 'react';
 
 export default function RegisterPage() {
     const { email, setEmail, password, setPassword, name, setName } = useFormContext()
@@ -19,6 +20,9 @@ export default function RegisterPage() {
     const router = useRouter()
 
     const { setNotification } = useNotification()
+    
+    const [agreeToPrivacyPolicy, setAgreeToPrivacyPolicy] = useState(false);
+
 
     if (user !== null ) {
         router.push('/')
@@ -35,9 +39,17 @@ export default function RegisterPage() {
     const handleNameChange = (event) => {
         setName(event.target.value)
     }
+    const handleCheckboxChange = () => {
+        setAgreeToPrivacyPolicy(!agreeToPrivacyPolicy);
+    }
 
     const handleRegister = async (event) => {
         event.preventDefault()
+        if (!agreeToPrivacyPolicy) {
+            setNotification('Please agree to the Privacy Policy before registering.', 'error');
+            return;
+        }
+
         try {
             const response = await authController.register({
                 name,
@@ -115,6 +127,20 @@ export default function RegisterPage() {
                 }}
             />
             </div>
+            <div className="mb-6">
+                    <label className="flex items-center">
+                        <input
+                            type="checkbox"
+                            checked={agreeToPrivacyPolicy}
+                            onChange={handleCheckboxChange}
+                            className="mr-2"
+                        />
+                        <span className="text-sm text-blue-gray-600">
+                            I agree to the <Link href="/privacy-policy" className="text-blue-500">Privacy Policy</Link>
+                        </span>
+                    </label>
+                </div>
+
             <Button color="green" type="submit" fullWidth>
             Register
             </Button>
