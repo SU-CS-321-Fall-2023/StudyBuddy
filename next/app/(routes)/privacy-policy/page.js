@@ -31,7 +31,7 @@ export default function Page () {
         <ul className="list-disc pl-6">
           <li>Connecting Users: We use class information to connect you with other users in the same class, enhancing your app experience.</li>
           <li>Communication: Your email address is used for account-related communications, and we use chat data to facilitate conversations among users.</li>
-          <li>Improving Services: We may use aggregated and anonymized data to analyze usage patterns and improve our app's functionality.</li>
+          <li>Improving Services: We may use aggregated and anonymized data to analyze usage patterns and improve our app&apos;s functionality.</li>
         </ul>
       </div>
 
@@ -52,7 +52,7 @@ export default function Page () {
       </div>
 
       <div className="mb-8">
-        <h3 className="text-xl font-bold mb-4">Children's Privacy:</h3>
+        <h3 className="text-xl font-bold mb-4">Children&apos;s Privacy:</h3>
         <p>StudyBuddy is intended for users aged 13 and older. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us.</p>
       </div>
 
