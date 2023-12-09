@@ -2,7 +2,7 @@
 import React from "react";
 import {
   Navbar,
-  MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
@@ -75,7 +75,7 @@ export default function NavbarDefault() {
             fill="#90A4AE"
           />
         </svg> */}
-        <Link href="#" className="flex items-center">
+        <Link href="/studygroups" className="flex items-center">
           Study Groups
         </Link>
       </Typography>
@@ -220,7 +220,7 @@ export default function NavbarDefault() {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
+      <Collapse open={openNav}>
         <div className="container mx-auto">
           {navList}
           <div className="flex items-center gap-x-1">
@@ -238,7 +238,7 @@ export default function NavbarDefault() {
           </Button>}
           </div>
         </div>
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
 }
