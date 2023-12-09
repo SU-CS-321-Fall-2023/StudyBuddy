@@ -61,6 +61,16 @@ const toggleEmailNotifications = async (user, token) => {
   };  
 
 
+const getUserByEmail = async (email) => {
+    try {
+        const response = await userService.getUserByEmail(email).then((res) => res.json());
+        return response
+    }
+    catch (error) {
+        console.log(error, 'userService error');
+    }
+}
+
 // give it better name like addClass
 const addClass = async (user, token, classObj) => {
     try {
@@ -243,5 +253,6 @@ export default { get,
     acceptFriendRequest,
     cancelFriendRequest,
     removeFriend,
-    toggleEmailNotifications
+    toggleEmailNotifications,
+    getUserByEmail
  };

@@ -29,6 +29,11 @@ const get = async(userId, token) => {
     return response
 }
 
+const getUserByEmail = async(email) => {
+  const response = await fetch(`${userApiUrl}/byEmail/${email}`);
+  return response
+}
+
 const getAll = async() => {
   const response = await fetch(`${userApiUrl}/?limit=1000`);
   return response
@@ -59,4 +64,4 @@ const acceptFriendRequest = async (accepterUser, requesterUser) => {
   return response
 }
 
-export default { update, get, getAll, sendFriendRequest, acceptFriendRequest}
+export default { update, get, getAll, sendFriendRequest, acceptFriendRequest, getUserByEmail}
