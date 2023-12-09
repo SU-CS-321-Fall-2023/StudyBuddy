@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import { FormProvider } from './contexts/FormContext'
 import { NotificationProvider } from './contexts/NotificationContext'
 import Notification from './components/Notification'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
+    <GoogleOAuthProvider clientId="792093389555-smtmu2ptk96qt3ro324ddbpnm0fjn2tu.apps.googleusercontent.com">
     <AuthProvider> 
         <NotificationProvider>
             <FormProvider>
@@ -36,5 +38,6 @@ export default function RootLayout({ children }) {
             </FormProvider>
         </NotificationProvider>
     </AuthProvider>
+    </GoogleOAuthProvider>
   )
 }

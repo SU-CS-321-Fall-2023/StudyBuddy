@@ -25,6 +25,50 @@ const getAll = async () => {
     }
 }
 
+const toggleEmailNotifications = async (user, token) => {
+    try {
+      // Toggle the value of emailPreferences.notifications
+      const updatedBody = {
+        emailPreferences: {
+          notifications: !user.emailPreferences.notifications,
+        },
+      };
+  
+      // Update the user with the new body
+      const response = await userService.update(user, token, updatedBody);
+  
+      if (response.ok) {
+        const updatedUser = await response.json();
+        return {
+          ok: true,
+          body: updatedUser,
+          message: `Email notifications are now ${updatedUser.emailPreferences.notifications ? 'enabled' : 'disabled'}.`,
+        };
+      } else {
+        return {
+          ok: false,
+          message: 'Failed to update email notifications. Please try again.',
+        };
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+        message: 'Failed to update email notifications. Please try again.',
+      };
+    }
+  };  
+
+
+const getUserByEmail = async (email) => {
+    try {
+        const response = await userService.getUserByEmail(email).then((res) => res.json());
+        return response
+    }
+    catch (error) {
+        console.log(error, 'userService error');
+    }
+}
 
 // give it better name like addClass
 const addClass = async (user, token, classObj) => {
@@ -207,5 +251,7 @@ export default { get,
     sendFriendRequest,
     acceptFriendRequest,
     cancelFriendRequest,
-    removeFriend    
+    removeFriend,
+    toggleEmailNotifications,
+    getUserByEmail
  };
