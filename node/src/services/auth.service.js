@@ -16,7 +16,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
-  return user;
+  return user.populate('classes').populate('studyGroups').populate('friends').populate('friendRequests');
 };
 
 /**

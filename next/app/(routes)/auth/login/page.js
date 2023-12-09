@@ -12,7 +12,9 @@ import { useFormContext } from '@/app/contexts/FormContext'
 import Link from 'next/link';
 import { useNotification } from '@/app/contexts/NotificationContext';
 import { authController } from '@/app/controllers'
-
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import { userController } from '@/app/controllers';
 export default function LoginPage() {
     const { user, setUser, setToken } = useAuthContext()
     const router = useRouter()
@@ -31,6 +33,89 @@ export default function LoginPage() {
     const handlePasswordChange = (event) => {
       setPassword(event.target.value)
     }
+    const responseMessage = (response) => {
+      console.log('Google Login Success:', response);
+      // Do something with the successful response
+    };
+
+    const errorMessage = (error) => {
+      console.error('Google Login Error:', error);
+      // Handle the error or log it as needed
+    };
+
+    const generateRandomPassword = () => {
+      const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_';
+      let password = '';
+    
+      for (let i = 0; i < 12; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+    
+      return password;
+    };
+    
+    const handleGoogleLogin = async (credentialResponse) => {
+      const { credential } = credentialResponse
+      console.log(credential, 'credential')
+      const decodedToken = jwtDecode(credential)
+      const { email, name } = decodedToken
+      const userExists = await userController.getUserByEmail(email)
+      .then((res) => res.code !== 404)
+      .catch((error) => {
+        console.error(error.message); // Handle other errors if necessary
+        return false; // Assuming that any error means the user doesn't exist
+      });
+
+      const GOOGLE_LOGIN_DUMMY_PASSWORD = 'google-login-dummy-password1';
+
+      if (userExists) {
+        // Login
+        const response = await authController.login({
+          email, password: GOOGLE_LOGIN_DUMMY_PASSWORD,
+        })
+        if ((typeof response.user !== 'undefined') && (response.user !== null)) {
+          const { user } = response
+          const fetchedToken = response.tokens.access.token
+          if (window !== undefined) {
+              window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+              window.localStorage.setItem('loggedStudyBuddyUserToken', JSON.stringify(fetchedToken))
+          }
+          // blogService.setToken(fetchedToken)
+          setUser(user)
+          setToken(fetchedToken)
+          setEmail('')
+          setPassword('')
+          router.push('/')
+          setNotification(`Successfully logged in as ${user.name} `, 'success')
+        } else throw new Error(response.message)
+      }
+      else {
+        const response = await authController.register({
+          name, email, password: GOOGLE_LOGIN_DUMMY_PASSWORD,
+        })
+        if ((typeof response.user !== 'undefined') && (response.user !== null)) {
+          const { user } = response
+          const fetchedToken = response.tokens.access.token
+          if (window !== undefined) {
+              window.localStorage.setItem('loggedStudyBuddyUser', JSON.stringify(user),)
+              window.localStorage.setItem('loggedStudyBuddyUserToken', JSON.stringify(fetchedToken))
+          }
+          // blogService.setToken(fetchedToken)
+          setUser(user)
+          setToken(fetchedToken)
+          setEmail('')
+          setPassword('')
+          router.push('/')
+          setNotification(`Successfully logged in as ${user.name} `, 'success')
+        } else throw new Error(response.message)
+      }
+    
+    console.log(userExists, 'doesUserExist');
+    
+      console.log(decodedToken, 'decodedToken')
+    }
+  
   
     const handleLogin = async (event) => {
       event.preventDefault()
@@ -103,6 +188,9 @@ export default function LoginPage() {
         Login
       </Button>
     </form>
+    <GoogleLogin onSuccess={credentialResponse => {
+    handleGoogleLogin(credentialResponse)
+  }} onError={errorMessage} />
     <Typography color="gray" className="text-center font-normal">
       {`Dont have an account?${" "}`}
       <Link href='/auth/register'>

@@ -56,6 +56,8 @@ export default function Page(props) {
     }
 
     return (
+        <main className="flex min-h-screen flex-col items-center justify-between py-4">
+
         <div className="flex h-screen flex-col bg-white">
             <div className="bg-white">
                 <h1 className="text-center text-2xl font-bold text-white"></h1>
@@ -79,5 +81,6 @@ export default function Page(props) {
                 <button type="submit" onClick={handleSendMessage} className="ml-2 rounded-lg bg-blue-500 px-4 py-2 text-white">Send</button>
             </div>
         </div>
+        </main>
     )
 }
