@@ -13,9 +13,13 @@ export default function Page() {
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter()
-    if (user === null || !user) {
-        router.push('/auth/login');
-      }
+    useEffect(() => {
+        if (!user) {
+          if (!user) {
+            router.push('/signin');
+          }
+        }
+      }, [user]);
     
     const { setNotification } = useNotification();
 
