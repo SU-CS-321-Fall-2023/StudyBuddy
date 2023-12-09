@@ -243,7 +243,7 @@ const getBuddyCountBadges = (buddyCount) => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={user.emailPreferences.notifications}
+            checked={user?.emailPreferences.notifications}
             onChange={toggleEmailNotifications}
           />
         }
@@ -271,7 +271,7 @@ const getBuddyCountBadges = (buddyCount) => {
               <>
                 <a className="text-md font-bold"> Buddies </a>
                 <ul className="text-sm font-medium">
-                {fetchedUser.friends.map(f =>
+                {fetchedUser?.friends.map(f =>
                 <li key={f.id}>
                   {f.name}
                   {/* <Button color='red' onClick={()=> handleRemoveBuddy(f)}> x </Button> */}
@@ -289,7 +289,7 @@ const getBuddyCountBadges = (buddyCount) => {
               <>
                 <a className="text-md font-bold"> Classes </a>
                 <ul className="text-sm font-medium">
-                {fetchedUser.classes.map(c =>
+                {fetchedUser?.classes.map(c =>
                 <li key={c.id}>
                   {c.department_code} {c.class_code}: {c.class_title}
                   <Button
