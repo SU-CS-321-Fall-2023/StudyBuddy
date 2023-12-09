@@ -5,10 +5,12 @@ const logger = require('./config/logger');
 const cron = require('node-cron');
 const { checkInactiveUsers } = require('./services/user.service');
 
+const http = require('http').Server(app);
+
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
-  server = app.listen(config.port, () => {
+  server = http.listen(config.port, () => {
     logger.info(`Listening to port ${config.port}`);
   });
 
@@ -22,6 +24,19 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     } catch (error) {
       logger.error(`Error in checkInactiveUsers job: ${error.message}`);
     }
+  });
+});
+
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3002",
+  },
+})
+
+io.on('connection', (socket) => {
+  console.log('connected')
+  socket.on('disconnect', () => {
+    console.log('disconnecte')
   });
 });
 
@@ -50,3 +65,4 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
+
