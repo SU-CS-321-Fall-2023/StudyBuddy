@@ -9,14 +9,14 @@ import { useNotification } from "@/app/contexts/NotificationContext";
 import { useRouter } from 'next/navigation'
 
 export default function Page() {
-    const { user, setUser } = useAuthContext()
+    const { user, fetchedUser, setFetchedUser, setUser } = useAuthContext()
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter()
     useEffect(() => {
-        if (!user) {
+        if (!user || user === null) {
           if (!user) {
-            router.push('/signin');
+            router.push('/auth/login');
           }
         }
       }, [user]);
@@ -62,11 +62,33 @@ export default function Page() {
         }
     }
 
+    const handleAcceptFriendRequest = async (requesterUser) => {
+      try {
+      const response = await userController.acceptFriendRequest(user, requesterUser.id).then((res) => res.json());
+      if (response.ok) {
+        setNotification(`Successfully accepted a friend request from ${requesterUser.name}`, 'success')
+        setUser(response.body)
+      }  else {
+      setNotification(`Error accepting a buddy request from ${requesterUser.name}`, 'error')
+    }
+    } catch (err) {
+        console.log(err);
+      }
+    }
+
+    const handleDeclineFriendRequest = async (requesterUser) => {
+      console.log(requesterUser, 'handleDeclineFriendRequest');
+    }
+
     const handleRemoveBuddy = async (removeeUser) => {
         const response = await userController.removeFriend(user, removeeUser)
 
         if (response.ok) {
             setNotification(`Successfully removed ${removeeUser.name} as a buddy`, 'success')
+            setUser(response.body)
+            if (fetchedUser && fetchedUser.id === user.id) {
+                setFetchedUser(response.body)
+            }
             handleMatch()
         } else {
         setNotification(`Error removing ${removeeUser.name} as a buddy`, 'error')
@@ -107,7 +129,14 @@ export default function Page() {
                 <p>Sent Friend Request</p>
                 <Button color='red' onClick={()=> handleCancelFriendRequest(result)} >Cancel Request</Button>
                 </>
-                ) : (
+                ) : user.friendRequests?.some(request => request.id === result.id) ? (
+                <>
+                <p>Friend Request</p>
+                <Button color='green' onClick={()=> handleAcceptFriendRequest(result)} >Accept Request</Button>
+                <Button color='red' onClick={()=> handleDeclineFriendRequest(result)} >Decline Request</Button>
+                </>
+                )
+                : (
                 <Button color='blue' onClick={()=> handleAddBuddy(result)} >Add Buddy</Button>
                 )}
                 </a> 

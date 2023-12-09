@@ -190,11 +190,6 @@ const acceptFriendRequest = async (accepterId, requesterId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  // Check if there is a friend request from the requester
-  if (!accepterUser.friendRequests.includes(requesterId)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, `No friend request from ${requesterUser.name}`);
-  }
-
   // Add each user to the other's friend list
   accepterUser.friends.push(requesterId);
   requesterUser.friends.push(accepterId);
