@@ -6,11 +6,20 @@ import { userController } from '@/app/controllers';
 
 import { Spinner } from "@material-tailwind/react";
 import { useNotification } from "@/app/contexts/NotificationContext";
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
     const { user, setUser } = useAuthContext()
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter()
+    useEffect(() => {
+        if (!user) {
+          if (!user) {
+            router.push('/signin');
+          }
+        }
+      }, [user]);
     
     const { setNotification } = useNotification();
 

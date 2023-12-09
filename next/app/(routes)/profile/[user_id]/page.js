@@ -15,15 +15,16 @@ import { FormControlLabel, Checkbox, Typography } from '@mui/material';
 
 export default function Page( {params}) {
   // TODO: Extract fetches into their own services
+
   const { user, fetchedUser, setFetchedUser, setUser, token } = useAuthContext()
   const { setMessage, setMessageType } = useNotificationContext();
   const { setNotification } = useNotification();
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true);
-
-  if (!user) {
-    router.push('/auth/login')
+  if (user === null || !user) {
+    router.push('/auth/login');
   }
+
 
   if (user && user.id !== params.user_id) {
     router.push(`/profile/${user.id}`)
@@ -137,10 +138,27 @@ const toggleEmailNotifications = async () => {
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
             {fetchedUser?.name}
           </h3>
-          {fetchedUser?.activity?.lastLogin && <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-            <i className="fas fa-clock mr-2 text-lg text-blueGray-400" />
-            Last login: {new Date(fetchedUser.activity.lastLogin).toLocaleString()}
-          </div>}
+          <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+            Stats & Badges:
+          </h3>
+          <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 ">
+            
+          {fetchedUser?.activity?.lastLogin && 
+          <li>
+            <b>Last login:</b> <i>{new Date(fetchedUser.activity.lastLogin).toLocaleString()} </i>
+            </li>
+          }
+          {fetchedUser?.friends && 
+          <li>
+            <b>Buddies:</b> <i>{fetchedUser.friends?.length || 0} </i>
+            </li>
+          }
+          {fetchedUser?.friends && 
+          <li>
+            <b>Received Buddy Requests:</b> <i>{fetchedUser.friendRequests?.length || 0} </i>
+            </li>
+          }
+          </div>
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
             Email Preferences:
           </h3>

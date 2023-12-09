@@ -16,11 +16,14 @@ export default function Page() {
     const { setNotification } = useNotification();
 
     const handleAccept = async (requesterUser) => {
-        const response = await userController.acceptFriendRequest(user, requesterUser.id)
+        const response = await userController.acceptFriendRequest(user, requesterUser.id).then((res) => res.json());
         console.log(response, 'handleaccept');
         if (response.ok) {
             setNotification(`Successfully accepted a friend request from ${requesterUser.name}`, 'success')
-            handleMatch()
+            setUser(response.body)
+            if (fetchedUser.id === user.id) {
+                setFetchedUser(response.body)
+            }
         } else {
         setNotification(`Error accepting a buddy request from ${requesterUser.name}`, 'error')
       }
