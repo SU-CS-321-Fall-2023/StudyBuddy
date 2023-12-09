@@ -227,7 +227,7 @@ export default function Page() {
                     ))}
                 </div>) : (<div className='flex flex-col gap-2'>
                     {studygroups.map((studyGroup) => (
-                        <Link href={`/studygroups/${studyGroup._id}`}>
+                        <Link key={studyGroup.id} href={`/studygroups/${studyGroup._id}`}>
                             <div
                                 className='flex justify-between space-x-3 items-center bg-gray-100 rounded-lg shadow-lg p-4 m-4'
                                 key={studyGroup.id}
