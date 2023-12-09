@@ -8,10 +8,10 @@ import {
     Card,
     CardBody,
     Input,
-    Button,
     Typography,
 } from "@material-tailwind/react";
-
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import { studyGroupController } from '@/app/controllers';
 import Link from 'next/link';
 
@@ -166,21 +166,24 @@ export default function Page() {
             </div> */}
 
             <div className='flex flex-col justify-center items-center'>
+
                 <div className='flex flex-row justify-center align-center items-center'>
-                    <input onChange={handleSearchTermChange} className='rounded-full p-2 px-4 mt-12' type="search" placeholder='Search for study groups' />
-                    <button
-                        className='bg-blue-500 hover:bg-blue-700 text-white px-4 rounded-full mt-4'
-                        onClick={handleSearchStudyGroup}
-                    >
-                        search
-                    </button>
-                </div>
-                <button
-                    className='bg-blue-500 hover:bg-blue-700 text-white px-4 rounded-full mt-4'
-                    onClick={openModal}
-                >
-                    Add
-                </button>
+                <TextField
+        onChange={handleSearchTermChange}
+        className='rounded-full p-2 px-4 mt-12'
+        variant='outlined'
+        fullWidth
+        placeholder='Search for study groups'
+      />
+      
+    </div>
+    <Button
+        className='bg-blue-500 hover:bg-blue-700 text-white mb-7'
+        onClick={handleSearchStudyGroup}
+        variant='contained'
+      >
+                Search
+      </Button>
 
                 {isModalOpen && (
                     <div className='modal z-10'>
@@ -205,6 +208,10 @@ export default function Page() {
                         </div>
                     </div>
                 )}
+
+                    <div className='flex justify-center items-center'>
+                    <h2 className='text-2xl font-bold'>Study Groups</h2>
+                    </div>
 
                 {searchTerm ? (<div className='flex flex-col gap-2'>
                     {searchResults.map((studyGroup) => (
