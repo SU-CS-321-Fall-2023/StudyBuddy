@@ -29,7 +29,6 @@ const toggleEmailNotifications = async (user, token) => {
     try {
       // Toggle the value of emailPreferences.notifications
       const updatedBody = {
-        ...user,
         emailPreferences: {
           notifications: !user.emailPreferences.notifications,
         },

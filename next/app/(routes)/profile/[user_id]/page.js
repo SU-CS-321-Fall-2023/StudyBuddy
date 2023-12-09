@@ -142,7 +142,7 @@ const toggleEmailNotifications = async () => {
             Last login: {new Date(fetchedUser.activity.lastLogin).toLocaleString()}
           </div>}
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-            Email Notifications:
+            Email Preferences:
           </h3>
       <FormControlLabel
         control={
