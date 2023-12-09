@@ -28,6 +28,10 @@ export default function Page() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [newStudyGroupName, setNewStudyGroupName] = useState('');
 
+    const toggleModal = () => {
+        setModalOpen(!isModalOpen);
+    };
+
     const openModal = () => {
         setModalOpen(true);
     };
@@ -59,12 +63,16 @@ export default function Page() {
 
     const handleCreateStudyGroup = async (event) => {
         event.preventDefault()
+        if (!newStudyGroupName || newStudyGroupName.trim() === '') {
+            setNotification('Please enter a study group name', 'error')
+            return
+        }
         const response = await studyGroupController.createStudyGroup(name)
         if (response.ok) {
             setStudygroups([...studygroups, response])
             setNotification(`Successfully created the group. `, 'success')
             setModalOpen(false)
-            console.log('res1', respons)
+            console.log('res1', response)
         } else {
             setNotification( 'error')
         }
@@ -82,8 +90,11 @@ export default function Page() {
     }
 
     const handleSearchStudyGroup = async (event) => {
-        setSearchResults([])
         event.preventDefault()
+        if (!searchTerm || searchTerm.trim() === '') {
+            setNotification('Please enter a search term', 'error')
+            return
+        }
         const response = await studyGroupController.searchStudyGroup(searchTerm);
         if (response.ok) {
             setSearchResults(response.body)
@@ -113,6 +124,10 @@ export default function Page() {
                 Search
       </Button>
 
+      <Button className='bg-green-500 hover:bg-green-700 text-white mb-7' onClick={toggleModal} variant='contained'>
+                Create Study Group
+        </Button>
+
                 {isModalOpen && (
                     <div className='modal z-10'>
                         <div className='bg-white modal-content border border-gray-300 rounded-lg p-4'>
@@ -130,8 +145,8 @@ export default function Page() {
                                 className='border border-gray-300 rounded-lg p-2 w-full mt-4'
                             />
                             <div className=' flex gap-4'>
-                                <button className='bg-blue-500 hover:bg-blue-700 text-white px-4 rounded-full mt-4' onClick={handleCreateStudyGroup}>Create</button>
-                                <button className='bg-red-500 hover:bg-blue-700 text-white px-4 rounded-full mt-4' onClick={closeModal}>Cancel</button>
+                                <Button className='bg-green-500 hover:bg-green-700 text-white px-4 mt-4' onClick={handleCreateStudyGroup}>Create</Button>
+                                <Button className='bg-red-500 hover:bg-red-700 text-white px-4 mt-4' onClick={toggleModal}>Cancel</Button>
                             </div>
                         </div>
                     </div>
