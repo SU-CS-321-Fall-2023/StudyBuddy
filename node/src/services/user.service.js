@@ -21,7 +21,8 @@ const checkInactiveUsers = async () => {
       const { email, name, classes } = user;
 
       // Check if the user has an email, a reset password token, and enrolled in courses
-      if (email) {
+      // Only send email if they're subscribed to notifications
+      if (email & user.emailPreferences.notifications) {
         try {
           // Construct a message for collaboration reminder email
           const subject = 'StudyBuddy Collaboration Reminder';
