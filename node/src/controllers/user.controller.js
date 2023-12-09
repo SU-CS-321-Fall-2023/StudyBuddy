@@ -39,6 +39,14 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const getUserByEmail = catchAsync(async (req, res) => {
+  const user = await userService.getUserByEmail(req.params.userEmail);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  res.send(user);
+});
+
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
   res.send(user);
@@ -57,5 +65,6 @@ module.exports = {
   deleteUser,
   sendFriendRequest,
   acceptFriendRequest,
-  rejectFriendRequest
+  rejectFriendRequest,
+  getUserByEmail
 };

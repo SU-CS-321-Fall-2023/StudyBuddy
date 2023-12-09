@@ -21,6 +21,10 @@ export default function Page( {params}) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true);
 
+  if (!user) {
+    router.push('/auth/login')
+  }
+
   if (user && user.id !== params.user_id) {
     router.push(`/profile/${user.id}`)
   }
@@ -84,6 +88,7 @@ const toggleEmailNotifications = async () => {
   }
 };
 
+
   if (isLoading) {
     return <Loading />
   }
@@ -132,7 +137,7 @@ const toggleEmailNotifications = async () => {
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
             {fetchedUser?.name}
           </h3>
-          {fetchedUser?.activity.lastLogin && <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+          {fetchedUser?.activity?.lastLogin && <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
             <i className="fas fa-clock mr-2 text-lg text-blueGray-400" />
             Last login: {new Date(fetchedUser.activity.lastLogin).toLocaleString()}
           </div>}
