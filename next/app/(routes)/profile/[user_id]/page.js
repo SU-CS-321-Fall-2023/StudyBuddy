@@ -89,6 +89,43 @@ const toggleEmailNotifications = async () => {
   }
 };
 
+const getLoginBadges = (logins) => {
+  if (logins <= 5) {
+    return "Newcomer Logger: Just started, with 5 or fewer logins.";
+  } else if (logins < 15) {
+    return "Regular Logger: Consistently logging in, more than 5 and less than 15 logins.";
+  } else if (logins < 20) {
+    return "Diligent Logger: Regularly logging in, more than 15 and less than 20 logins.";
+  } else if (logins >= 20) {
+    return "Master Logger: Achieved mastery with 20 or more logins.";
+  } else {
+    return false;
+  }
+};
+
+const getBuddyRequestBadges = (receivedBuddyRequests) => {
+  if (receivedBuddyRequests < 10) {
+    return "Starter Socializer: Just starting connections with fewer than 10 buddy requests.";
+  } else if (receivedBuddyRequests < 15) {
+    return "Social Connector: Building connections with 10 or more and fewer than 15 buddy requests.";
+  } else if (receivedBuddyRequests >= 25) {
+    return "Networking Pro: A well-connected individual with 25 or more buddy requests.";
+  } else {
+    return false;
+  }
+};
+
+const getBuddyCountBadges = (buddyCount) => {
+  if (buddyCount < 10) {
+    return "Friendly Beginner: Making friends with fewer than 10 buddies.";
+  } else if (buddyCount < 15) {
+    return "Buddy Builder: Expanding connections with 10 or more and fewer than 15 buddies.";
+  } else if (buddyCount >= 20) {
+    return "Social Butterfly: Highly connected with 20 or more buddies.";
+  } else {
+    return false;
+  }
+};
 
   if (isLoading) {
     return <Loading />
@@ -139,7 +176,7 @@ const toggleEmailNotifications = async () => {
             {fetchedUser?.name}
           </h3>
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-            Stats & Badges:
+            Stats:
           </h3>
           <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 ">
             
@@ -158,7 +195,48 @@ const toggleEmailNotifications = async () => {
             <b>Received Buddy Requests:</b> <i>{fetchedUser.friendRequests?.length || 0} </i>
             </li>
           }
+          {fetchedUser?.activity?.loginHistory && 
+          <li>
+            <b>Times logged in:</b> <i>{fetchedUser.activity.loginHistory?.length || 0} </i>
+            </li>
+          }
           </div>
+          <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+            Badges:
+            </h3>
+            {fetchedUser?.activity?.loginHistory &&
+            <>
+              {getLoginBadges(fetchedUser.activity.loginHistory.length) &&
+              <li>
+              <b>Badge Earned: </b>
+              <br />
+              {getLoginBadges(fetchedUser.activity.loginHistory.length)}
+              </li>
+              }
+            </>
+            }
+            {fetchedUser?.friendRequests &&
+            <>
+              {getBuddyRequestBadges(fetchedUser.friendRequests.length) &&
+              <li>
+              <b>Badge Earned: </b>
+              <br />
+              {getBuddyRequestBadges(fetchedUser.friendRequests.length)}
+              </li>
+              }
+            </>
+            }
+            {fetchedUser?.friends &&
+            <>
+              {getBuddyCountBadges(fetchedUser.friends.length) &&
+              <li>
+              <b>Badge Earned: </b>
+              <br />
+              {getBuddyCountBadges(fetchedUser.friends.length)}
+              </li>
+              }
+            </>
+            }
           <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
             Email Preferences:
           </h3>
