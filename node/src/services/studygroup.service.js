@@ -7,6 +7,8 @@ const { StudyGroup } = require('../models')
  */
 
 const createStudyGroup = async(studygroup) => {
+    
+    
     return await StudyGroup.create(studygroup);
 }
 

@@ -19,6 +19,13 @@ const getAllStudyGroups = async (user) => {
 }
 
 const createStudyGroup = async (name) => {
+    if(name == null || name == undefined) {
+        return  {
+            ok: false,
+            error,
+            message: 'A group must have a name.',
+        }
+    }
     try {
         const response = await studygroupService
             .createStudyGroup(name)
