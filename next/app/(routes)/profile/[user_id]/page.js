@@ -21,9 +21,13 @@ export default function Page( {params}) {
   const { setNotification } = useNotification();
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true);
-  if (user === null || !user) {
-    router.push('/auth/login');
-  }
+  useEffect(() => {
+    if (!user || user === null) {
+      if (!user) {
+        router.push('/auth/login');
+      }
+    }
+  }, [user]);
 
 
   if (user && user.id !== params.user_id) {
