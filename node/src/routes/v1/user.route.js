@@ -17,6 +17,10 @@ router
   .patch( userController.updateUser)
   .delete(validate(userValidation.deleteUser), userController.deleteUser);
 
+  router
+  .route('/byEmail/:userEmail')
+  .get(userController.getUserByEmail)
+
 router.post('/send-friend-request/:requesterId', userController.sendFriendRequest);
 router.post('/accept-friend-request/:requesterId', userController.acceptFriendRequest)
 router.post('/reject-friend-request/:requesterId', userController.rejectFriendRequest)

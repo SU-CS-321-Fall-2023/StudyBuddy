@@ -79,7 +79,12 @@ const userSchema = mongoose.Schema(
     activity: {
       lastLogin: {
         type: Date
-      }
+      },
+      loginHistory: [
+        {
+          type: Date
+        }
+      ],
     },
 
   },

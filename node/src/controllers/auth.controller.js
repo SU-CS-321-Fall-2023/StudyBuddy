@@ -12,6 +12,7 @@ const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
+  user.activity.loginHistory.push(new Date());
   user.activity.lastLogin = new Date();
   await user.save();
   res.send({ user, tokens });
