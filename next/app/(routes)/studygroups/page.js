@@ -54,7 +54,7 @@ export default function Page() {
     }, [])
 
     const handleStudyGroupNameChange = (event) => {
-        setName(event.target.value)
+        setNewStudyGroupName(event.target.value)
     }
 
     const handleSearchTermChange = (event) => {
@@ -63,19 +63,25 @@ export default function Page() {
 
     const handleCreateStudyGroup = async (event) => {
         event.preventDefault()
+        console.log(event, 'event')
         if (!newStudyGroupName || newStudyGroupName.trim() === '') {
             setNotification('Please enter a study group name', 'error')
             return
         }
-        const response = await studyGroupController.createStudyGroup(name)
-        if (response.ok) {
-            setStudygroups([...studygroups, response])
-            setNotification(`Successfully created the group. `, 'success')
-            setModalOpen(false)
-            console.log('res1', response)
-        } else {
-            setNotification( 'error')
+        try {
+        const response = await studyGroupController.createStudyGroup(newStudyGroupName, user)
+
+
+        console.log(response, 'created study group, response') 
+        setUser(response.user)
+        setStudygroups([...studygroups, response.newGroup])
+        setNotification(`Successfully created the group. `, 'success')
+        setModalOpen(false)
+        } catch (error) {
+            setNotification(`Error `, error)
+            console.log(error, 'error in create study group')
         }
+
     }
     const handleJoinStudyGroup = async (event, studygroup) => {
         event.preventDefault()
@@ -106,16 +112,34 @@ export default function Page() {
 
             <div className='flex flex-col justify-center items-center'>
 
+            <div className='flex justify-center items-center'>
+                    <h2 className='text-2xl font-bold'>My Study Groups</h2>
+            </div>
+                    <div className='flex flex-col gap-2'>
+                    {user?.studyGroups.map((studyGroup) => (
+                        <Link key={studyGroup.id} href={`/studygroups/${studyGroup._id}`}>
+                            <div
+                                className='flex justify-between space-x-3 items-center bg-gray-100 rounded-lg shadow-lg p-4 m-4'
+                                key={studyGroup.id}
+                            >
+                                <h2 className='text-2xl font-bold'>{studyGroup.name}</h2>
+                            </div>
+                        </Link>
+                    ))}
+                    </div>
                 <div className='flex flex-row justify-center align-center items-center'>
+
                 <TextField
-        onChange={handleSearchTermChange}
-        className='rounded-full p-2 px-4 mt-12'
-        variant='outlined'
-        fullWidth
-        placeholder='Search for study groups'
-      />
+                    value={searchTerm}
+                    onChange={handleSearchTermChange}
+                    className='rounded-full p-2 px-4 mt-12'
+                    variant='outlined'
+                    fullWidth
+                    placeholder='Search for study groups'
+                />
       
     </div>
+    
     <Button
         className='bg-blue-500 hover:bg-blue-700 text-white mb-7'
         onClick={handleSearchStudyGroup}
@@ -140,7 +164,7 @@ export default function Page() {
                             <input
                                 type="text"
                                 placeholder="Enter study group name"
-                                //value={newStudyGroupName}
+                                value={newStudyGroupName}
                                 onChange={handleStudyGroupNameChange}
                                 className='border border-gray-300 rounded-lg p-2 w-full mt-4'
                             />

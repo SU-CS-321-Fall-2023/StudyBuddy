@@ -1,5 +1,5 @@
 import apiBaseUrl from '@/app/services'
-
+import { userController } from '../controllers';
 const studygroupApiUrl = `${apiBaseUrl}/studygroups`
 
 //fetch user study groups
@@ -15,16 +15,24 @@ const getAll = async (userId) => {
 }
 
 //create studygroup
-const createStudyGroup = async (studygroupname) => {
+const createStudyGroup = async (studygroupname, userCreator) => {
+  try {
   const response = await fetch(`${studygroupApiUrl}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name: studygroupname }),
+    body: JSON.stringify({ userCreator: userCreator, newGroupBody: {name: studygroupname } }),
   });
 
   return response
+  } catch (error) {
+    return {
+      ok: false,
+      error,
+      message: 'Failed to create study group. Please try again.',
+    };
+  }
 }
 
 //join studygroup

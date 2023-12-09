@@ -18,26 +18,20 @@ const getAllStudyGroups = async (user) => {
     }
 }
 
-const createStudyGroup = async (name) => {
-    if(name == null || name == undefined) {
+const createStudyGroup = async (newStudyGroupTitle, userCreator) => {
+    if(newStudyGroupTitle == null || newStudyGroupTitle == undefined) {
         return  {
             ok: false,
             error,
             message: 'A group must have a name.',
         }
     }
-    try {
         const response = await studygroupService
-            .createStudyGroup(name)
-            .then((res) => res.json());
-        
-    } catch (error) {
-        return {
-            ok: false,
-            error,
-            message: 'Failed to create studygroup. Please try again.',
+            .createStudyGroup(newStudyGroupTitle, userCreator).then((res) => res.json())
+            
+        if (response) {
+            return response
         }
-    }
 }
 
 const joinStudyGroup = async(studygroup, user) => {
