@@ -93,6 +93,11 @@ export default function Page() {
 
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
+        // filter studygroups by search term without fetching from backend
+        const filteredStudyGroups = studygroups.filter((studygroup) => {
+            return studygroup.name.toLowerCase().includes(searchTerm.toLowerCase())
+        })
+        setSearchResults(filteredStudyGroups)
     }
 
     const handleCreateStudyGroup = async (event) => {
@@ -135,10 +140,11 @@ export default function Page() {
             setNotification('Please enter a search term', 'error')
             return
         }
-        const response = await studyGroupController.searchStudyGroup(searchTerm);
-        if (response.ok) {
-            setSearchResults(response.body)
-        } else throw new Error(response.message)
+        // filter studygroups by search term without fetching from backend
+        const filteredStudyGroups = studygroups.filter((studygroup) => {
+            return studygroup.name.toLowerCase().includes(searchTerm.toLowerCase())
+        })
+        setSearchResults(filteredStudyGroups)
     }
 
     return (
@@ -169,15 +175,6 @@ export default function Page() {
                 />
       
     </div>
-    
-    <Button
-        className='bg-blue-500 hover:bg-blue-700 text-white mb-7'
-        onClick={handleSearchStudyGroup}
-        variant='contained'
-        sx={{ marginTop: 2, marginBottom: 2}}
-      >
-                Search
-      </Button>
 
         <Button
         className='bg-green-500 hover:bg-green-700 text-white mb-7'
