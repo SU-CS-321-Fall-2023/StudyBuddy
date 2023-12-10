@@ -20,6 +20,6 @@ router
 
 router
   .route('/mygroups')
-  .post(studyGroupController.getStudyGroups)
+  .get(studyGroupController.getStudyGroups)
 
 module.exports = router;

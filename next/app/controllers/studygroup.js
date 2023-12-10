@@ -1,16 +1,10 @@
 import studygroupService from '@/app/services/studygroup'
 
 const getAllStudyGroups = async (user) => {
-    if(user == null || user == undefined) {
-        return {
-            ok: false,
-            message: 'Kindly provide more details to view groups.',
-        }
-    }
     try {
-        const response = await studygroupService.getAll(user.id)
+        const response = await studygroupService.getAll()
             .then((res) => res.json());
-            console.log(response)
+            console.log(response, 'getAllStudyGroups response')
         return response
     }
     catch (error) {
