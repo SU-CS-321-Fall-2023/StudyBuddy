@@ -56,9 +56,9 @@ export default function Page(props) {
     }
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between py-4">
+        <main className="flex min-h-200 flex-col items-center justify-between py-4">
 
-        <div className="flex h-screen flex-col bg-white">
+        <div className="flex h-[350px] flex-col bg-white">
             <div className="bg-white">
                 <h1 className="text-center text-2xl font-bold text-white"></h1>
             </div>

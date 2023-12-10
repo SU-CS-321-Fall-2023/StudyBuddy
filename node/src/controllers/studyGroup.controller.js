@@ -10,16 +10,15 @@ const createStudyGroup = catchAsync(async(req, res) => {
 
 const getStudyGroups = catchAsync(async(req, res) => {
     const studyGroups = await studygroupService.getStudyGroups()
-    console.log(studyGroups, 'studyGroups')
     res.send(studyGroups)
 })
 
 const joinStudyGroup = catchAsync(async(req, res) => {
-    const studygroup = await studygroupService.joinStudyGroup(
+    const response = await studygroupService.joinStudyGroup(
         req.params.studygroupId, req.body.user.id
     )
 
-    res.send(studygroup)
+    res.send(response)
 })
 
 const searchStudyGroup = catchAsync(async(req, res) => {

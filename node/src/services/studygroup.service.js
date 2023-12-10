@@ -9,8 +9,6 @@ const userService = require('./user.service')
 const createStudyGroup = async (studygroup) => {
 
     const newObj = studygroup.newGroupBody
-    console.log(newObj, 'studygroup');
-
     // Create a new study group
     const newGroup = await StudyGroup.create(newObj);
 
@@ -51,11 +49,22 @@ const getStudyGroups = async() => {
  */
 
 const joinStudyGroup = async(studygroupId, userId) =>{
-    return await StudyGroup.findByIdAndUpdate(
-        studygroupId,
-        { $push: { users: userId }},
-        { new: true, useFindAndModify: false }
-    );
+    console.log(studygroupId, userId, 'studygroup service')
+    const studyGroup = await StudyGroup.findById(studygroupId);
+    studyGroup.users.push(userId);
+    await studyGroup.save();
+    const user = await userService.getUserById(userId);
+    user.studyGroups.push(studyGroup);
+    await user.save();
+    const updatedStudyGroups = await StudyGroup.find({});
+    return {
+        ok: true,
+        body: {
+            updatedStudyGroups: updatedStudyGroups,
+            updatedUser: user
+        },
+        message: 'You have joined the group.',
+    }
 }
 
 /**
