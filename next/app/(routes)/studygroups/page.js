@@ -5,15 +5,18 @@ import { useAuthContext } from "@/app/contexts/AuthContext";
 import { useEffect, useState } from 'react'
 import { Spinner } from "@material-tailwind/react";
 import {
-    Card,
     CardBody,
     Input,
-    Typography,
 } from "@material-tailwind/react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { studyGroupController } from '@/app/controllers';
 import Link from 'next/link';
+
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 export default function Page() {
     const { name, setName } = useFormContext()
@@ -31,6 +34,37 @@ export default function Page() {
     const toggleModal = () => {
         setModalOpen(!isModalOpen);
     };
+
+    const StudyGroupCard = ({ studyGroupToShow }) => {
+        return (
+            <Card sx={{ backgroundColor: '#3498db', color: '#ffffff', marginBottom: 3,
+            borderRadius: 3
+            }}>
+            <CardContent>
+              <Typography variant="h5">
+                {studyGroupToShow.name}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                size="small"
+                href={`/studygroups/${studyGroupToShow._id}`}
+                sx={{
+                  backgroundColor: '#ffffff',
+                  color: '#3498db',
+                  '&:hover': {
+                    backgroundColor: '#3498db',
+                    color: '#ffffff',
+                  },
+                  borderRadius: 2
+                }}
+              >
+                Go to Study Group
+              </Button>
+            </CardActions>
+          </Card>
+        )
+    }
 
     const openModal = () => {
         setModalOpen(true);
@@ -116,16 +150,12 @@ export default function Page() {
                     <h2 className='text-2xl font-bold'>My Study Groups</h2>
             </div>
                     <div className='flex flex-col gap-2'>
-                    {user?.studyGroups.map((studyGroup) => (
-                        <Link key={studyGroup.id} href={`/studygroups/${studyGroup._id}`}>
-                            <div
-                                className='flex justify-between space-x-3 items-center bg-gray-100 rounded-lg shadow-lg p-4 m-4'
-                                key={studyGroup.id}
-                            >
-                                <h2 className='text-2xl font-bold'>{studyGroup.name}</h2>
-                            </div>
-                        </Link>
-                    ))}
+                    {user?.studyGroups.length > 0 ? (user?.studyGroups.map((studyGroup) => (
+                        <StudyGroupCard key={studyGroup.id} studyGroupToShow={studyGroup} />
+                    ))) : (
+                        <p>You haven't joined a study group yet.</p>
+                    )
+                }
                     </div>
                 <div className='flex flex-row justify-center align-center items-center'>
 
@@ -144,12 +174,25 @@ export default function Page() {
         className='bg-blue-500 hover:bg-blue-700 text-white mb-7'
         onClick={handleSearchStudyGroup}
         variant='contained'
+        sx={{ marginTop: 2, marginBottom: 2}}
       >
                 Search
       </Button>
 
-      <Button className='bg-green-500 hover:bg-green-700 text-white mb-7' onClick={toggleModal} variant='contained'>
-                Create Study Group
+        <Button
+        className='bg-green-500 hover:bg-green-700 text-white mb-7'
+        onClick={toggleModal}
+        variant='contained'
+        sx={{
+            backgroundColor: '#4CAF50', // Green color
+            color: '#ffffff', // White text color
+            '&:hover': {
+            backgroundColor: '#45a049', // Darker green color on hover
+            },
+            marginBottom: 2,
+        }}
+        > 
+           Create Study Group
         </Button>
 
                 {isModalOpen && (
@@ -189,16 +232,9 @@ export default function Page() {
                         </div>
                     ))}
                 </div>) : (<div className='flex flex-col gap-2'>
-                    {studygroups?.map((studyGroup) => (
-                        <Link key={studyGroup.id} href={`/studygroups/${studyGroup._id}`}>
-                            <div
-                                className='flex justify-between space-x-3 items-center bg-gray-100 rounded-lg shadow-lg p-4 m-4'
-                                key={studyGroup.id}
-                            >
-                                <h2 className='text-2xl font-bold'>{studyGroup.name}</h2>
-                            </div>
-                        </Link>
-                    ))}
+                {studygroups?.map((studyGroup) => (
+                <StudyGroupCard key={studyGroup.id} studyGroupToShow={studyGroup} />
+                ))}
                 </div>)}
             </div>
         </main>
