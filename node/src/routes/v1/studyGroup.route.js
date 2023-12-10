@@ -12,7 +12,7 @@ router
 
 router
   .route('/:studygroupId')
-  .put(validate(studyGroupValidation.joinStudyGroup), studyGroupController.joinStudyGroup);
+  .put(studyGroupController.joinStudyGroup);
 
 router
   .route('/search')

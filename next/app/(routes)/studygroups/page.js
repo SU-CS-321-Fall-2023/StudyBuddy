@@ -100,11 +100,16 @@ export default function Page() {
         event.preventDefault()
         setModalOpen(false)
         const response = await studyGroupController.joinStudyGroup(studygroup, user);
+        console.log(response, 'join study group response')
         if (response.ok) {
-            setStudygroups([...studygroups, response])
+            console.log(response.body, 'response body')
+            console.log(response.body.body.updatedStudyGroups, 'updated study groups')
+            console.log(response.body.body.updatedUser, 'updated user')
+            setStudygroups(response.body.body.updatedStudyGroups)
+            setUser(response.body.body.updatedUser)
             setNotification(`Welcome to the group.`, 'success')
         } else {
-            setNotification(`Error `, 'error')
+            setNotification(`Error `, response.message)
         }
     }
 

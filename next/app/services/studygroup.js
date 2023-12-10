@@ -39,7 +39,7 @@ const joinStudyGroup = async (studygroupId, userId) => {
     body: JSON.stringify({ user: { id: userId } }),
   });
 
-  response.log('response', response)
+  console.log(response, 'joinStudyGroup response')
   return response
 }
 
