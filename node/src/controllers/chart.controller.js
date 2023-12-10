@@ -10,7 +10,7 @@ const sendMessage = catchAsync(async (req, res) => {
 })
 
 const getGroupMessages = catchAsync(async (req, res) => {
-    const messages = await chartService.getGroupCharts(req.param.groupId)
+    const messages = await chartService.getGroupCharts(req.params.groupId)
     res.send(messages)
 })
 

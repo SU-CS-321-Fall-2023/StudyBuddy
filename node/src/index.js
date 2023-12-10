@@ -5,6 +5,8 @@ const logger = require('./config/logger');
 const cron = require('node-cron');
 const { checkInactiveUsers } = require('./services/user.service');
 
+const StudyGroup = require('../src/models/studygroup.model')
+
 const http = require('http').Server(app);
 
 let server;
@@ -29,7 +31,7 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: "http://localhost:3002",
+    origin: "http://localhost:3001",
   },
 })
 
@@ -38,6 +40,30 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('disconnecte')
   });
+
+  socket.on('joinGroup', ({ groupId }) => {
+    socket.join(groupId)
+    console.log('user joined the group')
+  });
+
+  socket.on('leaveGroup', ({ groupId }) => {
+    socket.leave(groupId)
+    console.log('user left the group')
+  });
+
+  socket.on('groupChatMessage', async ({ groupId, message }) => {
+    const group = await StudyGroup.findByIdAndUpdate(
+        groupId,
+      { $push: { messages: message } },
+      { new: true, useFindAndModify: false }
+    );
+    console.log('id', groupId, 'ms', message, 'g', group)
+    io.to(groupId).emit('newMessage', {
+      message: group.messages
+    })
+
+  })
+
 });
 
 const exitHandler = () => {
@@ -65,4 +91,3 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
-
