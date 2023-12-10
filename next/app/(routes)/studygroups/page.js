@@ -17,10 +17,11 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { userController } from '@/app/controllers';
 
 export default function Page() {
     const { name, setName } = useFormContext()
-    const { user, setUser } = useAuthContext()
+    const { user, setUser, token, fetchedUser, setFetchedUser } = useAuthContext()
     const [studygroups, setStudygroups] = useState([]);
     const { setNotification } = useNotification();
     const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +31,19 @@ export default function Page() {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [newStudyGroupName, setNewStudyGroupName] = useState('');
+
+    useEffect(() => {
+        if (user) {
+        async function fetchUser() {
+          const response = await userController.get(user.id, token)
+          if (response.id === user.id) {
+            setUser(response)
+          }
+          setIsLoading(false);
+        }
+        fetchUser();
+        }
+      }, [studygroups]);
 
     const toggleModal = () => {
         setModalOpen(!isModalOpen);
@@ -106,7 +120,6 @@ export default function Page() {
             console.log(response.body.body.updatedStudyGroups, 'updated study groups')
             console.log(response.body.body.updatedUser, 'updated user')
             setStudygroups(response.body.body.updatedStudyGroups)
-            setUser(response.body.body.updatedUser)
             setNotification(`Welcome to the group.`, 'success')
         } else {
             setNotification(`Error `, response.message)
@@ -205,8 +218,48 @@ export default function Page() {
         <main className="flex min-h-screen flex-col items-center justify-between py-4">
 
             <div className='flex flex-col justify-center items-center'>
+            <Button
+        className='bg-green-500 hover:bg-green-700 text-white mb-7'
+        onClick={toggleModal}
+        variant='contained'
+        sx={{
+            backgroundColor: '#4CAF50', // Green color
+            color: '#ffffff', // White text color
+            '&:hover': {
+            backgroundColor: '#45a049', // Darker green color on hover
+            },
+            marginBottom: 2,
+            marginTop: 2,
+        }}
+        > 
+           Create Study Group
+        </Button>
 
+                {isModalOpen && (
+                    <div className='modal z-10'>
+                        <div className='bg-white modal-content border border-gray-300 rounded-lg p-4 mb-4'>
+                            <div className='flex justify-end'>
+                                <span className='close bg-gray-400 h-5 w-5 rounded-full flex justify-center items-center' onClick={closeModal}>
+                                    &times;
+                                </span>
+                            </div>
+                            <h2>Create Study Group</h2>
+                            <input
+                                type="text"
+                                placeholder="Enter study group name"
+                                value={newStudyGroupName}
+                                onChange={handleStudyGroupNameChange}
+                                className='border border-gray-300 rounded-lg p-2 w-full mt-4'
+                            />
+                            <div className=' flex gap-4'>
+                                <Button className='bg-green-500 hover:bg-green-700 text-white px-4 mt-4' onClick={handleCreateStudyGroup}>Create</Button>
+                                <Button className='bg-red-500 hover:bg-red-700 text-white px-4 mt-4' onClick={toggleModal}>Cancel</Button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             <div className='flex justify-center items-center'>
+                
                     <h2 className='text-2xl font-bold'>My Study Groups</h2>
             </div>
                     <div className='flex flex-col gap-2'>
@@ -230,47 +283,9 @@ export default function Page() {
       
     </div>
 
-        <Button
-        className='bg-green-500 hover:bg-green-700 text-white mb-7'
-        onClick={toggleModal}
-        variant='contained'
-        sx={{
-            backgroundColor: '#4CAF50', // Green color
-            color: '#ffffff', // White text color
-            '&:hover': {
-            backgroundColor: '#45a049', // Darker green color on hover
-            },
-            marginBottom: 2,
-        }}
-        > 
-           Create Study Group
-        </Button>
-
-                {isModalOpen && (
-                    <div className='modal z-10'>
-                        <div className='bg-white modal-content border border-gray-300 rounded-lg p-4'>
-                            <div className='flex justify-end'>
-                                <span className='close bg-gray-400 h-5 w-5 rounded-full flex justify-center items-center' onClick={closeModal}>
-                                    &times;
-                                </span>
-                            </div>
-                            <h2>Create Study Group</h2>
-                            <input
-                                type="text"
-                                placeholder="Enter study group name"
-                                value={newStudyGroupName}
-                                onChange={handleStudyGroupNameChange}
-                                className='border border-gray-300 rounded-lg p-2 w-full mt-4'
-                            />
-                            <div className=' flex gap-4'>
-                                <Button className='bg-green-500 hover:bg-green-700 text-white px-4 mt-4' onClick={handleCreateStudyGroup}>Create</Button>
-                                <Button className='bg-red-500 hover:bg-red-700 text-white px-4 mt-4' onClick={toggleModal}>Cancel</Button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+  
                 <div className='flex justify-center items-center'>
-                    <h2 className='text-2xl font-bold'>Study Groups</h2>
+                    <h2 className='text-2xl font-bold'>All Study Groups</h2>
                     </div>
                     {
                     searchTerm ? (
