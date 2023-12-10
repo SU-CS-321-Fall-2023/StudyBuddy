@@ -39,8 +39,8 @@ const createStudyGroup = async (studygroup) => {
  * @returns {Promise<StudyGroup>}
  */
 
-const getStudyGroups = async(userId) => {
-    return await StudyGroup.find({ users: userId});
+const getStudyGroups = async() => {
+    return await StudyGroup.find({});
 }
 
 /**

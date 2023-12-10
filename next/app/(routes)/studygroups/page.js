@@ -47,11 +47,16 @@ export default function Page() {
         setIsLoading(true)
 
         const fetchstudygroups = async () => {
-            const response = await studyGroupController.getAllStudyGroups(user);
-            setStudygroups([...studygroups, ...response])
+            const response = await studyGroupController.getAllStudyGroups();
+            console.log(response, 'fetchedstudygroups')   
+            setStudygroups(response)
         }
 
+
         fetchstudygroups()
+            .then((response) => {
+                console.log(response, 'response')
+            })
             .catch(console.error);
         setIsLoading(false)
     }, [])

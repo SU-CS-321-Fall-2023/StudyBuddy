@@ -9,8 +9,8 @@ const createStudyGroup = catchAsync(async(req, res) => {
 })
 
 const getStudyGroups = catchAsync(async(req, res) => {
-    const id = mongoose.Types.ObjectId(req.body.user.id);
-    const studyGroups = await studygroupService.getStudyGroups(id)
+    const studyGroups = await studygroupService.getStudyGroups()
+    console.log(studyGroups, 'studyGroups')
     res.send(studyGroups)
 })
 
