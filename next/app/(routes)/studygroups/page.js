@@ -35,37 +35,6 @@ export default function Page() {
         setModalOpen(!isModalOpen);
     };
 
-    const StudyGroupCard = ({ studyGroupToShow }) => {
-        return (
-            <Card sx={{ backgroundColor: '#3498db', color: '#ffffff', marginBottom: 3,
-            borderRadius: 3
-            }}>
-            <CardContent>
-              <Typography variant="h5">
-                {studyGroupToShow.name}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                size="small"
-                href={`/studygroups/${studyGroupToShow._id}`}
-                sx={{
-                  backgroundColor: '#ffffff',
-                  color: '#3498db',
-                  '&:hover': {
-                    backgroundColor: '#3498db',
-                    color: '#ffffff',
-                  },
-                  borderRadius: 2
-                }}
-              >
-                Go to Study Group
-              </Button>
-            </CardActions>
-          </Card>
-        )
-    }
-
     const openModal = () => {
         setModalOpen(true);
     };
@@ -147,6 +116,81 @@ export default function Page() {
         setSearchResults(filteredStudyGroups)
     }
 
+    const StudyGroupCard = ({ studyGroupToShow }) => {
+        if (!studyGroupToShow) {
+          return null;
+        }
+        const isUserInStudyGroup = user.studyGroups.some((group) => group._id === studyGroupToShow._id)
+        return (
+          <Card
+          sx={{ backgroundColor: '#3498db', color: '#ffffff', marginBottom: 3, borderRadius: 3,
+          display: 'flex',  
+          flexDirection: 'column',
+        }}
+          >
+            <CardContent>
+              <Typography variant="h5">
+                {studyGroupToShow.name}
+              </Typography>
+              <Typography variant="body2">
+                id: {studyGroupToShow._id}
+                </Typography>
+                <Typography variant="body2">
+                members: {studyGroupToShow.users.length}
+                </Typography>
+                {isUserInStudyGroup ? (
+                    <Typography variant="body2">
+                        You are a member of this study group.
+                        </Typography>):
+                        (<Typography variant="body2">
+                            You are not a member of this study group.
+                            </Typography>)}
+            </CardContent>
+            <CardActions>
+            {
+            isUserInStudyGroup ? (
+                <CardActions>
+                <Button
+                    size="small"
+                    href={`/studygroups/${studyGroupToShow._id}`}
+                    sx={{
+                    backgroundColor: '#ffffff',
+                    color: '#3498db',
+                    '&:hover': {
+                        backgroundColor: '#3498db',
+                        color: '#ffffff',
+                    },
+                    borderRadius: 2,
+                    }}
+                >
+                    Go to Study Group
+                </Button>
+                </CardActions>
+            ) : (
+                <>
+               
+                <Button
+                size="small"
+                onClick={(event) => handleJoinStudyGroup(event, studyGroupToShow)}
+                sx={{
+                    color: '#ffffff',
+                    '&:hover': {
+                    backgroundColor: '#1769aa',
+                    },
+                    borderRadius: 2,
+                }}
+                >
+                Join
+                </Button>
+                </>
+            )
+            }
+
+            </CardActions>
+          </Card>
+        );
+      };
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-between py-4">
 
@@ -159,7 +203,7 @@ export default function Page() {
                     {user?.studyGroups.length > 0 ? (user?.studyGroups.map((studyGroup) => (
                         <StudyGroupCard key={studyGroup.id} studyGroupToShow={studyGroup} />
                     ))) : (
-                        <p>You haven't joined a study group yet.</p>
+                        <p>You haven&apos;t joined a study group yet.</p>
                     )
                 }
                     </div>
@@ -218,21 +262,36 @@ export default function Page() {
                 <div className='flex justify-center items-center'>
                     <h2 className='text-2xl font-bold'>Study Groups</h2>
                     </div>
-                {searchTerm ? (
-                <div className='flex flex-col gap-2'>
-                    {searchResults.map((studyGroup) => (
-                        <div className='flex justify-between space-x-3 items-center bg-gray-100 rounded-lg shadow-lg p-4 m-4' key={studyGroup.id}>
-                            <h2 className='text-2xl font-bold'>{studyGroup.name}</h2>
-                            <button onClick={(event) => handleJoinStudyGroup(event, studyGroup)} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4'>
-                                Join
-                            </button>
+                    {
+                    searchTerm ? (
+                        <div className='flex flex-col gap-2'>
+                        {searchResults.map((studyGroup) => (
+                            <StudyGroupCard key={studyGroup.id} studyGroupToShow={studyGroup} />
+                        ))}
                         </div>
-                    ))}
-                </div>) : (<div className='flex flex-col gap-2'>
-                {studygroups?.map((studyGroup) => (
-                <StudyGroupCard key={studyGroup.id} studyGroupToShow={studyGroup} />
-                ))}
-                </div>)}
+                    ) : (
+                        <div className='flex flex-col gap-2'>
+                        {studygroups
+                            ?.sort((groupA, groupB) => {
+                            // Move groups where the user is a member to the front
+                            const isUserInGroupA = user.studyGroups.some((group) => group._id === groupA._id);
+                            const isUserInGroupB = user.studyGroups.some((group) => group._id === groupB._id);
+
+                            if (isUserInGroupA && !isUserInGroupB) {
+                                return -1;
+                            } else if (!isUserInGroupA && isUserInGroupB) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                            })
+                            .map((studyGroup) => (
+                            <StudyGroupCard key={studyGroup.id} studyGroupToShow={studyGroup} />
+                            ))}
+                        </div>
+                    )
+                    }
+
             </div>
         </main>
     )
