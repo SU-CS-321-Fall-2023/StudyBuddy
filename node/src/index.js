@@ -6,6 +6,7 @@ const cron = require('node-cron');
 const { checkInactiveUsers } = require('./services/user.service');
 
 const StudyGroup = require('../src/models/studygroup.model')
+const PrivateMessage = require('../src/models/private.message.model')
 
 const http = require('http').Server(app);
 
@@ -53,16 +54,40 @@ io.on('connection', (socket) => {
 
   socket.on('groupChatMessage', async ({ groupId, message }) => {
     const group = await StudyGroup.findByIdAndUpdate(
-        groupId,
+      groupId,
       { $push: { messages: message } },
-      { new: true, useFindAndModify: false }
-    );
-    console.log('id', groupId, 'ms', message, 'g', group)
+      { new: true, useFindAndModify: false }).populate('messages.user')
+
     io.to(groupId).emit('newMessage', {
       message: group.messages
     })
-
   })
+
+  socket.on('ChatMessages', async ({ groupId }) => {
+    const group = await StudyGroup.findById(groupId).populate('messages.user')
+    io.to(groupId).emit('newMessage', {
+      message: group.messages
+    })
+  })
+
+  socket.on('privateChatMessage', async ({ chatId, message }) => {
+    const chat = await PrivateMessage.findByIdAndUpdate(
+      chatId,
+      { $push: { messages: message } },
+      { new: true, useFindAndModify: false }).populate('messages.user')
+
+    io.to(chatId).emit('newPrivateMessage', {
+      privateMessage: chat.messages
+    })
+  })
+
+  socket.on('privateMessages', async ({ chatId }) => {
+    const chat = await PrivateMessage.findById(chatId).populate('messages.user')
+    io.to(chatId).emit('newPrivateMessage', {
+      privateMessage: chat.messages
+    })
+  })
+
 
 });
 

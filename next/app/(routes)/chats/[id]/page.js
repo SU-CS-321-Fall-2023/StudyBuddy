@@ -1,6 +1,5 @@
 'use client'
 import { useState, useEffect, useRef } from "react"
-import { useSearchParams } from 'next/navigation'
 
 import { socket } from "@/app/socket/socket"
 import { useAuthContext } from "@/app/contexts/AuthContext"
@@ -9,33 +8,33 @@ export default function Page(props) {
     const [messages, setMessages] = useState([])
     const { user, setUser } = useAuthContext()
     const messageRef = useRef()
-    const groupId = props.params.id
+    const chatId = props.params.id
 
     useEffect(() => {
-        socket.emit("ChatMessages", {
-            groupId
+        socket.emit("privateMessages", {
+            chatId
         })
     }, [])
 
     useEffect(() => {
         socket.emit('joinGroup', {
-            groupId
+            chatId
         })
-        socket.on('newMessage', ({ message }) => {
-            setMessages(message)
-            console.log('m', message)
+        socket.on('newPrivateMessage', ({ privateMessage }) => {
+            setMessages(privateMessage)
+            console.log('m', privateMessage)
         })
         messageRef.current.value = ''
 
         return () => {
-            socket.emit('leaveGroup', { groupId })
+            socket.emit('leaveGroup', { chatId })
         }
     }, [messages])
 
     const handleSendMessage = () => {
         if (socket) {
-            socket.emit("groupChatMessage", {
-                groupId,
+            socket.emit("privateChatMessage", {
+                chatId,
                 message: {
                     user: user.id,
                     content: messageRef.current.value,
@@ -48,6 +47,7 @@ export default function Page(props) {
     }
 
     const showChats = (message) => {
+        console.log(message)
         if (message.user.id == user.id) {
             return (
                 <div className="flex items-center self-end rounded-xl rounded-tr bg-blue-500 py-2 px-3 text-white">
@@ -60,7 +60,6 @@ export default function Page(props) {
                     <div className="flex items-center self-start rounded-xl rounded-tl bg-gray-300 py-2 px-3">
                         <p>{message.content}</p>
                     </div>
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-500">{message.user.name}</span>
                 </div>
             )
         }
@@ -76,9 +75,9 @@ export default function Page(props) {
                 </div>
                 <div className="flex-grow overflow-y-auto">
                     <div className="flex flex-col space-y-2 p-4">
-                        {messages.length > 0 ? messages.map((message) => (
+                        {messages && messages.length > 0 ? messages.map((message) => (
                             showChats(message)
-                        )) : <div><p>No group messages</p></div>}
+                        )) : <div><p>No private messages</p></div>}
 
                     </div>
                 </div>
