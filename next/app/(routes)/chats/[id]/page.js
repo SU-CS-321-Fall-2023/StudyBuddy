@@ -17,7 +17,7 @@ export default function Page(props) {
     }, [])
 
     useEffect(() => {
-        socket.emit('joinGroup', {
+        socket.emit('joinChat', {
             chatId
         })
         socket.on('newPrivateMessage', ({ privateMessage }) => {
@@ -27,7 +27,7 @@ export default function Page(props) {
         messageRef.current.value = ''
 
         return () => {
-            socket.emit('leaveGroup', { chatId })
+            socket.emit('leaveChat', { chatId })
         }
     }, [messages])
 

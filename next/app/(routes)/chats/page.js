@@ -46,33 +46,42 @@ export default function Page() {
     }, [])
 
     const friends = (friends) => {
-        console.log(friends)
-        if(friends.includes(user.id)) {
-          return  (<d class="mb-2  text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">friends</d>)
+        if (friends.includes(user.id)) {
+            return (<d class="mb-2  text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">friends</d>)
         } else {
-           return (<d class="mb-2 text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">Not friends</d>)
+            return (<d class="mb-2 text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">Not friends</d>)
         }
     }
 
     const ContactCard = (chat) => {
-        return (
-            
+        if (chat.receiverId.id == user.id) {
+            return (
+
                 <div class="flex flex-row max-w-sm p-4 bg-green-500 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <p class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.receiverId.name} -</p>
-                {friends(chat.receiverId.friends)}
-        </div>
-        )
+                    <p class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.senderId.name} -</p>
+                    {friends(chat.senderId.friends)}
+                </div>
+            )
+        } else {
+            return (
+                <div class="flex flex-row max-w-sm p-4 bg-green-500 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <p class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.receiverId.name} -</p>
+                    {friends(chat.receiverId.friends)}
+                </div>
+            )
+        }
+
     }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between py-4">
 
             <div className='flex flex-col justify-center items-center'>
-            {chats.length > 0 ? (chats.map((chat) => (
-                <Link href={ `/chats/${chat._id}`}>
-                     {ContactCard(chat)}
-                </Link>
-            ))): <div>No chats</div>}
+                {chats.length > 0 ? (chats.map((chat) => (
+                    <Link href={`/chats/${chat._id}`}>
+                        {ContactCard(chat)}
+                    </Link>
+                ))) : <div>No chats</div>}
             </div>
         </main>
     )

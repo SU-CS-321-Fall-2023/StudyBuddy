@@ -52,6 +52,16 @@ io.on('connection', (socket) => {
     console.log('user left the group')
   });
 
+  socket.on('joinChat', ({ chatId }) => {
+    socket.join(chatId)
+    console.log('user joined the chat')
+  });
+
+  socket.on('leaveChat', ({ chatId }) => {
+    socket.leave(chatId)
+    console.log('user left the chat')
+  });
+
   socket.on('groupChatMessage', async ({ groupId, message }) => {
     const group = await StudyGroup.findByIdAndUpdate(
       groupId,
