@@ -1,16 +1,10 @@
 import studygroupService from '@/app/services/studygroup'
 
 const getAllStudyGroups = async (user) => {
-    if(user == null || user == undefined) {
-        return {
-            ok: false,
-            message: 'Kindly provide more details to view groups.',
-        }
-    }
     try {
-        const response = await studygroupService.getAll(user.id)
+        const response = await studygroupService.getAll()
             .then((res) => res.json());
-            console.log(response)
+            console.log(response, 'getAllStudyGroups response')
         return response
     }
     catch (error) {
@@ -18,19 +12,20 @@ const getAllStudyGroups = async (user) => {
     }
 }
 
-const createStudyGroup = async (name) => {
-    try {
-        const response = await studygroupService
-            .createStudyGroup(name)
-            .then((res) => res.json());
-        
-    } catch (error) {
-        return {
+const createStudyGroup = async (newStudyGroupTitle, userCreator) => {
+    if(newStudyGroupTitle == null || newStudyGroupTitle == undefined) {
+        return  {
             ok: false,
             error,
-            message: 'Failed to create studygroup. Please try again.',
+            message: 'A group must have a name.',
         }
     }
+        const response = await studygroupService
+            .createStudyGroup(newStudyGroupTitle, userCreator).then((res) => res.json())
+            
+        if (response) {
+            return response
+        }
 }
 
 const joinStudyGroup = async(studygroup, user) => {

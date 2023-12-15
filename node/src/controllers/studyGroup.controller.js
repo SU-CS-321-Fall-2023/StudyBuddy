@@ -9,17 +9,16 @@ const createStudyGroup = catchAsync(async(req, res) => {
 })
 
 const getStudyGroups = catchAsync(async(req, res) => {
-    const id = mongoose.Types.ObjectId(req.body.user.id);
-    const studyGroups = await studygroupService.getStudyGroups(id)
+    const studyGroups = await studygroupService.getStudyGroups()
     res.send(studyGroups)
 })
 
 const joinStudyGroup = catchAsync(async(req, res) => {
-    const studygroup = await studygroupService.joinStudyGroup(
+    const response = await studygroupService.joinStudyGroup(
         req.params.studygroupId, req.body.user.id
     )
 
-    res.send(studygroup)
+    res.send(response)
 })
 
 const searchStudyGroup = catchAsync(async(req, res) => {

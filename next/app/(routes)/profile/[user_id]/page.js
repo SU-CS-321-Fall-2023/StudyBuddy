@@ -270,6 +270,23 @@ const getBuddyCountBadges = (buddyCount) => {
           <div className="flex flex-wrap justify-center">
             <div className="w-full lg:w-9/12 px-4">
             <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
+
+              {fetchedUser?.studyGroups?.length 
+              ? 
+              <>
+                <a className="text-md font-bold"> Study Groups </a>
+                <ul className="text-sm font-medium">
+                {fetchedUser?.studyGroups.map(f =>
+                <li key={f.id}>
+                  {f.name}
+                  {/* <Button color='red' onClick={()=> handleRemoveBuddy(f)}> x </Button> */}
+                  </li>)}
+                </ul>
+              </>
+              
+              : 
+              <p>{`You haven't joined any study groups yet.`}</p>
+              }
               {fetchedUser?.friends?.length 
               ? 
               <>

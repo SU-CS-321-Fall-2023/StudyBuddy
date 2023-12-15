@@ -12,7 +12,7 @@ router
 
 router
   .route('/:studygroupId')
-  .put(validate(studyGroupValidation.joinStudyGroup), studyGroupController.joinStudyGroup);
+  .put(studyGroupController.joinStudyGroup);
 
 router
   .route('/search')
@@ -20,6 +20,6 @@ router
 
 router
   .route('/mygroups')
-  .post(studyGroupController.getStudyGroups)
+  .get(studyGroupController.getStudyGroups)
 
 module.exports = router;

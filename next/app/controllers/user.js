@@ -115,6 +115,49 @@ const addClass = async (user, token, classObj) => {
     };
 };
 
+const addStudyGroup = async (user, token, studyGroupObj) => {
+    try {
+        // Check if class is already in user classes
+        const transformedStudyGroups = user.studyGroups.map((studyGroupObj) => studyGroupObj.id);
+        if (studyGroupObj && transformedStudyGroups.includes(studyGroupObj.id)) {
+            return {
+                ok: false,
+                message: 'You already have this study group!',
+            };
+        }
+        
+        if (!studyGroupObj) {
+            return {
+                ok: false,
+                message: 'Please select a study group to add',
+            };
+        }
+
+        // If not, add it
+        const newObject = {
+            studyGroups: [...transformedStudyGroups, studyGroupObj.id],
+        };
+
+        const response = await userService.update(user, token, newObject);
+        if (response.ok) {
+            return {
+                ok: true,
+                body: await response.json(),
+                message: `Successfully added ${studyGroupObj.name} to your study groups`,
+            };
+        }
+    }
+    catch (error) {
+        return {
+
+            ok: false,
+            error,
+            message: 'Failed to update study groups. Please try again.',
+        };
+    }
+};
+
+
 const removeClass = async (user, token, classObj) => {
     try {
         // Check if class is already not in user classes
@@ -247,6 +290,7 @@ const removeFriend = async (removerUser, removeeUser) => {
 export default { get,
     getAll,
     addClass,
+    addStudyGroup,
     removeClass,
     sendFriendRequest,
     acceptFriendRequest,
