@@ -6,6 +6,7 @@ const cron = require('node-cron');
 const { checkInactiveUsers } = require('./services/user.service');
 
 const StudyGroup = require('../src/models/studygroup.model')
+const UserModel = require('../src/models/user.model')
 
 const http = require('http').Server(app);
 
@@ -53,16 +54,22 @@ io.on('connection', (socket) => {
 
   socket.on('groupChatMessage', async ({ groupId, message }) => {
     const group = await StudyGroup.findByIdAndUpdate(
-        groupId,
+      groupId,
       { $push: { messages: message } },
-      { new: true, useFindAndModify: false }
-    );
-    console.log('id', groupId, 'ms', message, 'g', group)
+      { new: true, useFindAndModify: false }).populate('messages.user')
+
     io.to(groupId).emit('newMessage', {
       message: group.messages
     })
-
   })
+  socket.on('ChatMessages', async ({ groupId }) => {
+    const group = await StudyGroup.findById(groupId).populate('messages.user')
+    console.log('group',group)
+    io.to(groupId).emit('newMessage', {
+      message: group.messages
+    })
+  })
+
 
 });
 
