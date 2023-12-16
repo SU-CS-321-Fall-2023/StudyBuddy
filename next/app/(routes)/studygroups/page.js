@@ -89,6 +89,7 @@ export default function Page() {
     }
 
     const handleCreateStudyGroup = async (event) => {
+        setModalOpen(false)
         event.preventDefault()
         console.log(event, 'event')
         if (!newStudyGroupName || newStudyGroupName.trim() === '') {
@@ -103,7 +104,6 @@ export default function Page() {
         setUser(response.user)
         setStudygroups([...studygroups, response.newGroup])
         setNotification(`Successfully created the group. `, 'success')
-        setModalOpen(false)
         } catch (error) {
             setNotification(`Error `, error)
             console.log(error, 'error in create study group')

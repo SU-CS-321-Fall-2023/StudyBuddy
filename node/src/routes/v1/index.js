@@ -5,7 +5,8 @@ const docsRoute = require('./docs.route');
 const classRoute = require('./class.route');
 const config = require('../../config/config');
 const studygroupRoute = require('./studyGroup.route')
-const groupChartRoute = require('./chart.route')
+const chatRoute = require('./chat.route')
+const privateChatRoute = require('./private.chat')
 
 const router = express.Router();
 
@@ -27,8 +28,12 @@ const defaultRoutes = [
     route: studygroupRoute,
   },
   {
-    path: '/chart',
-    route: groupChartRoute
+    path: '/chat',
+    route: chatRoute
+  },
+  {
+    path: '/private-chat',
+    route: privateChatRoute
   }
 ];
 
