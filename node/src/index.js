@@ -32,9 +32,9 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: "http://localhost:3001",
+    origin: "*",
   },
-})
+});
 
 io.on('connection', (socket) => {
   console.log('connected')
