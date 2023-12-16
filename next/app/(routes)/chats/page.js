@@ -47,9 +47,9 @@ export default function Page() {
 
     const friends = (friends) => {
         if (friends.includes(user.id)) {
-            return (<d class="mb-2  text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">friends</d>)
+            return (<d className="mb-2  text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">friends</d>)
         } else {
-            return (<d class="mb-2 text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">Not friends</d>)
+            return (<d className="mb-2 text-2xl rounded-full font-bold tracking-tight text-white-900 dark:text-white">Not friends</d>)
         }
     }
 
@@ -57,15 +57,15 @@ export default function Page() {
         if (chat.receiverId.id == user.id) {
             return (
 
-                <div class="flex flex-row max-w-sm p-4 bg-green-500 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <p class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.senderId.name} -</p>
+                <div className="flex flex-row max-w-sm p-4 bg-green-500 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <p className="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.senderId.name} -</p>
                     {friends(chat.senderId.friends)}
                 </div>
             )
         } else {
             return (
-                <div class="flex flex-row max-w-sm p-4 bg-green-500 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <p class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.receiverId.name} -</p>
+                <div className="flex flex-row max-w-sm p-4 bg-green-500 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <p className="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{chat.receiverId.name} -</p>
                     {friends(chat.receiverId.friends)}
                 </div>
             )

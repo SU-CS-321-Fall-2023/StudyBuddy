@@ -60,7 +60,7 @@ export default function Page(props) {
                     <div className="flex items-center self-start rounded-xl rounded-tl bg-gray-300 py-2 px-3">
                         <p>{message.content}</p>
                     </div>
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-500">{message.user.name}</span>
+                    <span className="text-sm font-normal text-gray-500 dark:text-gray-500">{message.user.name}</span>
                 </div>
             )
         }

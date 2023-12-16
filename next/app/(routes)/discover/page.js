@@ -127,12 +127,12 @@ export default function Page() {
           {isLoading && <Spinner />}
           {!isLoading && <Button onClick={handleMatch} color='blue' >Match</Button>}
         </div>
-        <div class="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {results?.map((result) => (
-            <a key={result.id} class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-              <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{result.name}</h5>
+            <a key={result.id} className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{result.name}</h5>
               {result.classes.map((cls) => (
-                <p key={cls.id} class="mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">{cls.department_code} {cls.class_code}</p>
+                <p key={cls.id} className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-400">{cls.department_code} {cls.class_code}</p>
               ))}
               {result.friends?.includes(user.id) ? (
                 <>
