@@ -78,7 +78,7 @@ export default function Page() {
 
             <div className='flex flex-col justify-center items-center'>
                 {chats.length > 0 ? (chats.map((chat) => (
-                    <Link href={`/chats/${chat._id}`}>
+                    <Link key={chat._id} href={`/chats/${chat._id}`}>
                         {ContactCard(chat)}
                     </Link>
                 ))) : <div>No chats</div>}
